@@ -1,5 +1,5 @@
-import dayjs from 'dayjs'
-import { dateFormat } from '../../config/setting'
+import dayjs from "dayjs";
+import { dateFormat } from "@/config/setting";
 
 /**
  * 日期的格式化函数
@@ -7,5 +7,5 @@ import { dateFormat } from '../../config/setting'
  * @return 格式化之后的字符串
  */
 export function day(target) {
-  return dayjs(target).format(dateFormat)
+  return dayjs(target).format(dateFormat);
 }

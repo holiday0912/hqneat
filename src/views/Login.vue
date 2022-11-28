@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import { login } from "../api/system/sysUser";
+import { login } from "@/api/system/sysUser";
 
 export default {
   data: function() {
@@ -55,7 +55,6 @@ export default {
   },
   methods: {
     submitForm() {
-      this.$router.push("/");
       this.$refs.login.validate(valid => {
         if (valid) {
           login(this.param).then(res => {
@@ -65,7 +64,7 @@ export default {
                 "userLoginContext",
                 JSON.stringify(res.data.userLoginContext)
               );
-              this.$router.push("/");
+              this.$router.push("/dashboard");
             }
           });
         } else {
@@ -83,7 +82,7 @@ export default {
   position: relative;
   width: 100%;
   height: 100%;
-  background-image: url(../../assets/img/login-bg.png);
+  background-image: url("~@/assets/img/login-bg.png");
   background-size: 100%;
 }
 
