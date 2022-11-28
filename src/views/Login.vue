@@ -3,11 +3,11 @@
     <div class="ms-login">
       <div class="ms-title">后台管理系统模板</div>
       <el-form
+        ref="login"
         :model="param"
         :rules="rules"
-        ref="login"
-        label-width="0"
         class="ms-content"
+        label-width="0"
       >
         <el-form-item prop="userName">
           <el-input v-model="param.userName" clearable placeholder="请输入账号">
@@ -16,10 +16,10 @@
         </el-form-item>
         <el-form-item prop="password">
           <el-input
-            type="password"
-            placeholder="请输入密码"
-            clearable
             v-model="param.password"
+            clearable
+            placeholder="请输入密码"
+            type="password"
             @keyup.enter.native="submitForm()"
           >
             <el-button slot="prepend" icon="el-icon-lx-lock"></el-button>
@@ -36,42 +36,46 @@
 </template>
 
 <script>
-import { login } from '../../api/sysUser'
+import { login } from "../api/system/sysUser";
+
 export default {
   data: function() {
     return {
       param: {
-        userName: '',
-        password: '',
+        userName: "",
+        password: ""
       },
       rules: {
         userName: [
-          { required: true, message: '请输入用户名', trigger: 'blur' },
+          { required: true, message: "请输入用户名", trigger: "blur" }
         ],
-        password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
-      },
-    }
+        password: [{ required: true, message: "请输入密码", trigger: "blur" }]
+      }
+    };
   },
   methods: {
     submitForm() {
-      this.$router.push('/')
-      this.$refs.login.validate((valid) => {
+      this.$router.push("/");
+      this.$refs.login.validate(valid => {
         if (valid) {
-          login(this.param).then((res) => {
+          login(this.param).then(res => {
             if (res) {
-              localStorage.setItem('token', res.data.token)
-              localStorage.setItem('userLoginContext', JSON.stringify(res.data.userLoginContext))
-              this.$router.push('/')
+              localStorage.setItem("token", res.data.token);
+              localStorage.setItem(
+                "userLoginContext",
+                JSON.stringify(res.data.userLoginContext)
+              );
+              this.$router.push("/");
             }
-          })
+          });
         } else {
           this.$message.error("请输入账号和密码");
           return false;
         }
       });
-    },
-  },
-}
+    }
+  }
+};
 </script>
 
 <style scoped>
@@ -82,6 +86,7 @@ export default {
   background-image: url(../../assets/img/login-bg.png);
   background-size: 100%;
 }
+
 .ms-title {
   width: 100%;
   line-height: 50px;
@@ -90,6 +95,7 @@ export default {
   color: #fff;
   border-bottom: 1px solid #ddd;
 }
+
 .ms-login {
   position: absolute;
   left: 50%;
@@ -100,22 +106,27 @@ export default {
   background: rgba(255, 255, 255, 0.3);
   overflow: hidden;
 }
+
 .ms-content {
   padding: 30px 30px;
 }
+
 .login-btn {
   text-align: center;
 }
+
 .login-btn button {
   width: 100%;
   height: 36px;
   margin-bottom: 10px;
 }
+
 .login-tips {
   font-size: 12px;
   line-height: 30px;
   color: #fff;
 }
+
 .copyDrec {
   font-size: 12px;
   color: #ccc;

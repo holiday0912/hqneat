@@ -1,107 +1,102 @@
 <template>
   <div class="container">
     <div class="handle-box">
-      <el-form :model="searchForm" ref="searchRorm" label-width="120px">
+      <el-form ref="searchRorm" :model="searchForm" label-width="120px">
         <el-row>
           <el-col :span="6">
-            <el-form-item label="账户名" prop="userName">
-              <el-input v-model="searchForm.userName"></el-input>
+            <el-form-item label="客户号" prop="customerId">
+              <el-input v-model="searchForm.customerId"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="6">
-            <el-form-item label="手机号" prop="phone">
-              <el-input v-model="searchForm.phone"></el-input>
+            <el-form-item label="账号" prop="creditPayNo">
+              <el-input v-model="searchForm.creditPayNo"></el-input>
             </el-form-item>
           </el-col>
           <div style="display: inline-block">
             <div style="margin-left: 10px; display: inline-block">
               <el-button icon="el-icon-refresh" @click="formRest"
-                >重置</el-button
-              >
+                >重置
+              </el-button>
             </div>
             <div style="margin-left: 10px; display: inline-block">
               <el-button
-                type="primary"
                 icon="el-icon-search"
+                type="primary"
                 @click="handleSearch"
-                >查询</el-button
-              >
+                >查询
+              </el-button>
             </div>
           </div>
         </el-row>
       </el-form>
-      <div class="handle-box">
-        <el-button type="primary" icon="el-icon-plus" @click="handleAdd"
-          >新增</el-button
-        >
-      </div>
       <el-table
+        ref="multipleTable"
         :data="tableData"
         border
         class="table"
-        ref="multipleTable"
         header-cell-class-name="table-header"
       >
-        <el-table-column label="序号" width="55" align="center">
+        <el-table-column align="center" label="序号" width="55">
           <template slot-scope="scope">
             {{ scope.$index + 1 }}
           </template>
         </el-table-column>
         <el-table-column
-          prop="id"
+          align="center"
           label="账号ID"
-          align="center"
+          prop="id"
         ></el-table-column>
         <el-table-column
-          prop="userName"
+          align="center"
           label="账号名称"
-          align="center"
+          prop="userName"
         ></el-table-column>
         <el-table-column
-          prop="phone"
+          align="center"
           label="手机号"
-          align="center"
+          prop="phone"
         ></el-table-column>
         <el-table-column
-          prop="roleNames"
+          align="center"
           label="角色名称"
-          align="center"
+          prop="roleNames"
         ></el-table-column>
         <el-table-column
-          prop="createTime"
+          align="center"
           label="创建时间"
-          align="center"
+          prop="createTime"
         ></el-table-column>
         <el-table-column
-          prop="updateTime"
-          label="更新时间"
           align="center"
+          label="更新时间"
+          prop="updateTime"
         ></el-table-column>
-        <el-table-column label="操作" width="220" align="center">
+        <el-table-column align="center" label="操作" width="220">
           <template slot-scope="scope">
             <el-button
-              type="text"
               icon="el-icon-edit"
-              @click="handleEdit(scope.$index, scope.row)"
-              >修改</el-button
-            >
-            <el-button
               type="text"
+              @click="handleEdit(scope.$index, scope.row)"
+              >修改
+            </el-button>
+            <el-button
               icon="el-icon-delete"
+              type="text"
               @click="handleDelete(scope.$index, scope.row)"
-              >删除</el-button
-            >
+              >删除
+            </el-button>
           </template>
         </el-table-column>
       </el-table>
       <div class="pagination">
         <el-pagination
+          :current-page="query.pageNum"
+          :page-size="query.pageSize"
+          :page-sizes="[10, 20, 30, 40, 50]"
+          :total="pageTotal"
           background
           layout="sizes, total, prev, pager, next"
-          :current-page="query.pageNum"
-          :page-sizes="[10, 20, 30, 40, 50]"
-          :page-size="query.pageSize"
-          :total="pageTotal"
           @current-change="handlePageChange"
           @size-change="hanleSizeChange"
         ></el-pagination>
@@ -111,28 +106,28 @@
       v-dialogDrag
       :close-on-click-modal="false"
       :title="dialogTitle"
-      @close="dialogClose"
       :visible.sync="dialogFormVisible"
       width="680px"
+      @close="dialogClose"
     >
       <el-form
-        :model="addItem"
-        ref="add"
-        label-width="150px"
         v-if="dialogFormVisible"
+        ref="add"
+        :model="addItem"
+        label-width="150px"
       >
         <el-row>
           <el-col :span="24">
             <el-form-item
-              label="用户名"
-              prop="userName"
               :rules="[
                 {
                   required: true,
                   message: '请输入用户名',
-                  trigger: 'blur',
-                },
+                  trigger: 'blur'
+                }
               ]"
+              label="用户名"
+              prop="userName"
             >
               <el-input
                 v-model="addItem.userName"
@@ -145,20 +140,20 @@
         <el-row>
           <el-col :span="24">
             <el-form-item
-              label="手机号"
-              prop="phone"
               :rules="[
                 {
                   required: true,
                   message: '请输入手机号',
-                  trigger: 'blur',
+                  trigger: 'blur'
                 },
                 {
                   pattern: /^1[3|5|7|8|9]\d{9}$/,
                   message: '请输入正确的号码格式',
-                  trigger: 'change',
-                },
+                  trigger: 'change'
+                }
               ]"
+              label="手机号"
+              prop="phone"
             >
               <el-input
                 v-model="addItem.phone"
@@ -171,21 +166,21 @@
         <el-row>
           <el-col :span="24">
             <el-form-item
-              label="角色"
-              prop="roleIds"
               :rules="[
                 {
                   required: true,
                   message: '请选择需要绑定的角色',
-                  trigger: 'blur',
-                },
+                  trigger: 'blur'
+                }
               ]"
+              label="角色"
+              prop="roleIds"
             >
               <el-select
                 v-model="addItem.roleIds"
+                clearable
                 filterable
                 multiple
-                clearable
                 placeholder="请选择需要绑定的角色"
                 style="width: 100%"
               >
@@ -225,24 +220,19 @@
 </template>
 
 <script>
-import {
-  pageList,
-  roleListByUserId,
-  addUser,
-  editItem,
-} from "../../../api/sysUser";
-import { list } from "../../../api/sysRole";
+import { queryLimitInfoList } from "../api/system/jiebei";
+
 export default {
-  name: "accountManage",
+  name: "quotaManage",
   data() {
     return {
       query: {
         pageNum: 1,
-        pageSize: 10,
+        pageSize: 10
       },
       searchForm: {
-        userName: "", // 用户名
-        phone: "", // 手机号
+        customerId: "", // 用户名
+        creditPayNo: "" // 手机号
       },
       tableData: [],
       pageTotal: 0,
@@ -252,33 +242,25 @@ export default {
         password: "", // 登入密码
         phone: "", // 手机号
         roleIds: "", // 角色id
-        userName: "", // 用户名
+        userName: "" // 用户名
       },
-      roleList: [], // 角色列表
+      roleList: [] // 角色列表
     };
   },
   components: {},
   computed: {},
   mounted() {},
   methods: {
-    // 查询角色列表
-    searchRoleList() {
-      list({}).then((res) => {
-        if (res) {
-          console.log(res);
-          this.roleList = res.data;
-        }
-      });
-    },
     // 表单重置
     formRest() {
       this.$refs.searchRorm.resetFields();
     },
     getData() {
       let obj = Object.assign(this.query, this.searchForm);
-      pageList(obj).then((res) => {
+      queryLimitInfoList({}).then(res => {
         if (res) {
-          this.tableData = res.data.list;
+          console.log(res);
+          this.tableData = res.data.creditPayInfoBodyList;
           this.pageTotal = res.data.total;
         }
       });
@@ -292,7 +274,7 @@ export default {
     handleSearch() {
       this.query = {
         pageNum: 1,
-        pageSize: 10,
+        pageSize: 10
       };
       this.getData();
     },
@@ -321,17 +303,17 @@ export default {
         password: "", // 登入密码
         phone: "", // 手机号
         roleIds: "", // 角色id
-        userName: "", // 用户名
+        userName: "" // 用户名
       };
     },
     // 新增资源提交
     handleComfire() {
-      this.$refs.add.validate((valid) => {
+      this.$refs.add.validate(valid => {
         if (valid) {
           let obj = JSON.parse(JSON.stringify(this.addItem));
           obj.roleIds = obj.roleIds.length > 0 ? obj.roleIds.join(",") : "";
           if (this.dialogTitle === "修改账号") {
-            editItem(obj).then((res) => {
+            editItem(obj).then(res => {
               if (res) {
                 this.$message.success("修改成功");
                 this.dialogClose();
@@ -339,7 +321,7 @@ export default {
               }
             });
           } else {
-            addUser(obj).then((res) => {
+            addUser(obj).then(res => {
               if (res) {
                 this.$message.success("新增成功");
                 this.dialogClose();
@@ -349,7 +331,7 @@ export default {
           }
         }
       });
-    },
-  },
+    }
+  }
 };
 </script>
