@@ -1,4 +1,5 @@
-# NanYang 2.0
+# smart-catering
+
 ## Project setup
 ```
 npm install
