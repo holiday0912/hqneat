@@ -43,13 +43,11 @@ export default {
     showDialog() {
       this.dialogFormVisible = true;
     },
-    // 表单重置
-    formRest() {
-      this.$refs.edit.resetFields();
-    },
     dialogEditClose() {
       this.dialogFormVisible = false;
+      this.$refs.edit.resetFields();
       this.formRest();
+      this.$emit("refresh");
     },
     addMessagePush() {
       this.$refs.edit.validate(async valid => {

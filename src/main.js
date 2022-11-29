@@ -5,8 +5,8 @@ import router from "./router";
 // import 'lib-flexible/flexible'
 // import VueI18n from 'vue-i18n';
 import ElementUI from "element-ui";
-// import "element-ui/lib/theme-chalk/index.css"; // 默认主题
-import "./assets/css/theme-green/index.css"; // 浅绿色主题
+import "element-ui/lib/theme-chalk/index.css"; // 默认主题
+// import "./assets/css/theme-green/index.css"; // 浅绿色主题
 import "./assets/css/icon.css";
 import "./utils/dialog";
 import NProgress from "nprogress"; // 进度条；进度指示器
@@ -27,9 +27,11 @@ Vue.config.productionTip = false;
 //   locale: 'zh',
 //   messages
 // });
+
 Vue.use(ElementUI, {
   size: "small"
 });
+
 NProgress.inc(0.2);
 NProgress.configure({
   easing: "ease",

@@ -69,6 +69,7 @@ const routes = [
           import(/* webpackChunkName: "billManage" */ "@/views/billManage.vue"),
         meta: { permission: false, title: "账单管理" }
       },
+      // 消息推送
       {
         path: "/msgPush",
         name: "msgPush",
@@ -78,6 +79,17 @@ const routes = [
           ),
         meta: { permission: false, title: "消息推送" }
       },
+      // 登陆日志
+      {
+        path: "/loginLog",
+        name: "loginLog",
+        component: () =>
+          import(
+            /* webpackChunkName: "loginLog" */ "@/views/loginLog/LoginLog.vue"
+          ),
+        meta: { permission: false, title: "登陆日志" }
+      },
+      // h5包管理
       {
         path: "/htmlPackage",
         name: "htmlPackage",

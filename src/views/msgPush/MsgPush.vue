@@ -72,7 +72,7 @@
           label="更新时间"
           prop="updateTime"
         ></el-table-column>
-        <el-table-column align="center" label="操作" width="220">
+        <el-table-column align="center" label="操作" width="90">
           <template v-slot="scope">
             <el-button
               icon="el-icon-delete"
@@ -90,7 +90,7 @@
       ></BasePagination>
     </div>
 
-    <MsgAddNew ref="msgAddNew"></MsgAddNew>
+    <MsgAddNew ref="msgAddNew" @refresh="getData"></MsgAddNew>
   </div>
 </template>
 

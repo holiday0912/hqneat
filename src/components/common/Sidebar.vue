@@ -106,7 +106,7 @@ export default {
         {
           icon: "el-icon-s-order",
           router: "loginLog",
-          resourceName: "登陆日志"
+          resourceName: "登录日志"
         },
         {
           icon: "el-icon-s-promotion",
@@ -137,7 +137,6 @@ export default {
       let userLoginContext = JSON.parse(
         sessionStorage.getItem("userLoginContext")
       );
-      console.log(userLoginContext.resources);
       this.items = userLoginContext.resources;
     }
   }

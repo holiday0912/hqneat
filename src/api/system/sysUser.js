@@ -4,7 +4,10 @@ const baseUrl = "";
 
 // 登入
 export const login = query => {
-  return post("/userLogin/toLogin", query);
+  return post("/userLogin/toLogin", {
+    body: { ...query, mobile: "" },
+    channel: ""
+  });
 };
 
 // 登出

@@ -1,5 +1,5 @@
 <template>
-  <!-- 角色绑定资源 -->
+  <!-- h5包上传的弹窗 -->
   <el-dialog
     v-dialogDrag
     :close-on-click-modal="false"
@@ -8,7 +8,7 @@
     width="680px"
     @close="dialogEditClose"
   >
-    <el-form ref="uploadMessage" :model="form" label-width="80px">
+    <el-form ref="uploadMessage" :model="form" label-width="110px">
       <el-form-item
         :rules="[{ required: true, message: '请输入' }]"
         label="版本号"
@@ -22,6 +22,39 @@
         prop="descr"
       >
         <el-input v-model="form.descr"></el-input>
+      </el-form-item>
+
+      <el-form-item
+        :rules="[{ required: true, message: '请输入' }]"
+        label="是否最新"
+        prop="descr"
+      >
+        <template>
+          <el-radio v-model="form.isLatest" label="1">是</el-radio>
+          <el-radio v-model="form.isLatest" label="0">否</el-radio>
+        </template>
+      </el-form-item>
+
+      <el-form-item
+        :rules="[{ required: true, message: '请输入' }]"
+        label="是否强制更新"
+        prop="descr"
+      >
+        <template>
+          <el-radio v-model="form.isForce" label="1">是</el-radio>
+          <el-radio v-model="form.isForce" label="0">否</el-radio>
+        </template>
+      </el-form-item>
+
+      <el-form-item
+        :rules="[{ required: true, message: '请输入' }]"
+        label="类型"
+        prop="descr"
+      >
+        <template>
+          <el-radio v-model="form.type" label="1">离线包</el-radio>
+          <el-radio v-model="form.type" label="0">安装包</el-radio>
+        </template>
       </el-form-item>
     </el-form>
 
@@ -38,6 +71,7 @@
     >
       <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
       <el-button
+        :loading="isUploading"
         class="upload-btn"
         size="small"
         style="margin-left: 10px;"
@@ -50,9 +84,9 @@
       </div>
     </el-upload>
 
-    <div slot="footer" class="dialog-footer">
+    <template #footer class="dialog-footer">
       <el-button @click="dialogEditClose">取 消</el-button>
-    </div>
+    </template>
   </el-dialog>
 </template>
 
@@ -69,28 +103,33 @@ export default {
       form: {
         appid: "njebd81krqn",
         versionCode: "",
-        descr: ""
+        descr: "",
+        isLatest: "1",
+        isForce: "0",
+        type: "1"
       },
-      actions: fileUpload
+      actions: fileUpload,
+      isUploading: false
     };
   },
   methods: {
     showDialog() {
       this.dialogFormVisible = true;
     },
-    // 表单重置
-    formRest() {
-      this.$refs.uploadMessage.resetFields();
-    },
     dialogEditClose() {
-      this.dialogFormVisible = false;
-      this.fileList = [];
-      this.formRest();
-      this.$emit("refresh");
+      if (!this.isUploading) {
+        this.dialogFormVisible = false;
+        this.fileList = [];
+        this.$refs.uploadMessage.resetFields();
+        this.$emit("refresh");
+      } else {
+        this.$message.info("文件正在上传中");
+      }
     },
     submitUpload() {
       this.$refs.uploadMessage.validate(valid => {
         if (valid) {
+          this.isUploading = true;
           this.$refs.upload.submit();
         }
       });
@@ -99,6 +138,7 @@ export default {
       try {
         let res = await insertVersion({ fileUrl: data, ...this.form });
         if (res) {
+          this.isUploading = false;
           this.$message.success(res.message);
           this.dialogEditClose();
         }
@@ -108,6 +148,7 @@ export default {
     },
     uploadError(res) {
       this.$message.error(res.message);
+      this.isUploading = false;
     },
     handleRemove(file, fileList) {
       console.log(file, fileList);
@@ -119,5 +160,9 @@ export default {
 <style lang="scss" scoped>
 .upload-btn {
   transform: translateX(80px);
+}
+
+.el-upload__tip {
+  margin-left: 10px;
 }
 </style>

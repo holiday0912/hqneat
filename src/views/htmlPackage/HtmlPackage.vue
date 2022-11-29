@@ -4,35 +4,47 @@
       <el-form ref="searchRorm" :model="searchForm" label-width="120px">
         <el-row>
           <el-col :span="6">
-            <el-form-item label="角色名称" prop="roleName">
-              <el-input v-model="searchForm.roleName"></el-input>
+            <el-form-item label="版本号" prop="versionCode">
+              <el-input v-model="searchForm.versionCode"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="6">
-            <el-form-item label="角色描述" prop="roleDesc">
-              <el-input v-model="searchForm.roleDesc"></el-input>
+            <el-form-item label="描述" prop="descr">
+              <el-input v-model="searchForm.descr"></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="6">
+            <el-form-item label="上传时间" prop="createTime">
+              <el-date-picker
+                v-model="searchForm.createTime"
+                placeholder="选择日期"
+                style="width: 100%"
+                type="date"
+              >
+              </el-date-picker>
             </el-form-item>
           </el-col>
 
-          <div style="display: inline-block">
-            <div style="margin-left: 10px; display: inline-block">
-              <el-button icon="el-icon-refresh" @click="formRest"
-                >重置
-              </el-button>
-            </div>
-            <div style="margin-left: 10px; display: inline-block">
-              <el-button
-                icon="el-icon-search"
-                type="primary"
-                @click="handleSearch"
-                >查询
-              </el-button>
-            </div>
-          </div>
+          <el-col :span="6">
+            <el-form-item label="类型" prop="createTime">
+              <el-select v-model="searchForm.type" placeholder="请选择">
+                <el-option
+                  v-for="item in typeList"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                />
+              </el-select>
+            </el-form-item>
+          </el-col>
         </el-row>
       </el-form>
 
       <div class="handle-box">
+        <el-button icon="el-icon-refresh" @click="formRest">重置</el-button>
+        <el-button icon="el-icon-search" type="primary" @click="handleSearch"
+          >查询
+        </el-button>
         <el-button icon="el-icon-plus" type="primary" @click="handleAdd"
           >文件上传
         </el-button>
@@ -51,44 +63,65 @@
           </template>
         </el-table-column>
 
-        <el-table-column
-          align="center"
-          label="是否最新"
-          prop="isLatest"
-        ></el-table-column>
-
+        <!--版本号-->
         <el-table-column
           align="center"
           label="版本号"
           prop="versionCode"
         ></el-table-column>
 
+        <!--描述-->
         <el-table-column
           align="center"
           label="描述"
           prop="descr"
         ></el-table-column>
 
+        <!--文件路径-->
         <el-table-column
           align="center"
           label="文件路径"
           prop="fileUrl"
         ></el-table-column>
 
+        <!-- 上传时间-->
         <el-table-column
           align="center"
           label="上传时间"
           prop="createTime"
         ></el-table-column>
 
-        <el-table-column align="center" label="操作" width="220">
-          <template slot-scope="scope">
-            <el-button
-              icon="el-icon-delete"
-              type="text"
-              @click="handleDelete(scope.row)"
-              >删除
-            </el-button>
+        <!--是否最新-->
+        <el-table-column
+          align="center"
+          label="是否最新"
+          prop="isLatest"
+        ></el-table-column>
+
+        <!--是否强制更新-->
+        <el-table-column
+          align="center"
+          label="是否强制更新"
+          prop="isForce"
+        ></el-table-column>
+
+        <!--类型-->
+        <el-table-column
+          align="center"
+          label="类型"
+          prop="type"
+        ></el-table-column>
+
+        <el-table-column align="center" label="操作" width="90">
+          <template v-slot="scope">
+            <el-popconfirm
+              title="确定删除吗？"
+              @confirm="handleDelete(scope.row)"
+            >
+              <el-button slot="reference" icon="el-icon-delete" type="text"
+                >删除
+              </el-button>
+            </el-popconfirm>
           </template>
         </el-table-column>
       </el-table>
@@ -118,11 +151,27 @@ export default {
         appid: "njebd81krqn",
         descr: "", //描述
         versionCode: "", //版本号
-        type: "" //类型
+        type: "", //类型，
+        createTime: ""
       },
       tableData: [],
       pageTotal: 0
     };
+  },
+  computed: {
+    // html安装包类型的枚举
+    typeList() {
+      return [
+        {
+          label: "离线包",
+          value: "1"
+        },
+        {
+          label: "安装包",
+          value: "0"
+        }
+      ];
+    }
   },
   mounted() {
     this.getData();
@@ -136,13 +185,36 @@ export default {
           this.tableData = res.data.list.map(i => {
             return {
               ...i,
-              createTime: this.$dayjs(i.createTime)
+              createTime: this.$dayjs(i.createTime),
+              isLatest: this.showIsLatestAndIsForce(i.isLatest),
+              isForce: this.showIsLatestAndIsForce(i.isForce),
+              type: this.showType(i.type)
             };
           });
           this.pageTotal = res.data.total;
         }
       } catch (e) {
         throw new Error(e);
+      }
+    },
+    showIsLatestAndIsForce(target) {
+      switch (target) {
+        case "1":
+          return "是";
+        case "0":
+          return "否";
+        default:
+          return "否";
+      }
+    },
+    showType(target) {
+      switch (target) {
+        case "1":
+          return "离线包";
+        case "0":
+          return "安装包";
+        default:
+          return "——";
       }
     },
     formRest() {
