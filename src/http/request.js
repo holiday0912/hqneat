@@ -29,13 +29,21 @@ export function get(url, params = {}) {
  */
 export function post(url, data = {}) {
   return new Promise((resolve, reject) => {
-    axios.post(url, data).then(
-      response => {
-        resolve(response);
-      },
-      err => {
-        reject(err);
-      }
-    );
+    axios
+      .post(url, {
+        body: {
+          ...data,
+          mobile: ""
+        },
+        channel: ""
+      })
+      .then(
+        response => {
+          resolve(response);
+        },
+        err => {
+          reject(err);
+        }
+      );
   });
 }

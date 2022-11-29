@@ -8,7 +8,7 @@
     width="680px"
     @close="dialogEditClose"
   >
-    <el-form ref="edit" :model="form" label-width="80px">
+    <el-form ref="uploadMessage" :model="form" label-width="80px">
       <el-form-item
         :rules="[{ required: true, message: '请输入' }]"
         label="版本号"
@@ -16,15 +16,22 @@
       >
         <el-input v-model="form.version"></el-input>
       </el-form-item>
+      <el-form-item
+        :rules="[{ required: true, message: '请输入' }]"
+        label="描述"
+        prop="describe"
+      >
+        <el-input v-model="form.describe"></el-input>
+      </el-form-item>
     </el-form>
 
     <el-upload
       ref="upload"
       :action="actions"
       :auto-upload="false"
-      :data="{ version: form.version }"
       :file-list="fileList"
       :on-remove="handleRemove"
+      accept="application/zip"
     >
       <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
       <el-button
@@ -36,7 +43,7 @@
         >上传到服务器
       </el-button>
       <div slot="tip" class="el-upload__tip">
-        请选择上传的文件
+        只能上传zip格式的压缩包
       </div>
     </el-upload>
 
@@ -57,7 +64,8 @@ export default {
       dialogFormVisible: false,
       fileList: [],
       form: {
-        version: ""
+        version: "",
+        describe: ""
       },
       actions: fileUpload
     };
@@ -68,14 +76,19 @@ export default {
     },
     // 表单重置
     formRest() {
-      this.$refs.edit.resetFields();
+      this.$refs.uploadMessage.resetFields();
     },
     dialogEditClose() {
       this.dialogFormVisible = false;
+      this.fileList = [];
       this.formRest();
     },
     submitUpload() {
-      this.$refs.upload.submit();
+      this.$refs.uploadMessage.validate(valid => {
+        if (valid) {
+          this.$refs.upload.submit();
+        }
+      });
     },
     handleRemove(file, fileList) {
       console.log(file, fileList);

@@ -73,7 +73,7 @@
           prop="updateTime"
         ></el-table-column>
         <el-table-column align="center" label="操作" width="220">
-          <template slot-scope="scope">
+          <template v-slot="scope">
             <el-button
               icon="el-icon-delete"
               type="text"
@@ -84,7 +84,10 @@
         </el-table-column>
       </el-table>
 
-      <BasePagination @getData="getData"></BasePagination>
+      <BasePagination
+        :pageTotal="pageTotal"
+        @getData="getData"
+      ></BasePagination>
     </div>
 
     <MsgAddNew ref="msgAddNew"></MsgAddNew>
@@ -110,6 +113,9 @@ export default {
       tableData: [],
       pageTotal: 0
     };
+  },
+  mounted() {
+    this.getData();
   },
   methods: {
     async getData(query = { pageNum: 1, pageSize: 10 }) {
@@ -145,8 +151,8 @@ export default {
     handleAdd() {
       this.$refs.msgAddNew.showDialog();
     },
-    handleDelete() {
-      console.log("delete");
+    handleDelete(index, row) {
+      console.log("delete", index, row);
     }
   }
 };

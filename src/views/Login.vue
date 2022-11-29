@@ -9,8 +9,8 @@
         class="ms-content"
         label-width="0"
       >
-        <el-form-item prop="userName">
-          <el-input v-model="param.userName" clearable placeholder="请输入账号">
+        <el-form-item prop="username">
+          <el-input v-model="param.username" clearable placeholder="请输入账号">
             <el-button slot="prepend" icon="el-icon-lx-people"></el-button>
           </el-input>
         </el-form-item>
@@ -42,11 +42,11 @@ export default {
   data: function() {
     return {
       param: {
-        userName: "",
-        password: ""
+        username: "qianyucai",
+        password: "123456"
       },
       rules: {
-        userName: [
+        username: [
           { required: true, message: "请输入用户名", trigger: "blur" }
         ],
         password: [{ required: true, message: "请输入密码", trigger: "blur" }]
@@ -59,11 +59,11 @@ export default {
         if (valid) {
           login(this.param).then(res => {
             if (res) {
-              localStorage.setItem("token", res.data.token);
-              localStorage.setItem(
-                "userLoginContext",
-                JSON.stringify(res.data.userLoginContext)
-              );
+              // sessionStorage.setItem("token", res.data.token);
+              // sessionStorage.setItem(
+              //   "userLoginContext",
+              //   JSON.stringify(res.data.userLoginContext)
+              // );
               this.$router.push("/dashboard");
             }
           });

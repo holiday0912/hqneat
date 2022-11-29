@@ -1,10 +1,10 @@
 import { post } from "@/http/request";
 
-const baseUrl = "/sysUser";
+const baseUrl = "";
 
 // 登入
 export const login = query => {
-  return post(baseUrl + "/login/toLogin", query);
+  return post("/userLogin/toLogin", query);
 };
 
 // 登出

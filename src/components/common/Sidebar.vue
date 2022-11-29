@@ -131,9 +131,9 @@ export default {
     //   this.collapse = msg
     //   bus.$emit('collapse-content', msg)
     // })
-    // if (localStorage.getItem('userLoginContext')) {
+    // if (sessionStorage.getItem('userLoginContext')) {
     //   let userLoginContext = JSON.parse(
-    //     localStorage.getItem('userLoginContext')
+    //     sessionStorage.getItem('userLoginContext')
     //   )
     //   console.log(userLoginContext.resources)
     //   this.items = userLoginContext.resources

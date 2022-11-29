@@ -157,7 +157,7 @@ export default {
   },
   computed: {
     username() {
-      let username = localStorage.getItem("ms_username");
+      let username = sessionStorage.getItem("ms_username");
       return username ? username : this.name;
     }
   },
@@ -173,8 +173,8 @@ export default {
           .then(() => {
             loginOut({}).then(res => {
               if (res) {
-                localStorage.removeItem("ms_username");
-                localStorage.removeItem("token");
+                sessionStorage.removeItem("ms_username");
+                sessionStorage.removeItem("token");
                 this.$router.push("/login");
               }
             });

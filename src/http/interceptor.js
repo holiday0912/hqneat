@@ -49,7 +49,7 @@ axios.interceptors.request.use(
     config.url = `${baseUrl}${config.url}`;
     config.headers = {
       "Content-Type": "application/json;charset=UTF-8",
-      Authorization: localStorage.getItem("token")
+      Authorization: sessionStorage.getItem("token")
     };
     showLoading();
     return config;

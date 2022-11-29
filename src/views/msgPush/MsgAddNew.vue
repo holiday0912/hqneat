@@ -55,7 +55,7 @@ export default {
       this.$refs.edit.validate(async valid => {
         if (valid) {
           try {
-            let res = await msgPushInsert({ content: this.content });
+            let res = await msgPushInsert({ content: this.form.content });
             if (res?.message === "请求成功") {
               this.$message.success("新增成功");
               this.dialogEditClose();
