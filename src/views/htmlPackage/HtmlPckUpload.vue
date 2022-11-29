@@ -12,16 +12,16 @@
       <el-form-item
         :rules="[{ required: true, message: '请输入' }]"
         label="版本号"
-        prop="version"
+        prop="versionCode"
       >
-        <el-input v-model="form.version"></el-input>
+        <el-input v-model="form.versionCode"></el-input>
       </el-form-item>
       <el-form-item
         :rules="[{ required: true, message: '请输入' }]"
         label="描述"
-        prop="describe"
+        prop="descr"
       >
-        <el-input v-model="form.describe"></el-input>
+        <el-input v-model="form.descr"></el-input>
       </el-form-item>
     </el-form>
 
@@ -30,7 +30,10 @@
       :action="actions"
       :auto-upload="false"
       :file-list="fileList"
+      :multiple="false"
+      :on-error="uploadError"
       :on-remove="handleRemove"
+      :on-success="uploadSuccess"
       accept="application/zip"
     >
       <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
@@ -54,7 +57,7 @@
 </template>
 
 <script>
-import { fileUpload } from "@/api/htmlPackage";
+import { fileUpload, insertVersion } from "@/api/htmlPackage";
 
 export default {
   name: "HtmlPckUpload",
@@ -64,8 +67,9 @@ export default {
       dialogFormVisible: false,
       fileList: [],
       form: {
-        version: "",
-        describe: ""
+        appid: "njebd81krqn",
+        versionCode: "",
+        descr: ""
       },
       actions: fileUpload
     };
@@ -82,6 +86,7 @@ export default {
       this.dialogFormVisible = false;
       this.fileList = [];
       this.formRest();
+      this.$emit("refresh");
     },
     submitUpload() {
       this.$refs.uploadMessage.validate(valid => {
@@ -89,6 +94,20 @@ export default {
           this.$refs.upload.submit();
         }
       });
+    },
+    async uploadSuccess({ data }) {
+      try {
+        let res = await insertVersion({ fileUrl: data, ...this.form });
+        if (res) {
+          this.$message.success(res.message);
+          this.dialogEditClose();
+        }
+      } catch (e) {
+        throw new Error(e);
+      }
+    },
+    uploadError(res) {
+      this.$message.error(res.message);
     },
     handleRemove(file, fileList) {
       console.log(file, fileList);

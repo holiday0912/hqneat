@@ -17,10 +17,31 @@ export const fileDownload = async query => {
 };
 
 /**
- * 读取远程服务器的文件
+ * 获取h5包的资源列表
  * @param query
  * @returns {Promise<unknown>}
  */
-export const fileList = async query => {
-  return post("/file/readRemoteServer", query);
+export const h5VersionList = async query => {
+  return post("/appVersion/versionList", {
+    body: {
+      ...query,
+      mobile: ""
+    },
+    channel: ""
+  });
+};
+
+// 删除h5资源包
+export const deleteVersion = async query => {
+  return post("/appVersion/deleteVersion", query);
+};
+// 上传版本号和描述
+export const insertVersion = async query => {
+  return post("/appVersion/insertVersion", {
+    body: {
+      ...query,
+      mobile: ""
+    },
+    channel: ""
+  });
 };

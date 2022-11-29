@@ -1,11 +1,13 @@
 <template>
   <div class="header">
     <!-- 折叠按钮 -->
-    <div class="collapse-btn" @click="collapseChage">
-      <i v-if="!collapse" class="el-icon-s-fold"></i>
-      <i v-else class="el-icon-s-unfold"></i>
+    <div>
+      <div class="collapse-btn" @click="collapseChage">
+        <i v-if="!collapse" class="el-icon-s-fold"></i>
+        <i v-else class="el-icon-s-unfold"></i>
+      </div>
+      <div class="logo">南洋 2.0</div>
     </div>
-    <div class="logo">后台管理系统</div>
     <div class="header-right">
       <div class="header-user-con">
         <!-- 全屏显示 -->
@@ -19,18 +21,18 @@
           </el-tooltip>
         </div>
         <!-- 消息中心 -->
-        <div class="btn-bell">
-          <el-tooltip
-            :content="message ? `有${message}条未读消息` : `消息中心`"
-            effect="dark"
-            placement="bottom"
-          >
-            <router-link to="/tabs">
-              <i class="el-icon-bell"></i>
-            </router-link>
-          </el-tooltip>
-          <span v-if="message" class="btn-bell-badge"></span>
-        </div>
+        <!--        <div class="btn-bell">-->
+        <!--          <el-tooltip-->
+        <!--            :content="message ? `有${message}条未读消息` : `消息中心`"-->
+        <!--            effect="dark"-->
+        <!--            placement="bottom"-->
+        <!--          >-->
+        <!--            <router-link to="/tabs">-->
+        <!--              <i class="el-icon-bell"></i>-->
+        <!--            </router-link>-->
+        <!--          </el-tooltip>-->
+        <!--          <span v-if="message" class="btn-bell-badge"></span>-->
+        <!--        </div>-->
         <!-- 用户头像 -->
         <div class="user-avator">
           <img src="../../assets/img/img.jpg" />
@@ -95,7 +97,7 @@
 </template>
 <script>
 import bus from "../common/bus";
-import { loginOut, resetPasswd } from "../../api/system/sysUser";
+import { loginOut, resetPasswd } from "@/api/system/sysUser";
 
 export default {
   data() {
@@ -245,10 +247,8 @@ export default {
 </script>
 <style scoped>
 .header {
-  position: relative;
-  box-sizing: border-box;
-  width: 100%;
-  height: 70px;
+  display: flex;
+  justify-content: space-between;
   font-size: 22px;
   color: #fff;
 }
@@ -261,14 +261,12 @@ export default {
 }
 
 .header .logo {
-  float: left;
   width: 250px;
   line-height: 70px;
 }
 
 .header-right {
-  float: right;
-  padding-right: 50px;
+  margin-right: 20px;
 }
 
 .header-user-con {

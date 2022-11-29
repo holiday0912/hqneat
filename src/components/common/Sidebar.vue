@@ -54,6 +54,8 @@
 </template>
 
 <script>
+import bus from "./bus";
+
 export default {
   data() {
     return {
@@ -87,32 +89,32 @@ export default {
           ]
         },
         {
-          icon: "el-icon-lx-home",
+          icon: "el-icon-data-line",
           router: "buryData",
           resourceName: "埋点数据管理"
         },
         {
-          icon: "el-icon-lx-home",
+          icon: "el-icon-film",
           router: "carouselManage",
           resourceName: "轮播图管理"
         },
         {
-          icon: "el-icon-lx-home",
+          icon: "el-icon-suitcase-1",
           router: "htmlPackage",
           resourceName: "h5包管理"
         },
         {
-          icon: "el-icon-lx-home",
+          icon: "el-icon-s-order",
           router: "loginLog",
           resourceName: "登陆日志"
         },
         {
-          icon: "el-icon-lx-home",
+          icon: "el-icon-s-promotion",
           router: "msgPush",
           resourceName: "消息推送"
         },
         {
-          icon: "el-icon-lx-home",
+          icon: "el-icon-news",
           router: "toastManage",
           resourceName: "toast样式管理"
         }
@@ -127,17 +129,17 @@ export default {
   },
   created() {
     // 通过 Event Bus 进行组件间通信，来折叠侧边栏
-    // bus.$on('collapse', (msg) => {
-    //   this.collapse = msg
-    //   bus.$emit('collapse-content', msg)
-    // })
-    // if (sessionStorage.getItem('userLoginContext')) {
-    //   let userLoginContext = JSON.parse(
-    //     sessionStorage.getItem('userLoginContext')
-    //   )
-    //   console.log(userLoginContext.resources)
-    //   this.items = userLoginContext.resources
-    // }
+    bus.$on("collapse", msg => {
+      this.collapse = msg;
+      bus.$emit("collapse-content", msg);
+    });
+    if (sessionStorage.getItem("userLoginContext")) {
+      let userLoginContext = JSON.parse(
+        sessionStorage.getItem("userLoginContext")
+      );
+      console.log(userLoginContext.resources);
+      this.items = userLoginContext.resources;
+    }
   }
 };
 </script>

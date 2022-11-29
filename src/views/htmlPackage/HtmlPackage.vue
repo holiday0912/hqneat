@@ -46,54 +46,66 @@
         header-cell-class-name="table-header"
       >
         <el-table-column align="center" label="序号" width="55">
-          <template slot-scope="scope">
+          <template v-slot="scope">
             {{ scope.$index + 1 }}
           </template>
         </el-table-column>
+
         <el-table-column
           align="center"
-          label="账号ID"
-          prop="id"
+          label="是否最新"
+          prop="isLatest"
         ></el-table-column>
 
         <el-table-column
           align="center"
-          label="内容"
-          prop="content"
+          label="版本号"
+          prop="versionCode"
         ></el-table-column>
 
         <el-table-column
           align="center"
-          label="创建时间"
+          label="描述"
+          prop="descr"
+        ></el-table-column>
+
+        <el-table-column
+          align="center"
+          label="文件路径"
+          prop="fileUrl"
+        ></el-table-column>
+
+        <el-table-column
+          align="center"
+          label="上传时间"
           prop="createTime"
         ></el-table-column>
-        <el-table-column
-          align="center"
-          label="更新时间"
-          prop="updateTime"
-        ></el-table-column>
+
         <el-table-column align="center" label="操作" width="220">
           <template slot-scope="scope">
             <el-button
               icon="el-icon-delete"
               type="text"
-              @click="handleDelete(scope.$index, scope.row)"
+              @click="handleDelete(scope.row)"
               >删除
             </el-button>
           </template>
         </el-table-column>
       </el-table>
 
-      <BasePagination @getData="getData"></BasePagination>
+      <BasePagination
+        :pageTotal="pageTotal"
+        @getData="getData"
+      ></BasePagination>
     </div>
 
-    <HtmlPckUpload ref="htmlPckUpload"></HtmlPckUpload>
+    <HtmlPckUpload ref="htmlPckUpload" @refresh="getData"></HtmlPckUpload>
   </div>
 </template>
 
 <script>
-import { msgPushList } from "@/api/msgPush";
 import HtmlPckUpload from "@/views/htmlPackage/HtmlPckUpload";
+import { deleteVersion, h5VersionList } from "@/api/htmlPackage";
 
 export default {
   name: "roleManage",
@@ -103,28 +115,31 @@ export default {
   data() {
     return {
       searchForm: {
-        roleName: "", // 角色名称
-        roleDesc: "", // 角色描述
-        isEnabled: "" // 角色是否启用
+        appid: "njebd81krqn",
+        descr: "", //描述
+        versionCode: "", //版本号
+        type: "" //类型
       },
       tableData: [],
       pageTotal: 0
     };
   },
+  mounted() {
+    this.getData();
+  },
   methods: {
     async getData(query = { pageNum: 1, pageSize: 10 }) {
       let obj = Object.assign(query, this.searchForm);
       try {
-        let res = await msgPushList(obj);
+        let res = await h5VersionList(obj);
         if (res) {
-          this.tableData = res.map(i => {
+          this.tableData = res.data.list.map(i => {
             return {
               ...i,
-              createTime: this.$dayjs(i.createTime),
-              updateTime: this.$dayjs(i.updateTime)
+              createTime: this.$dayjs(i.createTime)
             };
           });
-          this.pageTotal = res.length;
+          this.pageTotal = res.data.total;
         }
       } catch (e) {
         throw new Error(e);
@@ -145,8 +160,16 @@ export default {
     handleAdd() {
       this.$refs.htmlPckUpload.showDialog();
     },
-    handleDelete() {
-      console.log("delete");
+    async handleDelete({ id }) {
+      try {
+        let res = await deleteVersion({ body: id, channel: "" });
+        if (res.message === "请求成功") {
+          this.$message.success("删除成功");
+          this.getData();
+        }
+      } catch (e) {
+        throw new Error(e);
+      }
     }
   }
 };
