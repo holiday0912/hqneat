@@ -58,8 +58,20 @@
 
         <el-table-column
           align="center"
+          label="标题"
+          prop="title"
+        ></el-table-column>
+
+        <el-table-column
+          align="center"
           label="内容"
           prop="content"
+        ></el-table-column>
+
+        <el-table-column
+          align="center"
+          label="通知栏提示文字"
+          prop="ticker"
         ></el-table-column>
 
         <el-table-column
@@ -72,14 +84,32 @@
           label="更新时间"
           prop="updateTime"
         ></el-table-column>
-        <el-table-column align="center" label="操作" width="90">
+        <el-table-column align="center" label="操作" width="190">
           <template v-slot="scope">
+            <el-popconfirm
+              title="确定删除吗？"
+              @confirm="handleDelete(scope.row)"
+            >
+              <el-button slot="reference" icon="el-icon-delete" type="text"
+                >删除
+              </el-button>
+            </el-popconfirm>
+
             <el-button
-              icon="el-icon-delete"
+              icon="el-icon-edit"
               type="text"
-              @click="handleDelete(scope.$index, scope.row)"
-              >删除
+              @click="handleEdit(scope.row)"
+              >修改
             </el-button>
+
+            <el-popconfirm
+              title="确定发送吗？"
+              @confirm="handleSend(scope.row)"
+            >
+              <el-button slot="reference" icon="el-icon-position" type="text"
+                >发送
+              </el-button>
+            </el-popconfirm>
           </template>
         </el-table-column>
       </el-table>
@@ -91,17 +121,20 @@
     </div>
 
     <MsgAddNew ref="msgAddNew" @refresh="getData"></MsgAddNew>
+    <MsgPushEdit ref="msgPushEdit" @refresh="getData"></MsgPushEdit>
   </div>
 </template>
 
 <script>
-import { msgPushList } from "@/api/msgPush";
+import { deletePush, msgPushList, sendPush } from "@/api/msgPush";
 import MsgAddNew from "@/views/msgPush/MsgAddNew";
+import MsgPushEdit from "@/views/msgPush/MsgPushEdit.vue";
 
 export default {
-  name: "roleManage",
+  name: "MsgPush",
   components: {
-    MsgAddNew
+    MsgAddNew,
+    MsgPushEdit
   },
   data() {
     return {
@@ -147,12 +180,37 @@ export default {
       };
       this.getData();
     },
-    // 新增推送
+    // 新增推送消息
     handleAdd() {
       this.$refs.msgAddNew.showDialog();
     },
-    handleDelete(index, row) {
-      console.log("delete", index, row);
+    // 删除推送消息
+    async handleDelete({ id }) {
+      try {
+        let res = await deletePush(id);
+        console.log(res);
+        if (res.message === "请求成功") {
+          this.$message.success("删除成功");
+          this.getData();
+        }
+      } catch (e) {
+        throw new Error(e);
+      }
+    },
+    // 发布消息
+    async handleSend({ id }) {
+      try {
+        let res = await sendPush(id);
+        if (res.message === "请求成功") {
+          this.$message.success("发送成功");
+          this.getData();
+        }
+      } catch (e) {
+        throw new Error(e);
+      }
+    },
+    handleEdit(val) {
+      this.$refs.msgPushEdit.showDialog(val);
     }
   }
 };

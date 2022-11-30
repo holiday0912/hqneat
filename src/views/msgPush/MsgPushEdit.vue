@@ -36,16 +36,16 @@
 
     <div slot="footer" class="dialog-footer">
       <el-button @click="dialogEditClose">取 消</el-button>
-      <el-button type="primary" @click="addMessagePush">新 增</el-button>
+      <el-button type="primary" @click="addMessagePush">修 改</el-button>
     </div>
   </el-dialog>
 </template>
 
 <script>
-import { msgPushInsert } from "@/api/msgPush";
+import { updatePush } from "@/api/msgPush";
 
 export default {
-  name: "MsgAddNew",
+  name: "MsgPushEdit",
   props: {},
   data() {
     return {
@@ -53,13 +53,19 @@ export default {
       form: {
         content: "",
         title: "",
-        ticker: ""
+        ticker: "",
+        id: ""
       }
     };
   },
   methods: {
-    showDialog() {
+    showDialog(val) {
       this.dialogFormVisible = true;
+      const { content, title, ticker, id } = val;
+      this.form.content = content;
+      this.form.title = title;
+      this.form.ticker = ticker;
+      this.form.id = id;
     },
     dialogEditClose() {
       this.dialogFormVisible = false;
@@ -70,9 +76,9 @@ export default {
       this.$refs.edit.validate(async valid => {
         if (valid) {
           try {
-            let res = await msgPushInsert({ content: this.form.content });
+            let res = await updatePush(this.form);
             if (res?.message === "请求成功") {
-              this.$message.success("新增成功");
+              this.$message.success("修改成功");
               this.dialogEditClose();
             }
           } catch (e) {
@@ -84,5 +90,3 @@ export default {
   }
 };
 </script>
-
-<style lang="less" scoped></style>

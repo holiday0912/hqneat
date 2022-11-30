@@ -129,7 +129,7 @@
     <el-drawer
       :before-close="handleDrawerClose"
       :visible.sync="drawer"
-      size="60%"
+      size="700px"
       title="崩溃日志"
     >
       <div class="error-log">{{ logDetail }}</div>

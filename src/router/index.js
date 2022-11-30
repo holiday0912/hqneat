@@ -26,49 +26,49 @@ const routes = [
           import(/* webpackChunkName: "dashboard" */ "@/views/Dashboard.vue"),
         meta: { permission: true, title: "系统首页" }
       },
-      {
-        path: "/accountManage",
-        name: "accountManage",
-        component: () =>
-          import(
-            /* webpackChunkName: "accountManage" */ "@/views/authorityManage/accountManage.vue"
-          ),
-        meta: { permission: false, title: "账号管理" }
-      },
-      {
-        path: "/roleManage",
-        name: "roleManage",
-        component: () =>
-          import(
-            /* webpackChunkName: "roleManage" */ "@/views/authorityManage/roleManage.vue"
-          ),
-        meta: { permission: false, title: "角色管理" }
-      },
-      {
-        path: "/resourcesManage",
-        name: "resourcesManage",
-        component: () =>
-          import(
-            /* webpackChunkName: "resourcesManage" */ "@/views/authorityManage/resourcesManage.vue"
-          ),
-        meta: { permission: false, title: "资源管理" }
-      },
-      {
-        path: "/quotaManage",
-        name: "quotaManage",
-        component: () =>
-          import(
-            /* webpackChunkName: "quotaManage" */ "@/views/quotaManage.vue"
-          ),
-        meta: { permission: false, title: "额度管理" }
-      },
-      {
-        path: "/billManage",
-        name: "billManage",
-        component: () =>
-          import(/* webpackChunkName: "billManage" */ "@/views/billManage.vue"),
-        meta: { permission: false, title: "账单管理" }
-      },
+      // {
+      //   path: "/accountManage",
+      //   name: "accountManage",
+      //   component: () =>
+      //     import(
+      //       /* webpackChunkName: "accountManage" */ "@/views/authorityManage/accountManage.vue"
+      //     ),
+      //   meta: { permission: false, title: "账号管理" }
+      // },
+      // {
+      //   path: "/roleManage",
+      //   name: "roleManage",
+      //   component: () =>
+      //     import(
+      //       /* webpackChunkName: "roleManage" */ "@/views/authorityManage/roleManage.vue"
+      //     ),
+      //   meta: { permission: false, title: "角色管理" }
+      // },
+      // {
+      //   path: "/resourcesManage",
+      //   name: "resourcesManage",
+      //   component: () =>
+      //     import(
+      //       /* webpackChunkName: "resourcesManage" */ "@/views/authorityManage/resourcesManage.vue"
+      //     ),
+      //   meta: { permission: false, title: "资源管理" }
+      // },
+      // {
+      //   path: "/quotaManage",
+      //   name: "quotaManage",
+      //   component: () =>
+      //     import(
+      //       /* webpackChunkName: "quotaManage" */ "@/views/quotaManage.vue"
+      //     ),
+      //   meta: { permission: false, title: "额度管理" }
+      // },
+      // {
+      //   path: "/billManage",
+      //   name: "billManage",
+      //   component: () =>
+      //     import(/* webpackChunkName: "billManage" */ "@/views/billManage.vue"),
+      //   meta: { permission: false, title: "账单管理" }
+      // },
       // 消息推送
       {
         path: "/msgPush",
@@ -98,6 +98,26 @@ const routes = [
             /* webpackChunkName: "htmlPackage" */ "@/views/htmlPackage/HtmlPackage.vue"
           ),
         meta: { permission: false, title: "h5包管理" }
+      },
+      // 热修复
+      {
+        path: "/hotRepair",
+        name: "hotRepair",
+        component: () =>
+          import(
+            /* webpackChunkName: "hotRepair" */ "@/views/hotRepair/HotRepair.vue"
+          ),
+        meta: { permission: false, title: "热修复" }
+      },
+      // 埋点数据管理
+      {
+        path: "/buryData",
+        name: "buryData",
+        component: () =>
+          import(
+            /* webpackChunkName: "buryData" */ "@/views/buryData/BuryData.vue"
+          ),
+        meta: { permission: false, title: "埋点数据管理" }
       }
     ]
   },

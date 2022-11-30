@@ -13,30 +13,30 @@
               <el-input v-model="searchForm.descr"></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="6">
-            <el-form-item label="上传时间" prop="createTime">
-              <el-date-picker
-                v-model="searchForm.createTime"
-                placeholder="选择日期"
-                style="width: 100%"
-                type="date"
-              >
-              </el-date-picker>
-            </el-form-item>
-          </el-col>
+          <!--          <el-col :span="6">-->
+          <!--            <el-form-item label="上传时间" prop="createTime">-->
+          <!--              <el-date-picker-->
+          <!--                v-model="searchForm.createTime"-->
+          <!--                placeholder="选择日期"-->
+          <!--                style="width: 100%"-->
+          <!--                type="date"-->
+          <!--              >-->
+          <!--              </el-date-picker>-->
+          <!--            </el-form-item>-->
+          <!--          </el-col>-->
 
-          <el-col :span="6">
-            <el-form-item label="类型" prop="createTime">
-              <el-select v-model="searchForm.type" placeholder="请选择">
-                <el-option
-                  v-for="item in typeList"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                />
-              </el-select>
-            </el-form-item>
-          </el-col>
+          <!--          <el-col :span="6">-->
+          <!--            <el-form-item label="类型" prop="createTime">-->
+          <!--              <el-select v-model="searchForm.type" placeholder="请选择">-->
+          <!--                <el-option-->
+          <!--                  v-for="item in typeList"-->
+          <!--                  :key="item.value"-->
+          <!--                  :label="item.label"-->
+          <!--                  :value="item.value"-->
+          <!--                />-->
+          <!--              </el-select>-->
+          <!--            </el-form-item>-->
+          <!--          </el-col>-->
         </el-row>
       </el-form>
 
@@ -46,7 +46,7 @@
           >查询
         </el-button>
         <el-button icon="el-icon-plus" type="primary" @click="handleAdd"
-          >文件上传
+          >新增
         </el-button>
       </div>
 
@@ -63,56 +63,70 @@
           </template>
         </el-table-column>
 
-        <!--版本号-->
+        <!--事件名称-->
         <el-table-column
           align="center"
-          label="版本号"
-          prop="versionCode"
+          label="事件名称"
+          prop="eventName"
         ></el-table-column>
 
-        <!--描述-->
+        <!--触发时机-->
         <el-table-column
           align="center"
-          label="描述"
-          prop="descr"
-        ></el-table-column>
-
-        <!--文件路径-->
-        <el-table-column
-          align="center"
-          label="文件路径"
-          prop="fileUrl"
-        ></el-table-column>
-
-        <!-- 上传时间-->
-        <el-table-column
-          align="center"
-          label="上传时间"
-          prop="createTime"
-        ></el-table-column>
-
-        <!--是否最新-->
-        <el-table-column
-          align="center"
-          label="是否最新"
-          prop="isLatest"
-        ></el-table-column>
-
-        <!--是否强制更新-->
-        <el-table-column
-          align="center"
-          label="是否强制更新"
-          prop="isForce"
+          label="触发时机"
+          prop="triggerTiming"
         ></el-table-column>
 
         <!--类型-->
         <el-table-column
           align="center"
-          label="类型"
+          label="文件路径"
           prop="type"
         ></el-table-column>
 
-        <el-table-column align="center" label="操作" width="90">
+        <!--类型-->
+        <el-table-column
+          align="center"
+          label="分类标签"
+          prop="classLabels"
+        ></el-table-column>
+
+        <!--创建人-->
+        <el-table-column
+          align="center"
+          label="创建人"
+          prop="createUser"
+        ></el-table-column>
+
+        <!-- 创建时间-->
+        <el-table-column
+          align="center"
+          label="创建时间"
+          prop="createTime"
+        ></el-table-column>
+
+        <!--更新人-->
+        <el-table-column
+          align="center"
+          label="更新人"
+          prop="updateUser"
+        ></el-table-column>
+
+        <!--首次上报-->
+        <el-table-column
+          align="center"
+          label="首次上报"
+          prop="firstAppear"
+        ></el-table-column>
+
+        <!--最近上报-->
+        <el-table-column
+          align="center"
+          label="最近上报"
+          prop="lastAppear"
+        ></el-table-column>
+
+        <el-table-column align="center" label="操作" width="150">
           <template v-slot="scope">
             <el-popconfirm
               title="确定删除吗？"
@@ -122,6 +136,13 @@
                 >删除
               </el-button>
             </el-popconfirm>
+            <el-button
+              slot="reference"
+              icon="el-icon-delete"
+              type="text"
+              @click="showDrawer(scope.row)"
+              >详情
+            </el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -132,18 +153,22 @@
       ></BasePagination>
     </div>
 
-    <HtmlPckUpload ref="htmlPckUpload" @refresh="getData"></HtmlPckUpload>
+    <BuryDataAdd ref="htmlPckUpload" @refresh="getData"></BuryDataAdd>
+
+    <BuryDataDrawer ref="buryDataDrawer"></BuryDataDrawer>
   </div>
 </template>
 
 <script>
-import HtmlPckUpload from "@/views/htmlPackage/HtmlPckUpload";
-import { deleteVersion, h5VersionList } from "@/api/htmlPackage";
+import BuryDataAdd from "@/views/buryData/BuryDataAdd";
+import BuryDataDrawer from "@/views/buryData/BuryDataDrawer.vue";
+import { selectAllInfo } from "@/api/buryData";
 
 export default {
-  name: "HtmlPackage",
+  name: "roleManage",
   components: {
-    HtmlPckUpload
+    BuryDataAdd,
+    BuryDataDrawer
   },
   data() {
     return {
@@ -158,63 +183,27 @@ export default {
       pageTotal: 0
     };
   },
-  computed: {
-    // html安装包类型的枚举
-    typeList() {
-      return [
-        {
-          label: "离线包",
-          value: "1"
-        },
-        {
-          label: "安装包",
-          value: "0"
-        }
-      ];
-    }
-  },
   mounted() {
     this.getData();
   },
   methods: {
     async getData(query = { pageNum: 1, pageSize: 10 }) {
-      let obj = Object.assign(query, this.searchForm);
       try {
-        let res = await h5VersionList(obj);
+        let res = await selectAllInfo();
         if (res) {
-          this.tableData = res.data.list.map(i => {
+          const { data, total } = res.data;
+          this.tableData = data.map(i => {
             return {
               ...i,
               createTime: this.$dayjs(i.createTime),
-              isLatest: this.showIsLatestAndIsForce(i.isLatest),
-              isForce: this.showIsLatestAndIsForce(i.isForce),
-              type: this.showType(i.type)
+              updateTime: this.$dayjs(i.updateTime)
+              // type: this.showType(i.type)
             };
           });
-          this.pageTotal = res.data.total;
+          this.pageTotal = total;
         }
       } catch (e) {
         throw new Error(e);
-      }
-    },
-    showIsLatestAndIsForce(target) {
-      switch (target) {
-        case "1":
-          return "是";
-        case "0":
-          return "否";
-        default:
-          return "否";
-      }
-    },
-    showType(target) {
-      switch (target) {
-        case "1":
-          return "离线包";
-        case "0":
-          return "安装包";
-        default:
-          return "——";
       }
     },
     formRest() {
@@ -242,6 +231,9 @@ export default {
       } catch (e) {
         throw new Error(e);
       }
+    },
+    showDrawer(val) {
+      this.$refs.buryDataDrawer.showDrawer(val);
     }
   }
 };

@@ -61,47 +61,47 @@ export default {
     return {
       collapse: false,
       items: [
-        {
-          icon: "el-icon-lx-home",
-          router: "dashboard",
-          resourceName: "系统首页"
-        },
-        {
-          icon: "el-icon-lx-shop",
-          router: "2",
-          resourceName: "权限管理",
-          resources: [
-            {
-              icon: "el-icon-lx-shop",
-              router: "accountManage",
-              resourceName: "账号管理"
-            },
-            {
-              icon: "el-icon-lx-shop",
-              router: "roleManage",
-              resourceName: "角色管理"
-            },
-            {
-              icon: "el-icon-lx-shop",
-              router: "resourcesManage",
-              resourceName: "资源管理"
-            }
-          ]
-        },
+        // {
+        //   icon: "el-icon-lx-home",
+        //   router: "dashboard",
+        //   resourceName: "系统首页"
+        // },
+        // {
+        //   icon: "el-icon-lx-shop",
+        //   router: "2",
+        //   resourceName: "权限管理",
+        //   resources: [
+        //     {
+        //       icon: "el-icon-lx-shop",
+        //       router: "accountManage",
+        //       resourceName: "账号管理"
+        //     },
+        //     {
+        //       icon: "el-icon-lx-shop",
+        //       router: "roleManage",
+        //       resourceName: "角色管理"
+        //     },
+        //     {
+        //       icon: "el-icon-lx-shop",
+        //       router: "resourcesManage",
+        //       resourceName: "资源管理"
+        //     }
+        //   ]
+        // },
         {
           icon: "el-icon-data-line",
           router: "buryData",
           resourceName: "埋点数据管理"
         },
         {
-          icon: "el-icon-film",
-          router: "carouselManage",
-          resourceName: "轮播图管理"
-        },
-        {
           icon: "el-icon-suitcase-1",
           router: "htmlPackage",
           resourceName: "h5包管理"
+        },
+        {
+          icon: "el-icon-warning",
+          router: "hotRepair",
+          resourceName: "热修复"
         },
         {
           icon: "el-icon-s-order",

@@ -26,3 +26,29 @@ export const msgPushList = async query => {
   });
   return res.data;
 };
+
+// 修改
+export const updatePush = query => {
+  return post("/msgPush/update", {
+    body: {
+      ...query
+    },
+    channel: ""
+  });
+};
+
+// 删除
+export const deletePush = query => {
+  return post("/msgPush/delete", {
+    body: query,
+    channel: ""
+  });
+};
+
+// 发送
+export const sendPush = query => {
+  return post("/msgPush/send", {
+    body: query,
+    channel: ""
+  });
+};

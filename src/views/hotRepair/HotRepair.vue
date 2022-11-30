@@ -132,18 +132,18 @@
       ></BasePagination>
     </div>
 
-    <HtmlPckUpload ref="htmlPckUpload" @refresh="getData"></HtmlPckUpload>
+    <HotRepairUpload ref="htmlPckUpload" @refresh="getData"></HotRepairUpload>
   </div>
 </template>
 
 <script>
-import HtmlPckUpload from "@/views/htmlPackage/HtmlPckUpload";
+import HotRepairUpload from "@/views/hotRepair/HotRepairUpload.vue";
 import { deleteVersion, h5VersionList } from "@/api/htmlPackage";
 
 export default {
-  name: "HtmlPackage",
+  name: "HotRepair",
   components: {
-    HtmlPckUpload
+    HotRepairUpload
   },
   data() {
     return {
