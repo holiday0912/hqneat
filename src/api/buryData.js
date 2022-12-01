@@ -16,6 +16,11 @@ export const addEvent = async query => {
   return post("/NyEventController/addEvent", query);
 };
 
+// 删除事件
+export const NyEventControllerDeleteById = async query => {
+  return get("/NyEventController/deleteById", query);
+};
+
 //埋点详情统计图（get）：
 export const searchDetailCount = async query => {
   return get("/NyEventController/searchDetailCount", query);

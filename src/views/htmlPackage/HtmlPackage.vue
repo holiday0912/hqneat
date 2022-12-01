@@ -128,11 +128,15 @@
 
       <BasePagination
         :pageTotal="pageTotal"
-        @getData="getData"
+        @getdata="getData"
       ></BasePagination>
     </div>
 
-    <HtmlPckUpload ref="htmlPckUpload" @refresh="getData"></HtmlPckUpload>
+    <HtmlPckUpload
+      ref="htmlPckUpload"
+      :maxVerionCode="maxVerionCode"
+      @refresh="getData"
+    ></HtmlPckUpload>
   </div>
 </template>
 
@@ -155,7 +159,8 @@ export default {
         createTime: ""
       },
       tableData: [],
-      pageTotal: 0
+      pageTotal: 0,
+      maxVerionCode: 0
     };
   },
   computed: {
@@ -183,6 +188,10 @@ export default {
         let res = await h5VersionList(obj);
         if (res) {
           this.tableData = res.data.list.map(i => {
+            this.maxVerionCode =
+              this.maxVerionCode > +i.versionCode
+                ? this.maxVerionCode
+                : +i.versionCode;
             return {
               ...i,
               createTime: this.$dayjs(i.createTime),

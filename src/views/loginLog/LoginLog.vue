@@ -123,7 +123,7 @@
 
       <BasePagination
         :pageTotal="pageTotal"
-        @getData="getData"
+        @getdata="getData"
       ></BasePagination>
     </div>
     <el-drawer
@@ -204,13 +204,14 @@ export default {
         if (res.message === "请求成功") {
           this.$message.success("删除成功");
           this.getData();
+        } else {
+          this.$message.error(res.message);
         }
       } catch (e) {
         throw new Error(e);
       }
     },
     handleDetail(val) {
-      console.log(val);
       if (val.logInfo) {
         this.logDetail = val.logInfo;
         this.drawer = true;

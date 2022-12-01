@@ -12,16 +12,27 @@
       <el-form-item
         :rules="[{ required: true, message: '请输入' }]"
         label="版本号"
-        prop="versionCode"
+        prop="pkVersion"
       >
-        <el-input v-model="form.versionCode"></el-input>
+        <el-input v-model="form.pkVersion"></el-input>
       </el-form-item>
+
       <el-form-item
         :rules="[{ required: true, message: '请输入' }]"
-        label="更新时间"
-        prop="updateTime"
+        label="包名称"
+        prop="pkName"
       >
-        <el-input v-model="form.updateTime"></el-input>
+        <el-input v-model="form.pkName"></el-input>
+      </el-form-item>
+
+      <el-form-item label="发布时间" prop="pubTime">
+        <el-date-picker
+          v-model="form.pubTime"
+          placeholder="请选择日期"
+          style="width: 200px"
+          type="date"
+        >
+        </el-date-picker>
       </el-form-item>
     </el-form>
 
@@ -33,7 +44,6 @@
       :multiple="false"
       :on-change="handleFileChange"
       :on-remove="handleRemove"
-      accept="application/zip"
     >
       <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
       <el-button
@@ -46,9 +56,9 @@
         @click="submitUpload"
         >上传到服务器
       </el-button>
-      <!--      <div slot="tip" class="el-upload__tip">-->
-      <!--        只能上传zip格式的压缩包-->
-      <!--      </div>-->
+      <div slot="tip" class="el-upload__tip">
+        只能上传jar包
+      </div>
     </el-upload>
 
     <template #footer class="dialog-footer">
@@ -59,6 +69,7 @@
 
 <script>
 import { fileUpload } from "@/api/htmlPackage";
+import { nyHotDepAddHotDep } from "@/api/hotRepair";
 
 export default {
   name: "HotRepairUpload",
@@ -68,12 +79,9 @@ export default {
       dialogFormVisible: false,
       fileList: [],
       form: {
-        appid: "njebd81krqn",
-        versionCode: "",
-        descr: "",
-        isLatest: "1",
-        isForce: "0",
-        type: "1"
+        pkVersion: "",
+        pkName: "",
+        pubTime: ""
       },
       actions: fileUpload,
       isUploading: false,
@@ -103,9 +111,19 @@ export default {
           } else {
             this.isUploading = true;
             // this.$refs.upload.submit();
-            setTimeout(() => {
-              this.isUploading = false;
-              this.dialogEditClose();
+            setTimeout(async () => {
+              try {
+                let res = await nyHotDepAddHotDep(this.form);
+                if (res.message === "请求成功") {
+                  this.isUploading = false;
+                  this.dialogEditClose();
+                  this.$message.success("上传成功");
+                } else {
+                  this.$message.error(res.message);
+                }
+              } catch (e) {
+                throw new Error(e);
+              }
             }, 2000);
           }
         }
@@ -132,6 +150,12 @@ export default {
       console.log(file, fileList);
     },
     handleFileChange(file, fileList) {
+      const { name } = file;
+      if (name.slice(name.lastIndexOf(".") + 1) !== "jar") {
+        this.$refs.upload.clearFiles();
+        this.$message.error("请上传jar包");
+        return;
+      }
       this.selectFile = Boolean(fileList.length);
     }
   }

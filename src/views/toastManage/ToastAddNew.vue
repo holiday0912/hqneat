@@ -5,7 +5,7 @@
       v-dialogDrag
       :close-on-click-modal="false"
       :visible.sync="dialogFormVisible"
-      title="新增推送"
+      title="新增toast样式"
       width="680px"
       @close="dialogEditClose"
     >
@@ -20,42 +20,30 @@
 
         <el-form-item
           :rules="[{ required: true, message: '请输入' }]"
-          label="内容"
-          prop="content"
+          label="属性"
+          prop="property"
         >
-          <el-input v-model="form.content"></el-input>
+          <el-input v-model="form.property"></el-input>
         </el-form-item>
 
         <el-form-item
           :rules="[{ required: true, message: '请输入' }]"
-          label="通知栏提示文字"
-          prop="ticker"
+          label="类型"
+          prop="type"
         >
-          <el-input v-model="form.ticker"></el-input>
-        </el-form-item>
-
-        <el-form-item
-          :rules="[{ required: true, message: '请输入' }]"
-          label="分组"
-          prop="group"
-        >
-          <el-select
-            v-model="form.group"
-            clearable
-            placeholder="请选择"
-            style="width: 100%"
-            @change="handleTypeManage"
+          <el-autocomplete
+            v-model="form.type"
+            :fetch-suggestions="querySearch"
+            placeholder="请输入内容"
+            @select="handleSelect"
           >
-            <el-option
-              v-for="item in groupList"
-              :key="item.id"
-              :label="item.filterGroup"
-              :value="item.filterGroup"
-              class="select-group"
-            >
-            </el-option>
-          </el-select>
+            <template v-slot="{ item }">
+              <span>{{ item.type }}</span>
+            </template>
+          </el-autocomplete>
         </el-form-item>
+
+        <!--          @select="handleSelect"-->
       </el-form>
 
       <div slot="footer" class="dialog-footer">
@@ -63,60 +51,71 @@
         <el-button type="primary" @click="addMessagePush">新 增</el-button>
       </div>
     </el-dialog>
-    <MsgPushType ref="msgPushType" @updateGroup="getMsgPushGroup"></MsgPushType>
+    <ToastType ref="toastType" @updateGroup="getTypeList"></ToastType>
   </div>
 </template>
 
 <script>
-import { msgPushInsert, postGroupList } from "@/api/msgPush";
-import MsgPushType from "@/views/msgPush/MsgPushGroup.vue";
+import ToastType from "@/views/toastManage/ToastType.vue";
+import { searchTypeList } from "@/api/toastManage";
 
 export default {
-  name: "MsgAddNew",
+  name: "ToastAddNew",
   components: {
-    MsgPushType
+    ToastType
   },
   props: {},
   data() {
     return {
       dialogFormVisible: false,
       form: {
-        content: "",
+        property: "",
         title: "",
-        ticker: "",
-        group: ""
+        type: ""
       },
-      groupList: []
+      typeList: []
     };
   },
   methods: {
     showDialog() {
       this.dialogFormVisible = true;
-      this.getMsgPushGroup();
+      this.getTypeList();
     },
     dialogEditClose() {
       this.dialogFormVisible = false;
       this.$refs.edit.resetFields();
       this.$emit("refresh");
     },
+    querySearch(queryString, cb) {
+      const typeList = this.typeList;
+      const results = queryString
+        ? typeList.filter(this.createFilter(queryString))
+        : typeList;
+      // 调用 callback 返回建议列表的数据
+      cb(results);
+    },
+    createFilter(queryString) {
+      return restaurant => {
+        return (
+          restaurant.type.toLowerCase().indexOf(queryString.toLowerCase()) === 0
+        );
+      };
+    },
     handleTypeManage(val) {
-      if (val === "分组管理") {
-        this.$refs.msgPushType.handleDrawerOpen();
+      if (val === "类型管理") {
+        this.$refs.toastType.handleDrawerOpen();
       }
     },
-    async getMsgPushGroup() {
+    async getTypeList() {
       try {
-        let res = await postGroupList("");
-        this.groupList = [
-          {
-            id: "分组管理",
-            filterGroup: "分组管理"
-          },
-          ...res.data
-        ];
+        let res = await searchTypeList();
+        this.typeList = res.data;
       } catch (e) {
         throw new Error(e);
       }
+    },
+    handleSelect(val) {
+      this.form.type = val.type;
     },
     addMessagePush() {
       this.$refs.edit.validate(async valid => {

@@ -34,11 +34,13 @@ export default {
     // 分页导航
     handlePageChange(val) {
       this.query.pageNum = val;
+      console.log(this.query, "page");
       this.getData();
     },
     // 改变页码
     hanleSizeChange(val) {
       this.query.pageSize = val;
+      console.log(this.query, "size");
       this.getData();
     },
     getData() {

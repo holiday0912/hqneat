@@ -55,7 +55,11 @@
           <!--        <el-input v-model="form.classLabels"></el-input>-->
           <!--      </el-form-item>-->
         </el-form>
-        <BuryDataChart />
+        <BuryDataChart
+          v-if="chartLoaded"
+          :chartData="chartData"
+          :labelData="labelData"
+        />
       </el-tab-pane>
       <el-tab-pane label="事件记录" name="second">
         <el-form
@@ -106,15 +110,20 @@ export default {
         classLabels: "",
         collectionStatus: "",
         eventId: ""
-      }
+      },
+      chartData: [""],
+      labelData: [""],
+      chartLoaded: false
     };
   },
   methods: {
     showDrawer(val) {
       this.drawer = true;
       this.formData = val;
+      this.getChartData();
     },
     handleDrawerClose() {
+      this.chartLoaded = false;
       this.drawer = false;
     },
     handleClick(tab, event) {
@@ -123,7 +132,11 @@ export default {
     async getChartData() {
       try {
         let res = await searchDetailCount({ eventId: this.formData.eventId });
-        console.log(res);
+        if (res.message === "请求成功") {
+          this.labelData = res.data.map(i => i.staDay);
+          this.chartData = res.data.map(i => i.detailCount);
+          this.chartLoaded = true;
+        }
       } catch (e) {
         throw new Error(e);
       }

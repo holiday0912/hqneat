@@ -8,13 +8,14 @@
     width="680px"
     @close="dialogEditClose"
   >
-    <el-form ref="uploadMessage" :model="form" label-width="110px">
-      <el-form-item
-        :rules="[{ required: true, message: '请输入' }]"
-        label="版本号"
-        prop="versionCode"
-      >
-        <el-input v-model="form.versionCode"></el-input>
+    <el-form
+      ref="uploadMessage"
+      :model="form"
+      :rules="rules"
+      label-width="110px"
+    >
+      <el-form-item label="版本号" prop="versionCode">
+        <el-input v-model="form.versionCode" type="number"></el-input>
       </el-form-item>
       <el-form-item
         :rules="[{ required: true, message: '请输入' }]"
@@ -84,7 +85,7 @@
         >上传到服务器
       </el-button>
       <div slot="tip" class="el-upload__tip">
-        只能上传zip格式的压缩包
+        只能上传zip格式的压缩包，并请直接压缩所需文件，不要直接压缩文件夹
       </div>
     </el-upload>
 
@@ -99,14 +100,26 @@ import { fileUpload, insertVersion } from "@/api/htmlPackage";
 
 export default {
   name: "HtmlPckUpload",
-  props: {},
+  props: {
+    maxVerionCode: {
+      type: Number,
+      default: 0
+    }
+  },
   data() {
+    const validateVersionCode = (rule, value, callback) => {
+      if (value < this.maxVerionCode) {
+        callback(new Error(`版本号必须大于${this.maxVerionCode}`));
+      } else {
+        callback();
+      }
+    };
     return {
       dialogFormVisible: false,
       fileList: [],
       form: {
         appid: "njebd81krqn",
-        versionCode: "",
+        versionCode: null,
         descr: "",
         isLatest: "1",
         isForce: "0",
@@ -114,7 +127,13 @@ export default {
       },
       actions: fileUpload,
       isUploading: false,
-      selectFile: false
+      selectFile: false,
+      rules: {
+        versionCode: [
+          { required: true, message: "请输入" },
+          { validator: validateVersionCode, trigger: "change" }
+        ]
+      }
     };
   },
   methods: {
@@ -135,26 +154,28 @@ export default {
     submitUpload() {
       this.$refs.uploadMessage.validate(valid => {
         if (valid) {
-          // if (this.fileList.length === 0) {
-          //   this.$message.error("请选择上传文件");
-          // } else {
           this.isUploading = true;
           this.$refs.upload.submit();
-          // }
         }
       });
     },
-    async uploadSuccess({ data }) {
-      try {
-        let res = await insertVersion({ fileUrl: data, ...this.form });
-        if (res) {
+    async uploadSuccess({ message, data }) {
+      if (message === "请求成功") {
+        try {
+          let res = await insertVersion({ fileUrl: data, ...this.form });
+          if (res.message === "请求成功") {
+            this.isUploading = false;
+            this.$message.success(res.message);
+            this.dialogEditClose();
+          } else {
+            this.$message.error(res.message);
+          }
+        } catch (e) {
           this.isUploading = false;
-          this.$message.success(res.message);
-          this.dialogEditClose();
+          throw new Error(e);
         }
-      } catch (e) {
-        this.isUploading = false;
-        throw new Error(e);
+      } else {
+        this.$message.error(message);
       }
     },
     uploadError(res) {

@@ -116,7 +116,7 @@
 
       <BasePagination
         :pageTotal="pageTotal"
-        @getData="getData"
+        @getdata="getData"
       ></BasePagination>
     </div>
 
@@ -188,10 +188,9 @@ export default {
     async handleDelete({ id }) {
       try {
         let res = await deletePush(id);
-        console.log(res);
         if (res.message === "请求成功") {
           this.$message.success("删除成功");
-          this.getData();
+          await this.getData();
         }
       } catch (e) {
         throw new Error(e);
@@ -203,7 +202,7 @@ export default {
         let res = await sendPush(id);
         if (res.message === "请求成功") {
           this.$message.success("发送成功");
-          this.getData();
+          await this.getData();
         }
       } catch (e) {
         throw new Error(e);

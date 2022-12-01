@@ -106,7 +106,7 @@ export default {
         {
           icon: "el-icon-s-order",
           router: "loginLog",
-          resourceName: "登录日志"
+          resourceName: "app日志"
         },
         {
           icon: "el-icon-s-promotion",

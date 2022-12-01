@@ -14,7 +14,6 @@
             </el-form-item>
           </el-col>
         </el-form>
-
         <el-col :span="8" style="margin-left: 20px">
           <div class="handle-box">
             <el-button icon="el-icon-refresh" @click="formRest">重置</el-button>
@@ -44,18 +43,18 @@
           </template>
         </el-table-column>
 
-        <!--事件名称-->
+        <!--标题-->
         <el-table-column
           align="center"
-          label="事件名称"
-          prop="eventName"
+          label="标题"
+          prop="title"
         ></el-table-column>
 
-        <!--触发时机-->
+        <!--属性-->
         <el-table-column
           align="center"
           label="触发时机"
-          prop="triggerTiming"
+          prop="property"
         ></el-table-column>
 
         <!--类型-->
@@ -65,39 +64,11 @@
           prop="type"
         ></el-table-column>
 
-        <!--分类标签-->
+        <!--样式-->
         <el-table-column
           align="center"
-          label="分类标签"
-          prop="classLabels"
-        ></el-table-column>
-
-        <!--创建人-->
-        <el-table-column
-          align="center"
-          label="创建人"
-          prop="createUser"
-        ></el-table-column>
-
-        <!-- 创建时间-->
-        <el-table-column
-          align="center"
-          label="创建时间"
-          prop="createTime"
-        ></el-table-column>
-
-        <!--首次上报-->
-        <el-table-column
-          align="center"
-          label="首次上报"
-          prop="firstAppear"
-        ></el-table-column>
-
-        <!--最近上报-->
-        <el-table-column
-          align="center"
-          label="最近上报"
-          prop="lastAppear"
+          label="样式"
+          prop="picPath"
         ></el-table-column>
 
         <el-table-column align="center" label="操作" width="150">
@@ -112,10 +83,10 @@
             </el-popconfirm>
             <el-button
               slot="reference"
-              icon="el-icon-delete"
+              icon="el-icon-edit"
               type="text"
-              @click="showDrawer(scope.row)"
-              >详情
+              @click="handleEdit(scope.row)"
+              >编辑
             </el-button>
           </template>
         </el-table-column>
@@ -123,26 +94,22 @@
 
       <BasePagination
         :pageTotal="pageTotal"
-        @getdata="getData"
+        @getData="getData"
       ></BasePagination>
     </div>
 
-    <BuryDataAdd ref="htmlPckUpload" @refresh="getData"></BuryDataAdd>
-
-    <BuryDataDrawer ref="buryDataDrawer"></BuryDataDrawer>
+    <ToastEdit ref="toastEdit" @refresh="getData"></ToastEdit>
   </div>
 </template>
 
 <script>
-import BuryDataAdd from "@/views/buryData/BuryDataAdd";
-import BuryDataDrawer from "@/views/buryData/BuryDataDrawer.vue";
-import { NyEventControllerDeleteById, selectAllInfo } from "@/api/buryData";
+import { toastDeleteById, toastManageList } from "@/api/toastManage";
+import ToastEdit from "@/views/toastManage/ToastEdit.vue";
 
 export default {
   name: "roleManage",
   components: {
-    BuryDataAdd,
-    BuryDataDrawer
+    ToastEdit
   },
   data() {
     return {
@@ -167,7 +134,7 @@ export default {
         size: query.pageSize
       };
       try {
-        let res = await selectAllInfo(params);
+        let res = await toastManageList(params);
         if (res) {
           const { data, total } = res.data;
           this.tableData = data.map(i => {
@@ -196,11 +163,12 @@ export default {
     },
     // 新增推送
     handleAdd() {
-      this.$refs.htmlPckUpload.showDialog();
+      this.$refs.toastAddNew.showDialog();
     },
+    // 删除toast
     async handleDelete({ id }) {
       try {
-        let res = await NyEventControllerDeleteById({ id });
+        let res = await toastDeleteById({ id });
         if (res.message === "请求成功") {
           this.$message.success("删除成功");
           await this.getData();
@@ -209,8 +177,8 @@ export default {
         throw new Error(e);
       }
     },
-    showDrawer(val) {
-      this.$refs.buryDataDrawer.showDrawer(val);
+    handleEdit(val) {
+      this.$refs.toastEdit.showDialog(val);
     }
   }
 };

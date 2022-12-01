@@ -87,7 +87,7 @@ const routes = [
           import(
             /* webpackChunkName: "loginLog" */ "@/views/loginLog/LoginLog.vue"
           ),
-        meta: { permission: false, title: "登陆日志" }
+        meta: { permission: false, title: "app日志" }
       },
       // h5包管理
       {
@@ -118,6 +118,16 @@ const routes = [
             /* webpackChunkName: "buryData" */ "@/views/buryData/BuryData.vue"
           ),
         meta: { permission: false, title: "埋点数据管理" }
+      },
+      // toast样式管理
+      {
+        path: "/toastManage",
+        name: "toastManage",
+        component: () =>
+          import(
+            /* webpackChunkName: "toastManage" */ "@/views/toastManage/ToastManage.vue"
+          ),
+        meta: { permission: false, title: "toast样式管理" }
       }
     ]
   },

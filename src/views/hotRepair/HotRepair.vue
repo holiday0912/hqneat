@@ -1,55 +1,32 @@
 <template>
   <div class="container">
     <div class="handle-box">
-      <el-form ref="searchRorm" :model="searchForm" label-width="120px">
-        <el-row>
-          <el-col :span="6">
-            <el-form-item label="版本号" prop="versionCode">
-              <el-input v-model="searchForm.versionCode"></el-input>
+      <el-row>
+        <el-col :span="8">
+          <el-form ref="searchRorm" :model="searchForm" label-width="120px">
+            <el-form-item label="包版本号" prop="pkVersion">
+              <el-input
+                v-model="searchForm.pkVersion"
+                style="width: 80%"
+              ></el-input>
             </el-form-item>
-          </el-col>
-          <el-col :span="6">
-            <el-form-item label="描述" prop="descr">
-              <el-input v-model="searchForm.descr"></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="6">
-            <el-form-item label="上传时间" prop="createTime">
-              <el-date-picker
-                v-model="searchForm.createTime"
-                placeholder="选择日期"
-                style="width: 100%"
-                type="date"
-              >
-              </el-date-picker>
-            </el-form-item>
-          </el-col>
-
-          <el-col :span="6">
-            <el-form-item label="类型" prop="createTime">
-              <el-select v-model="searchForm.type" placeholder="请选择">
-                <el-option
-                  v-for="item in typeList"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                />
-              </el-select>
-            </el-form-item>
-          </el-col>
-        </el-row>
-      </el-form>
-
-      <div class="handle-box">
-        <el-button icon="el-icon-refresh" @click="formRest">重置</el-button>
-        <el-button icon="el-icon-search" type="primary" @click="handleSearch"
-          >查询
-        </el-button>
-        <el-button icon="el-icon-plus" type="primary" @click="handleAdd"
-          >文件上传
-        </el-button>
-      </div>
-
+          </el-form>
+        </el-col>
+        <el-col :span="16">
+          <div class="handle-box">
+            <el-button icon="el-icon-refresh" @click="formRest">重置</el-button>
+            <el-button
+              icon="el-icon-search"
+              type="primary"
+              @click="handleSearch"
+              >查询
+            </el-button>
+            <el-button icon="el-icon-plus" type="primary" @click="handleAdd"
+              >文件上传
+            </el-button>
+          </div>
+        </el-col>
+      </el-row>
       <el-table
         ref="multipleTable"
         :data="tableData"
@@ -63,25 +40,18 @@
           </template>
         </el-table-column>
 
-        <!--版本号-->
+        <!--包版本号-->
         <el-table-column
           align="center"
-          label="版本号"
-          prop="versionCode"
+          label="包版本号"
+          prop="pkVersion"
         ></el-table-column>
 
-        <!--描述-->
+        <!--包名字-->
         <el-table-column
           align="center"
-          label="描述"
-          prop="descr"
-        ></el-table-column>
-
-        <!--文件路径-->
-        <el-table-column
-          align="center"
-          label="文件路径"
-          prop="fileUrl"
+          label="包名字"
+          prop="pkName"
         ></el-table-column>
 
         <!-- 上传时间-->
@@ -91,28 +61,14 @@
           prop="createTime"
         ></el-table-column>
 
-        <!--是否最新-->
+        <!--发布时间-->
         <el-table-column
           align="center"
-          label="是否最新"
-          prop="isLatest"
+          label="发布时间"
+          prop="pubTime"
         ></el-table-column>
 
-        <!--是否强制更新-->
-        <el-table-column
-          align="center"
-          label="是否强制更新"
-          prop="isForce"
-        ></el-table-column>
-
-        <!--类型-->
-        <el-table-column
-          align="center"
-          label="类型"
-          prop="type"
-        ></el-table-column>
-
-        <el-table-column align="center" label="操作" width="90">
+        <el-table-column align="center" label="操作" width="150">
           <template v-slot="scope">
             <el-popconfirm
               title="确定删除吗？"
@@ -122,6 +78,13 @@
                 >删除
               </el-button>
             </el-popconfirm>
+            <el-button
+              slot="reference"
+              icon="el-icon-delete"
+              type="text"
+              @click="handleEdit(scope.row)"
+              >修改
+            </el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -133,88 +96,56 @@
     </div>
 
     <HotRepairUpload ref="htmlPckUpload" @refresh="getData"></HotRepairUpload>
+    <HotRepairEdit ref="hotRepairEdit" @refresh="getData"></HotRepairEdit>
   </div>
 </template>
 
 <script>
 import HotRepairUpload from "@/views/hotRepair/HotRepairUpload.vue";
-import { deleteVersion, h5VersionList } from "@/api/htmlPackage";
+import { nyHotDepDeleteById, nyHotDepSelectAllInfo } from "@/api/hotRepair";
+import HotRepairEdit from "@/views/hotRepair/HotRepairEdit.vue";
 
 export default {
   name: "HotRepair",
   components: {
-    HotRepairUpload
+    HotRepairUpload,
+    HotRepairEdit
   },
   data() {
     return {
       searchForm: {
-        appid: "njebd81krqn",
-        descr: "", //描述
-        versionCode: "", //版本号
-        type: "", //类型，
-        createTime: ""
+        pkVersion: ""
       },
       tableData: [],
       pageTotal: 0
     };
-  },
-  computed: {
-    // html安装包类型的枚举
-    typeList() {
-      return [
-        {
-          label: "离线包",
-          value: "1"
-        },
-        {
-          label: "安装包",
-          value: "0"
-        }
-      ];
-    }
   },
   mounted() {
     this.getData();
   },
   methods: {
     async getData(query = { pageNum: 1, pageSize: 10 }) {
-      let obj = Object.assign(query, this.searchForm);
+      const params = {
+        current: query.pageNum,
+        size: query.pageSize,
+        pkVersion: this.searchForm.pkVersion
+      };
       try {
-        let res = await h5VersionList(obj);
-        if (res) {
-          this.tableData = res.data.list.map(i => {
+        let res = await nyHotDepSelectAllInfo(params);
+        if (res.message === "请求成功") {
+          this.tableData = res.data.data.map(i => {
             return {
               ...i,
               createTime: this.$dayjs(i.createTime),
-              isLatest: this.showIsLatestAndIsForce(i.isLatest),
-              isForce: this.showIsLatestAndIsForce(i.isForce),
-              type: this.showType(i.type)
+              pubTime: this.$dayjs(i.pubTime)
             };
           });
           this.pageTotal = res.data.total;
+        } else {
+          this.$message.error(res.message);
         }
       } catch (e) {
         throw new Error(e);
-      }
-    },
-    showIsLatestAndIsForce(target) {
-      switch (target) {
-        case "1":
-          return "是";
-        case "0":
-          return "否";
-        default:
-          return "否";
-      }
-    },
-    showType(target) {
-      switch (target) {
-        case "1":
-          return "离线包";
-        case "0":
-          return "安装包";
-        default:
-          return "——";
       }
     },
     formRest() {
@@ -222,10 +153,6 @@ export default {
     },
     // 列表查询
     handleSearch() {
-      this.query = {
-        pageNum: 1,
-        pageSize: 10
-      };
       this.getData();
     },
     // 新增推送
@@ -234,14 +161,19 @@ export default {
     },
     async handleDelete({ id }) {
       try {
-        let res = await deleteVersion({ body: id, channel: "" });
+        let res = await nyHotDepDeleteById({ id });
         if (res.message === "请求成功") {
           this.$message.success("删除成功");
-          this.getData();
+          await this.getData();
+        } else {
+          this.$message.error(res.message);
         }
       } catch (e) {
         throw new Error(e);
       }
+    },
+    handleEdit(val) {
+      this.$refs.hotRepairEdit.showDialog(val);
     }
   }
 };
