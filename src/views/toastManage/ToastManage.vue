@@ -51,11 +51,8 @@
         </el-table-column>
 
         <!--标题-->
-        <el-table-column
-          align="center"
-          label="标题"
-          prop="title"
-        ></el-table-column>
+        <el-table-column align="center" label="标题" prop="tittle">
+        </el-table-column>
 
         <!--属性-->
         <el-table-column

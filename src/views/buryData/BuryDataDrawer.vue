@@ -126,7 +126,7 @@ export default {
     async getChartData() {
       try {
         let res = await createCookieView({
-          classLabels: this.formData.classLabels
+          eventId: this.formData.eventId
         });
         if (res.message === "请求成功") {
           this.labelData = res.data.map(i => i.staDay);

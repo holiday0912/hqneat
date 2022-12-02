@@ -202,7 +202,7 @@ export default {
       this.selectFile = Boolean(fileList.length);
     },
     uploadError(res) {
-      this.$message.error(`${res.message}，请重新上传`);
+      this.$message.error(`请重新上传`);
     },
     uploadSuccess({ message, data }) {
       console.log(message);

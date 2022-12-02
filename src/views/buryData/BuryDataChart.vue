@@ -25,7 +25,7 @@ export default {
   data() {
     return {
       options: {
-        type: "pie",
+        type: "line",
         legend: {
           display: true
         },
