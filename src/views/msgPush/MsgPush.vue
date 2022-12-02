@@ -4,39 +4,42 @@
       <el-form ref="searchRorm" :model="searchForm" label-width="120px">
         <el-row>
           <el-col :span="6">
-            <el-form-item label="角色名称" prop="roleName">
-              <el-input v-model="searchForm.roleName"></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="6">
-            <el-form-item label="角色描述" prop="roleDesc">
-              <el-input v-model="searchForm.roleDesc"></el-input>
+            <el-form-item label="通知栏提示文字" prop="ticker">
+              <el-input v-model="searchForm.ticker"></el-input>
             </el-form-item>
           </el-col>
 
-          <div style="display: inline-block">
-            <div style="margin-left: 10px; display: inline-block">
-              <el-button icon="el-icon-refresh" @click="formRest"
-                >重置
-              </el-button>
-            </div>
-            <div style="margin-left: 10px; display: inline-block">
-              <el-button
-                icon="el-icon-search"
-                type="primary"
-                @click="handleSearch"
-                >查询
-              </el-button>
-            </div>
-          </div>
+          <el-col :span="6">
+            <el-form-item label="标题" prop="title">
+              <el-input v-model="searchForm.title"></el-input>
+            </el-form-item>
+          </el-col>
+
+          <el-col :span="6">
+            <el-form-item label="内容" prop="content">
+              <el-input v-model="searchForm.content"></el-input>
+            </el-form-item>
+          </el-col>
         </el-row>
       </el-form>
 
-      <div class="handle-box">
-        <el-button icon="el-icon-plus" type="primary" @click="handleAdd"
-          >新增
-        </el-button>
+      <div style="display: inline-block">
+        <div style="margin-left: 10px; display: inline-block">
+          <el-button icon="el-icon-refresh" @click="formRest">重置</el-button>
+        </div>
+        <div style="margin-left: 10px; display: inline-block">
+          <el-button icon="el-icon-search" type="primary" @click="handleSearch"
+            >查询
+          </el-button>
+        </div>
+        <div style="margin-left: 10px; display: inline-block">
+          <el-button icon="el-icon-plus" type="primary" @click="handleAdd"
+            >新增
+          </el-button>
+        </div>
       </div>
+
+      <div class="handle-box"></div>
 
       <el-table
         ref="multipleTable"
@@ -79,6 +82,7 @@
           label="创建时间"
           prop="createTime"
         ></el-table-column>
+
         <el-table-column
           align="center"
           label="更新时间"
@@ -139,9 +143,9 @@ export default {
   data() {
     return {
       searchForm: {
-        roleName: "", // 角色名称
-        roleDesc: "", // 角色描述
-        isEnabled: "" // 角色是否启用
+        title: "",
+        content: "",
+        ticker: ""
       },
       tableData: [],
       pageTotal: 0
@@ -156,14 +160,14 @@ export default {
       try {
         let res = await msgPushList(obj);
         if (res) {
-          this.tableData = res.map(i => {
+          this.tableData = res.list.map(i => {
             return {
               ...i,
               createTime: this.$dayjs(i.createTime),
               updateTime: this.$dayjs(i.updateTime)
             };
           });
-          this.pageTotal = res.length;
+          this.pageTotal = res.total;
         }
       } catch (e) {
         throw new Error(e);

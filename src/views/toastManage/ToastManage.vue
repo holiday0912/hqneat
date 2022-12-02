@@ -4,13 +4,20 @@
       <el-row>
         <el-form ref="searchRorm" :model="searchForm" label-width="120px">
           <el-col :span="6">
-            <el-form-item label="版本号" prop="versionCode">
-              <el-input v-model="searchForm.versionCode"></el-input>
+            <el-form-item label="标题" prop="title">
+              <el-input v-model="searchForm.title"></el-input>
             </el-form-item>
           </el-col>
+
           <el-col :span="6">
-            <el-form-item label="描述" prop="descr">
-              <el-input v-model="searchForm.descr"></el-input>
+            <el-form-item label="内容" prop="property">
+              <el-input v-model="searchForm.property"></el-input>
+            </el-form-item>
+          </el-col>
+
+          <el-col :span="6">
+            <el-form-item label="类型" prop="type">
+              <el-input v-model="searchForm.type"></el-input>
             </el-form-item>
           </el-col>
         </el-form>
@@ -53,7 +60,7 @@
         <!--属性-->
         <el-table-column
           align="center"
-          label="触发时机"
+          label="内容"
           prop="property"
         ></el-table-column>
 
@@ -99,26 +106,27 @@
     </div>
 
     <ToastEdit ref="toastEdit" @refresh="getData"></ToastEdit>
+    <ToastAddNew ref="toastAddNew" @refresh="getData"></ToastAddNew>
   </div>
 </template>
 
 <script>
 import { toastDeleteById, toastManageList } from "@/api/toastManage";
 import ToastEdit from "@/views/toastManage/ToastEdit.vue";
+import ToastAddNew from "@/views/toastManage/ToastAddNew.vue";
 
 export default {
   name: "roleManage",
   components: {
-    ToastEdit
+    ToastEdit,
+    ToastAddNew
   },
   data() {
     return {
       searchForm: {
-        appid: "njebd81krqn",
-        descr: "", //描述
-        versionCode: "", //版本号
-        type: "", //类型，
-        createTime: ""
+        title: "",
+        property: "",
+        type: ""
       },
       tableData: [],
       pageTotal: 0
@@ -134,7 +142,7 @@ export default {
         size: query.pageSize
       };
       try {
-        let res = await toastManageList(params);
+        let res = await toastManageList({ ...params, ...this.searchForm });
         if (res) {
           const { data, total } = res.data;
           this.tableData = data.map(i => {

@@ -22,6 +22,11 @@ export const NyEventControllerDeleteById = async query => {
 };
 
 //埋点详情统计图（get）：
-export const searchDetailCount = async query => {
-  return get("/NyEventController/searchDetailCount", query);
+export const createCookieView = async query => {
+  return get("/NyEventController/createCookieView", query);
+};
+
+// 事件详情
+export const searchNewsDetail = async query => {
+  return get("/NyEventController/searchNewsDetail", query);
 };

@@ -119,6 +119,16 @@ const routes = [
           ),
         meta: { permission: false, title: "埋点数据管理" }
       },
+      // 轮播图管理
+      {
+        path: "/carouselManage",
+        name: "carouselManage",
+        component: () =>
+          import(
+            /* webpackChunkName: "carouselManage" */ "@/views/carouselManage/CarouselManage.vue"
+          ),
+        meta: { permission: false, title: "轮播图管理" }
+      },
       // toast样式管理
       {
         path: "/toastManage",
@@ -127,7 +137,7 @@ const routes = [
           import(
             /* webpackChunkName: "toastManage" */ "@/views/toastManage/ToastManage.vue"
           ),
-        meta: { permission: false, title: "toast样式管理" }
+        meta: { permission: false, title: "提示配置" }
       }
     ]
   },

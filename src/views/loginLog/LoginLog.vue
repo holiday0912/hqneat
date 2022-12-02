@@ -4,14 +4,8 @@
       <el-form ref="searchRorm" :model="searchForm" label-width="120px">
         <el-row>
           <el-col :span="6">
-            <el-form-item label="时间" prop="createTime">
-              <el-date-picker
-                v-model="searchForm.createTime"
-                placeholder="选择日期"
-                style="width: 100%"
-                type="date"
-              >
-              </el-date-picker>
+            <el-form-item label="app名称" prop="appName">
+              <el-input v-model="searchForm.appName"></el-input>
             </el-form-item>
           </el-col>
 
@@ -151,10 +145,7 @@ export default {
     return {
       searchForm: {
         appid: "njebd81krqn",
-        descr: "", //描述
-        versionCode: "", //版本号
-        type: "", //类型，
-        createTime: ""
+        appName: ""
       },
       tableData: [],
       pageTotal: 0,
@@ -174,7 +165,9 @@ export default {
           this.tableData = res.data.list.map(i => {
             return {
               ...i,
-              createTime: this.$dayjs(i.createTime)
+              createTime: i.createTime
+                ? this.$dayjs(i.createTime)
+                : this.$nodata
             };
           });
           this.pageTotal = res.data.total;

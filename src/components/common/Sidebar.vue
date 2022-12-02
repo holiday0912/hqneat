@@ -116,7 +116,12 @@ export default {
         {
           icon: "el-icon-news",
           router: "toastManage",
-          resourceName: "toast样式管理"
+          resourceName: "提示配置"
+        },
+        {
+          icon: "el-icon-picture",
+          router: "carouselManage",
+          resourceName: "轮播图管理"
         }
       ]
       // items: [],

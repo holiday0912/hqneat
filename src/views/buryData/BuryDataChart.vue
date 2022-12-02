@@ -1,5 +1,6 @@
 <template>
   <div class="wrapper">
+    <h3 style="text-align: center;margin-bottom: 20px">事件占比</h3>
     <Schart ref="schart" :options="options" canvasId="canvas" class="wrapper" />
   </div>
 </template>
@@ -24,9 +25,13 @@ export default {
   data() {
     return {
       options: {
-        type: "line",
+        type: "pie",
+        legend: {
+          display: true
+        },
         title: {
-          text: "事件7天趋势"
+          text: "事件7天趋势",
+          position: "bottom"
         },
         bgColor: "#fbfbfb",
         labels: this.labelData,
@@ -44,6 +49,6 @@ export default {
 <style>
 .wrapper {
   width: 100%;
-  height: 200px;
+  height: 350px;
 }
 </style>

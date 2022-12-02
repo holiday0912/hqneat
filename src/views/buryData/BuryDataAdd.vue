@@ -35,26 +35,17 @@
       <el-form-item
         :rules="[{ required: true, message: '请输入' }]"
         label="类型"
-        prop="type"
-      >
-        <el-input v-model="form.type"></el-input>
-      </el-form-item>
-
-      <el-form-item
-        :rules="[{ required: true, message: '请输入' }]"
-        label="分类标签"
         prop="classLabels"
       >
-        <el-input v-model="form.classLabels"></el-input>
+        <el-select v-model="form.classLabels" placeholder="请选择">
+          <el-option
+            v-for="item in typeList"
+            :key="item.key"
+            :label="item.val"
+            :value="item.val"
+          />
+        </el-select>
       </el-form-item>
-
-      <!--      <el-form-item-->
-      <!--        :rules="[{ required: true, message: '请输入' }]"-->
-      <!--        label="属性"-->
-      <!--        prop="classLabels"-->
-      <!--      >-->
-      <!--        <el-input v-model="form.classLabels"></el-input>-->
-      <!--      </el-form-item>-->
     </el-form>
 
     <template #footer class="dialog-footer">
@@ -76,13 +67,27 @@ export default {
       form: {
         triggerTiming: "",
         eventName: "",
-        type: "",
         classLabels: "",
-        collectionStatus: "",
+        // classLabels: "",
+        // collectionStatus: "",
         eventId: ""
       },
       isUploading: false
     };
+  },
+  computed: {
+    typeList() {
+      return [
+        {
+          key: "点击事件",
+          val: "点击事件"
+        },
+        {
+          key: "页面点击事件",
+          val: "页面点击事件"
+        }
+      ];
+    }
   },
   methods: {
     showDialog() {

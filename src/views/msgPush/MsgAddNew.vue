@@ -105,6 +105,9 @@ export default {
       }
     },
     async getMsgPushGroup() {
+      if (this.form.group) {
+        this.form.group = "";
+      }
       try {
         let res = await postGroupList("");
         this.groupList = [
@@ -122,7 +125,7 @@ export default {
       this.$refs.edit.validate(async valid => {
         if (valid) {
           try {
-            let res = await msgPushInsert({ content: this.form.content });
+            let res = await msgPushInsert(this.form);
             if (res?.message === "请求成功") {
               this.$message.success("新增成功");
               this.dialogEditClose();

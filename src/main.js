@@ -18,6 +18,7 @@ import axios from "axios";
 
 Vue.prototype.$axios = axios;
 Vue.prototype.$dayjs = day;
+Vue.prototype.$nodata = "——";
 
 Vue.component("BasePagination", BasePagination);
 

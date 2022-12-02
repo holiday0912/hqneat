@@ -4,13 +4,13 @@
       <el-row>
         <el-form ref="searchRorm" :model="searchForm" label-width="120px">
           <el-col :span="6">
-            <el-form-item label="版本号" prop="versionCode">
-              <el-input v-model="searchForm.versionCode"></el-input>
+            <el-form-item label="事件id" prop="eventId">
+              <el-input v-model="searchForm.eventId"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="6">
-            <el-form-item label="描述" prop="descr">
-              <el-input v-model="searchForm.descr"></el-input>
+            <el-form-item label="分类标签" prop="classLabels">
+              <el-input v-model="searchForm.classLabels"></el-input>
             </el-form-item>
           </el-col>
         </el-form>
@@ -44,6 +44,13 @@
           </template>
         </el-table-column>
 
+        <!--事件id-->
+        <el-table-column
+          align="center"
+          label="事件id"
+          prop="eventId"
+        ></el-table-column>
+
         <!--事件名称-->
         <el-table-column
           align="center"
@@ -56,13 +63,6 @@
           align="center"
           label="触发时机"
           prop="triggerTiming"
-        ></el-table-column>
-
-        <!--类型-->
-        <el-table-column
-          align="center"
-          label="类型"
-          prop="type"
         ></el-table-column>
 
         <!--分类标签-->
@@ -86,18 +86,11 @@
           prop="createTime"
         ></el-table-column>
 
-        <!--首次上报-->
+        <!--统计数据-->
         <el-table-column
           align="center"
-          label="首次上报"
-          prop="firstAppear"
-        ></el-table-column>
-
-        <!--最近上报-->
-        <el-table-column
-          align="center"
-          label="最近上报"
-          prop="lastAppear"
+          label="统计数据"
+          prop="detailCount"
         ></el-table-column>
 
         <el-table-column align="center" label="操作" width="150">
@@ -147,11 +140,8 @@ export default {
   data() {
     return {
       searchForm: {
-        appid: "njebd81krqn",
-        descr: "", //描述
-        versionCode: "", //版本号
-        type: "", //类型，
-        createTime: ""
+        eventId: "",
+        classLabels: ""
       },
       tableData: [],
       pageTotal: 0
@@ -162,22 +152,21 @@ export default {
   },
   methods: {
     async getData(query = { pageNum: 1, pageSize: 10 }) {
-      const params = {
-        current: query.pageNum,
-        size: query.pageSize
-      };
+      // const params = {
+      //   current: query.pageNum,
+      //   size: query.pageSize
+      // };
       try {
-        let res = await selectAllInfo(params);
+        let res = await selectAllInfo({ ...this.searchForm });
         if (res) {
-          const { data, total } = res.data;
-          this.tableData = data.map(i => {
+          this.tableData = res.data.data.map(i => {
             return {
               ...i,
               createTime: this.$dayjs(i.createTime),
               updateTime: this.$dayjs(i.updateTime)
             };
           });
-          this.pageTotal = total;
+          this.pageTotal = res.data.total;
         }
       } catch (e) {
         throw new Error(e);

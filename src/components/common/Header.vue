@@ -6,7 +6,7 @@
         <i v-if="!collapse" class="el-icon-s-fold"></i>
         <i v-else class="el-icon-s-unfold"></i>
       </div>
-      <div class="logo">南洋 2.0</div>
+      <div class="logo">泓齐后台管理系统</div>
     </div>
     <div class="header-right">
       <div class="header-user-con">

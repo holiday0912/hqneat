@@ -246,7 +246,7 @@ export default {
         let res = await deleteVersion({ body: id, channel: "" });
         if (res.message === "请求成功") {
           this.$message.success("删除成功");
-          this.getData();
+          await this.getData();
         }
       } catch (e) {
         throw new Error(e);
