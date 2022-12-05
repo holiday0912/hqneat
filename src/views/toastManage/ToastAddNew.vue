@@ -13,7 +13,7 @@
         :on-change="handleFileChange"
         :on-error="uploadError"
         :on-success="uploadSuccess"
-        action="http://203.195.199.38:9009/file/uploadRemoteServer"
+        :action="action"
         class="upload-demo"
         drag
         multiple
@@ -120,6 +120,7 @@
 <script>
 import ToastType from "@/views/toastManage/ToastType.vue";
 import { searchTypeList, toastAddNotice } from "@/api/toastManage";
+import { fileUpload } from "@/api/htmlPackage";
 
 export default {
   name: "ToastAddNew",
@@ -139,7 +140,8 @@ export default {
         titleF: "",
         type: ""
       },
-      typeList: []
+      typeList: [],
+      actions: fileUpload,
     };
   },
   methods: {

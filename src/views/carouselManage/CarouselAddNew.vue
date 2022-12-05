@@ -14,7 +14,7 @@
           :on-change="handleFileChange"
           :on-error="uploadError"
           :on-success="uploadSuccess"
-          action="http://203.195.199.38:9009/file/uploadRemoteServer"
+          :action="actions"
           class="upload-demo"
           drag
           multiple
@@ -45,6 +45,7 @@
 
 <script>
 import { carouselImgInsert } from "@/api/carouselManage";
+import { fileUpload } from "@/api/htmlPackage";
 
 export default {
   name: "CarouselAddNew",
@@ -56,7 +57,8 @@ export default {
         imgUrl: "",
         path: ""
       },
-      typeList: []
+      typeList: [],
+      actions: fileUpload,
     };
   },
   methods: {
