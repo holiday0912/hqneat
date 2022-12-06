@@ -54,8 +54,7 @@ export default {
       dialogFormVisible: false,
       form: {
         forwardUrl: "",
-        imgUrl: "",
-        path: ""
+        imgUrl: ""
       },
       typeList: [],
       actions: fileUpload,
@@ -95,7 +94,7 @@ export default {
     },
     async uploadSuccess({ message, data }) {
       if (message === "请求成功") {
-        this.form.path = data;
+        this.form.imgUrl = data;
       } else {
         this.$message.error(message);
       }

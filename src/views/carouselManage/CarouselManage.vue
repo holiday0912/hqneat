@@ -40,9 +40,14 @@
 
         <!--图片地址-->
         <el-table-column align="center" label="图片地址" prop="imgUrl">
-          <!--          <template v-slot="scope">-->
-          <!--            <img :src="`${scope.row.imgUrl}`" alt="" />-->
-          <!--          </template>-->
+          <template v-slot="scope">
+            <img
+              :src="`${baseUrl}${scope.row.imgUrl}`"
+              alt=""
+              crossorigin="anonymous"
+              height="100px"
+            />
+          </template>
         </el-table-column>
 
         <!--导航地址-->
@@ -73,8 +78,6 @@
         </el-table-column>
       </el-table>
 
-      <!--      <img :src="imgSrc" alt="" />-->
-
       <BasePagination
         :pageTotal="pageTotal"
         @getData="getData"
@@ -93,6 +96,7 @@ import {
   carouselImgDeleteVersion,
   carouselImgList
 } from "@/api/carouselManage";
+import { baseUrl } from "@/config/setting";
 
 export default {
   name: "carouselManage",
@@ -105,7 +109,7 @@ export default {
       searchForm: {},
       tableData: [],
       pageTotal: 0,
-      imgSrc: "http://192.168.10.240:8989/hzw.png"
+      baseUrl: baseUrl
     };
   },
   mounted() {

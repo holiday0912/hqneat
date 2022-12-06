@@ -10,10 +10,10 @@
       @close="dialogEditClose"
     >
       <el-upload
+        :action="actions"
         :on-change="handleFileChange"
         :on-error="uploadError"
         :on-success="uploadSuccess"
-        :action="action"
         class="upload-demo"
         drag
         multiple
@@ -138,10 +138,11 @@ export default {
         title: "",
         titleE: "",
         titleF: "",
-        type: ""
+        type: "",
+        imgUrl: ""
       },
       typeList: [],
-      actions: fileUpload,
+      actions: fileUpload
     };
   },
   methods: {
@@ -209,7 +210,7 @@ export default {
     uploadSuccess({ message, data }) {
       console.log(message);
       if (message === "请求成功") {
-        this.form.path = data;
+        this.form.imgUrl = data;
       } else {
         this.$message.error(message);
       }
