@@ -156,6 +156,7 @@ export default {
         this.$message.error("请上传jar包");
         return;
       }
+      this.fileList = fileList;
       this.selectFile = Boolean(fileList.length);
     }
   }

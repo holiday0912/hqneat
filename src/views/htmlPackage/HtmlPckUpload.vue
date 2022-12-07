@@ -163,14 +163,18 @@ export default {
       if (message === "请求成功") {
         try {
           let res = await insertVersion({ fileUrl: data, ...this.form });
+          console.log(res);
           if (res.message === "请求成功") {
             this.isUploading = false;
             this.$message.success(res.message);
             this.dialogEditClose();
           } else {
+            this.isUploading = false;
+            console.log("response error");
             this.$message.error(res.message);
           }
         } catch (e) {
+          console.log("req error");
           this.isUploading = false;
           throw new Error(e);
         }
