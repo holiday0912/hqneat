@@ -5,18 +5,17 @@
       v-dialogDrag
       :close-on-click-modal="false"
       :visible.sync="dialogFormVisible"
-      title="轮播图新增"
+      title="轮播图修改"
       width="680px"
       @close="dialogEditClose"
     >
       <el-form ref="edit" :model="form" label-width="150px">
-        <el-form-item
-          :rules="[{ required: true, message: '请输入' }]"
-          label="图片地址"
-          prop="imgUrl"
-        >
-          <el-input v-model="form.imgUrl"></el-input>
-        </el-form-item>
+        <img
+          :src="imgUrl"
+          alt="轮播图"
+          style="margin-bottom: 20px"
+          width="100%"
+        />
 
         <el-form-item
           :rules="[{ required: true, message: '请输入' }]"
@@ -29,7 +28,7 @@
 
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogEditClose">取 消</el-button>
-        <el-button type="primary" @click="carouselEditSubmit">新 增</el-button>
+        <el-button type="primary" @click="carouselEditSubmit">修 改</el-button>
       </div>
     </el-dialog>
   </div>
@@ -43,9 +42,9 @@ export default {
   data() {
     return {
       dialogFormVisible: false,
+      imgUrl: "",
       form: {
         forwardUrl: "",
-        imgUrl: "",
         id: ""
       }
     };
@@ -55,7 +54,7 @@ export default {
       this.dialogFormVisible = true;
       this.form.id = val.id;
       this.form.forwardUrl = val.forwardUrl;
-      this.form.imgUrl = val.imgUrl;
+      this.imgUrl = val.imgUrl;
     },
     dialogEditClose() {
       this.dialogFormVisible = false;
