@@ -41,7 +41,7 @@
         <!--图片地址-->
         <el-table-column align="center" label="图片地址" prop="imgUrl">
           <template v-slot="scope">
-            <img :src="`${scope.row.imgUrl}`" alt="" height="250px" />
+            <img :src="`${scope.row.imgUrl}`" alt="" width="350px" />
           </template>
         </el-table-column>
 
