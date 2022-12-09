@@ -131,9 +131,9 @@ export default {
         throw new Error(e);
       }
     },
-    formRest() {
-      this.$refs.searchRorm.resetFields();
-    },
+    // formRest() {
+    //   this.$refs.searchRorm.resetFields();
+    // },
     // 列表查询
     handleSearch() {
       this.query = {

@@ -49,7 +49,7 @@
         header-cell-class-name="table-header"
       >
         <el-table-column align="center" label="序号" width="55">
-          <template slot-scope="scope">
+          <template v-slot="scope">
             {{ scope.$index + 1 }}
           </template>
         </el-table-column>
@@ -75,6 +75,12 @@
           align="center"
           label="通知栏提示文字"
           prop="ticker"
+        ></el-table-column>
+
+        <el-table-column
+          align="center"
+          label="分组"
+          prop="filterGroup"
         ></el-table-column>
 
         <el-table-column
@@ -164,7 +170,9 @@ export default {
             return {
               ...i,
               createTime: this.$dayjs(i.createTime),
-              updateTime: this.$dayjs(i.updateTime)
+              updateTime: i.updateTime
+                ? this.$dayjs(i.updateTime)
+                : this.$nodata
             };
           });
           this.pageTotal = res.total;

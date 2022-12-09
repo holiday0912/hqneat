@@ -61,33 +61,33 @@ export default {
     return {
       collapse: false,
       items: [
-        // {
-        //   icon: "el-icon-lx-home",
-        //   router: "dashboard",
-        //   resourceName: "系统首页"
-        // },
-        // {
-        //   icon: "el-icon-lx-shop",
-        //   router: "2",
-        //   resourceName: "权限管理",
-        //   resources: [
-        //     {
-        //       icon: "el-icon-lx-shop",
-        //       router: "accountManage",
-        //       resourceName: "账号管理"
-        //     },
-        //     {
-        //       icon: "el-icon-lx-shop",
-        //       router: "roleManage",
-        //       resourceName: "角色管理"
-        //     },
-        //     {
-        //       icon: "el-icon-lx-shop",
-        //       router: "resourcesManage",
-        //       resourceName: "资源管理"
-        //     }
-        //   ]
-        // },
+        {
+          icon: "el-icon-lx-home",
+          router: "dashboard",
+          resourceName: "系统首页"
+        },
+        {
+          icon: "el-icon-lx-shop",
+          router: "2",
+          resourceName: "权限管理",
+          resources: [
+            {
+              icon: "el-icon-lx-shop",
+              router: "accountManage",
+              resourceName: "账号管理"
+            },
+            {
+              icon: "el-icon-lx-shop",
+              router: "roleManage",
+              resourceName: "角色管理"
+            },
+            {
+              icon: "el-icon-lx-shop",
+              router: "resourcesManage",
+              resourceName: "资源管理"
+            }
+          ]
+        },
         {
           icon: "el-icon-data-line",
           router: "buryData",

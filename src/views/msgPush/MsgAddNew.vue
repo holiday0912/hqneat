@@ -37,10 +37,10 @@
         <el-form-item
           :rules="[{ required: true, message: '请输入' }]"
           label="分组"
-          prop="group"
+          prop="filterGroup"
         >
           <el-select
-            v-model="form.group"
+            v-model="form.filterGroup"
             clearable
             placeholder="请选择"
             style="width: 100%"
@@ -84,7 +84,7 @@ export default {
         content: "",
         title: "",
         ticker: "",
-        group: ""
+        filterGroup: ""
       },
       groupList: []
     };

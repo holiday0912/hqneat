@@ -10,7 +10,12 @@
         label-width="0"
       >
         <el-form-item prop="username">
-          <el-input v-model="param.username" clearable placeholder="请输入账号">
+          <el-input
+            v-model="param.username"
+            clearable
+            placeholder="请输入账号"
+            @focus="onfocus($event)"
+          >
             <el-button slot="prepend" icon="el-icon-lx-people"></el-button>
           </el-input>
         </el-form-item>
@@ -20,6 +25,7 @@
             clearable
             placeholder="请输入密码"
             type="password"
+            @focus="onfocus($event)"
             @keyup.enter.native="submitForm()"
           >
             <el-button slot="prepend" icon="el-icon-lx-lock"></el-button>
@@ -72,6 +78,9 @@ export default {
           return false;
         }
       });
+    },
+    onfocus(e) {
+      e.currentTarget.select();
     }
   }
 };

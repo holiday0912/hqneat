@@ -97,7 +97,7 @@
 </template>
 <script>
 import bus from "../common/bus";
-import { loginOut, resetPasswd } from "@/api/system/sysUser";
+import { resetPasswd } from "@/api/system/sysUser";
 
 export default {
   data() {
@@ -167,23 +167,24 @@ export default {
     // 用户名下拉菜单选择事件
     handleCommand(command) {
       if (command == "loginout") {
-        this.$confirm("您确定要退出么?", "提示", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning"
-        })
-          .then(() => {
-            loginOut({}).then(res => {
-              if (res) {
-                sessionStorage.removeItem("ms_username");
-                sessionStorage.removeItem("token");
-                this.$router.push("/login");
-              }
-            });
-          })
-          .catch(error => {
-            console.log(error);
-          });
+        // this.$confirm("您确定要退出么?", "提示", {
+        //   confirmButtonText: "确定",
+        //   cancelButtonText: "取消",
+        //   type: "warning"
+        // })
+        //   .then(() => {
+        //     loginOut({}).then(res => {
+        //       if (res) {
+        //         sessionStorage.removeItem("ms_username");
+        //         sessionStorage.removeItem("token");
+        //         this.$router.push("/login");
+        //       }
+        //     });
+        //   })
+        //   .catch(error => {
+        //     console.log(error);
+        //   });
+        this.$router.push({ name: "login" });
       } else if (command == "changePsw") {
         this.dialogFormVisible = true;
       }

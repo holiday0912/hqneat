@@ -47,7 +47,7 @@ export const deletePush = query => {
 
 // 发送消息
 export const sendPush = query => {
-  return post("/msgPush/send", {
+  return post("/msgPush/sendToTopic", {
     body: query,
     channel: ""
   });

@@ -26,33 +26,33 @@ const routes = [
           import(/* webpackChunkName: "dashboard" */ "@/views/Dashboard.vue"),
         meta: { permission: true, title: "系统首页" }
       },
-      // {
-      //   path: "/accountManage",
-      //   name: "accountManage",
-      //   component: () =>
-      //     import(
-      //       /* webpackChunkName: "accountManage" */ "@/views/authorityManage/accountManage.vue"
-      //     ),
-      //   meta: { permission: false, title: "账号管理" }
-      // },
-      // {
-      //   path: "/roleManage",
-      //   name: "roleManage",
-      //   component: () =>
-      //     import(
-      //       /* webpackChunkName: "roleManage" */ "@/views/authorityManage/roleManage.vue"
-      //     ),
-      //   meta: { permission: false, title: "角色管理" }
-      // },
-      // {
-      //   path: "/resourcesManage",
-      //   name: "resourcesManage",
-      //   component: () =>
-      //     import(
-      //       /* webpackChunkName: "resourcesManage" */ "@/views/authorityManage/resourcesManage.vue"
-      //     ),
-      //   meta: { permission: false, title: "资源管理" }
-      // },
+      {
+        path: "/accountManage",
+        name: "accountManage",
+        component: () =>
+          import(
+            /* webpackChunkName: "accountManage" */ "@/views/authorityManage/accountManage.vue"
+          ),
+        meta: { permission: false, title: "账号管理" }
+      },
+      {
+        path: "/roleManage",
+        name: "roleManage",
+        component: () =>
+          import(
+            /* webpackChunkName: "roleManage" */ "@/views/authorityManage/roleManage.vue"
+          ),
+        meta: { permission: false, title: "角色管理" }
+      },
+      {
+        path: "/resourcesManage",
+        name: "resourcesManage",
+        component: () =>
+          import(
+            /* webpackChunkName: "resourcesManage" */ "@/views/authorityManage/resourcesManage.vue"
+          ),
+        meta: { permission: false, title: "资源管理" }
+      },
       // {
       //   path: "/quotaManage",
       //   name: "quotaManage",
