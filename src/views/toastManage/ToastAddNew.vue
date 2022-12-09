@@ -5,54 +5,46 @@
       v-dialogDrag
       :close-on-click-modal="false"
       :visible.sync="dialogFormVisible"
-      title="新增toast样式"
+      title="提示配置新增"
       width="680px"
       @close="dialogEditClose"
     >
-      <el-upload
-        :action="actions"
-        :on-change="handleFileChange"
-        :on-error="uploadError"
-        :on-success="uploadSuccess"
-        class="upload-demo"
-        drag
-        multiple
-      >
-        <i class="el-icon-upload"></i>
-        <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-        <div slot="tip" class="el-upload__tip">
-          只能上传jpg/png文件，且不超过500kb
-        </div>
-      </el-upload>
-
       <el-form ref="edit" :model="form" label-width="150px">
         <el-form-item
           :rules="[{ required: true, message: '请输入' }]"
+          label="样式"
+          prop="picPath"
+        >
+          <el-input v-model="form.picPath" style="width: 82.2%;"></el-input>
+        </el-form-item>
+
+        <el-form-item
+          :rules="[{ required: true, message: '请输入' }]"
           label="标题"
-          prop="title"
+          prop="tittle"
         >
           <div class="input-wp">
-            <el-input v-model="form.title"></el-input>
+            <el-input v-model="form.tittle"></el-input>
             <span>(中文)</span>
           </div>
         </el-form-item>
 
         <el-form-item
           :rules="[{ required: true, message: '请输入' }]"
-          prop="titleE"
+          prop="tittleE"
         >
           <div class="input-wp">
-            <el-input v-model="form.titleE"></el-input>
+            <el-input v-model="form.tittleE"></el-input>
             <span>(英文)</span>
           </div>
         </el-form-item>
 
         <el-form-item
           :rules="[{ required: true, message: '请输入' }]"
-          prop="titleF"
+          prop="tittleF"
         >
           <div class="input-wp">
-            <el-input v-model="form.titleF"></el-input>
+            <el-input v-model="form.tittleF"></el-input>
             <span>(繁体)</span>
           </div>
         </el-form-item>
@@ -120,7 +112,6 @@
 <script>
 import ToastType from "@/views/toastManage/ToastType.vue";
 import { searchTypeList, toastAddNotice } from "@/api/toastManage";
-import { fileUpload } from "@/api/htmlPackage";
 
 export default {
   name: "ToastAddNew",
@@ -135,14 +126,14 @@ export default {
         property: "",
         propertyE: "",
         propertyF: "",
-        title: "",
-        titleE: "",
-        titleF: "",
+        tittle: "",
+        tittleE: "",
+        tittleF: "",
         type: "",
-        imgUrl: ""
+        imgUrl: "",
+        picPath: ""
       },
-      typeList: [],
-      actions: fileUpload
+      typeList: []
     };
   },
   methods: {
@@ -200,20 +191,6 @@ export default {
           }
         }
       });
-    },
-    handleFileChange(file, fileList) {
-      this.selectFile = Boolean(fileList.length);
-    },
-    uploadError(res) {
-      this.$message.error(`请重新上传`);
-    },
-    uploadSuccess({ message, data }) {
-      console.log(message);
-      if (message === "请求成功") {
-        this.form.imgUrl = data;
-      } else {
-        this.$message.error(message);
-      }
     }
   }
 };

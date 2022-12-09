@@ -5,7 +5,7 @@
       v-dialogDrag
       :close-on-click-modal="false"
       :visible.sync="dialogFormVisible"
-      title="编辑toast样式"
+      title="提示配置修改"
       width="680px"
       @close="dialogEditClose"
     >
@@ -13,9 +13,9 @@
         <el-form-item
           :rules="[{ required: true, message: '请输入' }]"
           label="标题"
-          prop="title"
+          prop="tittle"
         >
-          <el-input v-model="form.title"></el-input>
+          <el-input v-model="form.tittle"></el-input>
         </el-form-item>
 
         <el-form-item
@@ -24,6 +24,14 @@
           prop="property"
         >
           <el-input v-model="form.property"></el-input>
+        </el-form-item>
+
+        <el-form-item
+          :rules="[{ required: true, message: '请输入' }]"
+          label="样式"
+          prop="picPath"
+        >
+          <el-input v-model="form.picPath"></el-input>
         </el-form-item>
 
         <el-form-item
@@ -46,7 +54,7 @@
 
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogEditClose">取 消</el-button>
-        <el-button type="primary" @click="editMessagePush">新 增</el-button>
+        <el-button type="primary" @click="editMessagePush">编 辑</el-button>
       </div>
     </el-dialog>
   </div>
@@ -62,8 +70,10 @@ export default {
       dialogFormVisible: false,
       form: {
         property: "",
-        title: "",
-        type: ""
+        picPath: "",
+        tittle: "",
+        type: "",
+        id: ""
       },
       typeList: []
     };
@@ -72,8 +82,10 @@ export default {
     showDialog(val) {
       this.dialogFormVisible = true;
       this.form.property = val.property;
-      this.form.title = val.title;
+      this.form.tittle = val.tittle;
       this.form.type = val.type;
+      this.form.id = val.id;
+      this.form.picPath = val.picPath;
       this.getTypeList();
     },
     dialogEditClose() {
@@ -118,7 +130,7 @@ export default {
           try {
             let res = await toastUpdateNotice(this.form);
             if (res?.message === "请求成功") {
-              this.$message.success("新增成功");
+              this.$message.success("修改成功");
               this.dialogEditClose();
             } else {
               this.$message.error(res.message);
