@@ -97,14 +97,6 @@
 
         <el-table-column align="center" label="操作" width="90">
           <template v-slot="scope">
-            <!--            <el-popconfirm-->
-            <!--              title="确定删除吗？"-->
-            <!--              @confirm="handleDelete(scope.row)"-->
-            <!--            >-->
-            <!--              <el-button slot="reference" icon="el-icon-delete" type="text"-->
-            <!--                >删除-->
-            <!--              </el-button>-->
-            <!--            </el-popconfirm>-->
             <el-button
               icon="el-icon-document"
               type="text"
@@ -132,15 +124,11 @@
 </template>
 
 <script>
-// import HtmlPckUpload from "@/views/htmlPackage/HtmlPckUpload";
 import { deleteVersion } from "@/api/htmlPackage";
 import { LogInfo } from "@/api/loginLog";
 
 export default {
   name: "LoginLog",
-  components: {
-    // HtmlPckUpload
-  },
   data() {
     return {
       searchForm: {

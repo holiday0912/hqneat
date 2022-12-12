@@ -11,10 +11,10 @@
     >
       <el-form ref="edit" :model="form" label-width="150px">
         <el-upload
+          :action="actions"
           :on-change="handleFileChange"
           :on-error="uploadError"
           :on-success="uploadSuccess"
-          :action="actions"
           class="upload-demo"
           drag
           multiple
@@ -56,8 +56,7 @@ export default {
         forwardUrl: "",
         imgUrl: ""
       },
-      typeList: [],
-      actions: fileUpload,
+      actions: fileUpload
     };
   },
   methods: {
@@ -89,7 +88,7 @@ export default {
     handleFileChange(file, fileList) {
       this.selectFile = Boolean(fileList.length);
     },
-    uploadError(res) {
+    uploadError() {
       this.$message.error(`请重新上传`);
     },
     async uploadSuccess({ message, data }) {

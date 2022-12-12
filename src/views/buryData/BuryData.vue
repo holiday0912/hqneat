@@ -105,7 +105,7 @@
             </el-popconfirm>
             <el-button
               slot="reference"
-              icon="el-icon-delete"
+              icon="el-icon-document"
               type="text"
               @click="showDrawer(scope.row)"
               >详情

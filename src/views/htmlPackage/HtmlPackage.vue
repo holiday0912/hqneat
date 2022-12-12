@@ -112,7 +112,7 @@
           prop="type"
         ></el-table-column>
 
-        <el-table-column align="center" label="操作" width="90">
+        <el-table-column align="center" label="操作" width="140">
           <template v-slot="scope">
             <el-popconfirm
               title="确定删除吗？"
@@ -122,6 +122,14 @@
                 >删除
               </el-button>
             </el-popconfirm>
+            <el-button
+              slot="reference"
+              icon="el-icon-download"
+              style="margin-left: 10px"
+              type="text"
+              @click="handleDownload(scope.row)"
+              >下载
+            </el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -142,7 +150,7 @@
 
 <script>
 import HtmlPckUpload from "@/views/htmlPackage/HtmlPckUpload";
-import { deleteVersion, h5VersionList } from "@/api/htmlPackage";
+import { deleteVersion, fileDownload, h5VersionList } from "@/api/htmlPackage";
 
 export default {
   name: "HtmlPackage",
@@ -248,6 +256,20 @@ export default {
           this.$message.success("删除成功");
           await this.getData();
         }
+      } catch (e) {
+        throw new Error(e);
+      }
+    },
+    async handleDownload({ fileUrl }) {
+      try {
+        const res = await fileDownload(fileUrl);
+        const url = res.config.data;
+        const aLink = document.createElement("a");
+        aLink.href = URL.createObjectURL(res.data);
+        aLink.setAttribute("download", url.slice(url.lastIndexOf("%2F") + 3));
+        document.body.appendChild(aLink);
+        aLink.click();
+        document.body.removeChild(aLink);
       } catch (e) {
         throw new Error(e);
       }

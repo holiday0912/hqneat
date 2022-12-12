@@ -12,6 +12,7 @@ import "./utils/dialog";
 import NProgress from "nprogress"; // 进度条；进度指示器
 import "nprogress/nprogress.css"; // 进度条；进度指示器 样式
 import BasePagination from "@/components/BasePagination";
+import BaseTable from "@/components/BaseTable.vue";
 import { day } from "@/common/toolFunc";
 // import './utils/rem'
 import axios from "axios";
@@ -21,6 +22,7 @@ Vue.prototype.$dayjs = day;
 Vue.prototype.$nodata = "——";
 
 Vue.component("BasePagination", BasePagination);
+Vue.component("BaseTable", BaseTable);
 
 Vue.config.productionTip = false;
 // Vue.use(VueI18n);

@@ -42,8 +42,7 @@
       :auto-upload="false"
       :file-list="fileList"
       :multiple="false"
-      :on-change="handleFileChange"
-      :on-remove="handleRemove"
+      accept=".jar"
     >
       <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
       <el-button
@@ -128,7 +127,7 @@ export default {
           }
         }
       });
-    },
+    }
     // async uploadSuccess({ data }) {
     //   try {
     //     let res = await insertVersion({ fileUrl: data, ...this.form });
@@ -146,19 +145,6 @@ export default {
     //   this.$message.error(res.message);
     //   this.isUploading = false;
     // },
-    handleRemove(file, fileList) {
-      console.log(file, fileList);
-    },
-    handleFileChange(file, fileList) {
-      const { name } = file;
-      if (name.slice(name.lastIndexOf(".") + 1) !== "jar") {
-        this.$refs.upload.clearFiles();
-        this.$message.error("请上传jar包");
-        return;
-      }
-      this.fileList = fileList;
-      this.selectFile = Boolean(fileList.length);
-    }
   }
 };
 </script>
