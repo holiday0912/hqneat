@@ -1,5 +1,6 @@
 import { baseUrl } from "@/config/setting";
 import { post } from "@/http/request";
+import { http } from "@/http/interceptor";
 
 /**
  * 上传文件的路径
@@ -12,8 +13,24 @@ export const fileUpload = baseUrl + "/file/uploadRemoteServer";
  * @param query
  * @returns {Promise<unknown>}
  */
-export const fileDownload = async query => {
-  return post("/file/downloadRemoteServer", query);
+// export const fileDownload = query => {
+//   return post(
+//     "/file/downloadRemoteServer1",
+//     { path: query }
+//   );
+// };
+
+export const fileDownload = query => {
+  return http.post(
+    "/file/downloadRemoteServer1",
+    { path: query },
+    {
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      responseType: "blob"
+    }
+  );
 };
 
 /**

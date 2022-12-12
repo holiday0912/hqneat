@@ -10,8 +10,12 @@ import { Loading, Message } from "element-ui";
 import Vue from "vue";
 import { baseUrl } from "@/config/setting";
 // import { smSign, smEncryption, smDecrypt, smSignTrue } from '../utils/sm2'; // 需要sm2加密在打开
+
+export const http = axios.create({
+  baseURL: baseUrl
+});
+
 // request 拦截器
-// const baseUrl = process.env.NODE_ENV==='development'?'/api':`${process.env.API_ROOT}/syf-mms/`;
 const options = { text: "拼命加载中", fullscreen: true };
 let loadingRequestCount = 0;
 let loadingInstance;
