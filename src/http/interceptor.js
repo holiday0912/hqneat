@@ -44,16 +44,16 @@ axios.interceptors.request.use(
     // 加签
     // let sign = smSign(config)
     // config.headers.sign = sign
-    if (config.method == "post") {
+    if (config.method === "post") {
       config.params = {};
-    } else if (config.method == "get") {
+    } else if (config.method === "get") {
       // console.log(config)
       // config.params = config.data
     }
     config.url = `${baseUrl}${config.url}`;
     config.headers = {
       "Content-Type": "application/json;charset=UTF-8",
-      Authorization: sessionStorage.getItem("token")
+      token: sessionStorage.getItem("token")
     };
     showLoading();
     return config;
@@ -69,7 +69,7 @@ axios.interceptors.response.use(
     setTimeout(() => {
       hideLoading();
     }, 200);
-    if (response.status == 200) {
+    if (response.status === 200) {
       let res = response.data;
       if (res.code.slice(-5) === "00000") {
         // 验签
@@ -96,11 +96,11 @@ axios.interceptors.response.use(
       hideLoading();
     }, 200);
     if (error && error.response) {
-      if (error.response.status == 500) {
+      if (error.response.status === 500) {
         Message.error("服务器内部错误，请联系管理人员");
-      } else if (error.response.status == 502) {
+      } else if (error.response.status === 502) {
         Message.error("服务器正在更新版本，请稍后重试");
-      } else if (error.response.status == 401) {
+      } else if (error.response.status === 401) {
         Message.error("登录状态失效，请重新登录");
       }
     }

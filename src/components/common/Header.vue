@@ -46,7 +46,7 @@
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item command="changePsw">修改密码</el-dropdown-item>
             <el-dropdown-item command="loginout" divided
-              >退出登录
+            >退出登录
             </el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
@@ -97,7 +97,7 @@
 </template>
 <script>
 import bus from "../common/bus";
-import { resetPasswd } from "@/api/system/sysUser";
+import { loginOut, resetPasswd } from "@/api/system/sysUser";
 
 export default {
   data() {
@@ -166,26 +166,25 @@ export default {
   methods: {
     // 用户名下拉菜单选择事件
     handleCommand(command) {
-      if (command == "loginout") {
-        // this.$confirm("您确定要退出么?", "提示", {
-        //   confirmButtonText: "确定",
-        //   cancelButtonText: "取消",
-        //   type: "warning"
-        // })
-        //   .then(() => {
-        //     loginOut({}).then(res => {
-        //       if (res) {
-        //         sessionStorage.removeItem("ms_username");
-        //         sessionStorage.removeItem("token");
-        //         this.$router.push("/login");
-        //       }
-        //     });
-        //   })
-        //   .catch(error => {
-        //     console.log(error);
-        //   });
-        this.$router.push({ name: "login" });
-      } else if (command == "changePsw") {
+      if (command === "loginout") {
+        this.$confirm("您确定要退出么?", "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        })
+          .then(() => {
+            loginOut({ username: sessionStorage.getItem("user") }).then(res => {
+              if (res) {
+                sessionStorage.removeItem("user");
+                sessionStorage.removeItem("token");
+                this.$router.push("/login");
+              }
+            });
+          })
+          .catch(error => {
+            console.log(error);
+          });
+      } else if (command === "changePsw") {
         this.dialogFormVisible = true;
       }
     },

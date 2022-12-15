@@ -16,7 +16,7 @@
           <div style="display: inline-block">
             <div style="margin-left: 10px; display: inline-block">
               <el-button icon="el-icon-refresh" @click="formRest"
-                >重置
+              >重置
               </el-button>
             </div>
             <div style="margin-left: 10px; display: inline-block">
@@ -24,7 +24,7 @@
                 icon="el-icon-search"
                 type="primary"
                 @click="handleSearch"
-                >查询
+              >查询
               </el-button>
             </div>
           </div>
@@ -32,7 +32,7 @@
       </el-form>
       <div class="handle-box">
         <el-button icon="el-icon-plus" type="primary" @click="handleAdd"
-          >新增
+        >新增
         </el-button>
       </div>
       <el-table
@@ -83,13 +83,13 @@
               icon="el-icon-edit"
               type="text"
               @click="handleEdit(scope.$index, scope.row)"
-              >修改
+            >修改
             </el-button>
             <el-button
               icon="el-icon-delete"
               type="text"
               @click="handleDelete(scope.$index, scope.row)"
-              >删除
+            >删除
             </el-button>
           </template>
         </el-table-column>
@@ -106,6 +106,7 @@
           @size-change="hanleSizeChange"
         ></el-pagination>
       </div>
+
     </div>
     <el-dialog
       v-dialogDrag
@@ -121,100 +122,92 @@
         :model="addItem"
         label-width="150px"
       >
-        <el-row>
-          <el-col :span="24">
-            <el-form-item
-              :rules="[
+
+        <el-form-item
+          :rules="[
                 {
                   required: true,
                   message: '请输入用户名',
                   trigger: 'blur'
                 }
               ]"
-              label="用户名"
-              prop="userName"
-            >
-              <el-input
-                v-model="addItem.userName"
-                clearable
-                placeholder="请输入用户名"
-              />
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="24">
-            <el-form-item
-              :rules="[
-                {
-                  required: true,
-                  message: '请输入手机号',
-                  trigger: 'blur'
-                },
-                {
-                  pattern: /^1[3|5|7|8|9]\d{9}$/,
-                  message: '请输入正确的号码格式',
-                  trigger: 'change'
-                }
-              ]"
-              label="手机号"
-              prop="phone"
-            >
-              <el-input
-                v-model="addItem.phone"
-                clearable
-                placeholder="请输入手机号"
-              />
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="24">
-            <el-form-item
-              :rules="[
-                {
-                  required: true,
-                  message: '请选择需要绑定的角色',
-                  trigger: 'blur'
-                }
-              ]"
-              label="角色"
-              prop="roleIds"
-            >
-              <el-select
-                v-model="addItem.roleIds"
-                clearable
-                filterable
-                multiple
-                placeholder="请选择需要绑定的角色"
-                style="width: 100%"
-              >
-                <el-option
-                  v-for="item in roleList"
-                  :key="item.id"
-                  :label="
-                    item.roleDesc
-                      ? item.roleName + '-' + item.roleDesc
-                      : item.roleName
-                  "
-                  :value="item.id"
-                >
-                </el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="24">
-            <el-form-item label="密码" prop="password">
-              <el-input
-                v-model="addItem.password"
-                clearable
-                placeholder="请输入密码"
-              />
-            </el-form-item>
-          </el-col>
-        </el-row>
+          label="用户名"
+          prop="userName"
+        >
+          <el-input
+            v-model="addItem.userName"
+            clearable
+            placeholder="请输入用户名"
+          />
+        </el-form-item>
+
+        <!--        <el-form-item-->
+        <!--          :rules="[-->
+        <!--                {-->
+        <!--                  required: true,-->
+        <!--                  message: '请输入手机号',-->
+        <!--                  trigger: 'blur'-->
+        <!--                },-->
+        <!--                {-->
+        <!--                  pattern: /^1[3|5|7|8|9]\d{9}$/,-->
+        <!--                  message: '请输入正确的号码格式',-->
+        <!--                  trigger: 'change'-->
+        <!--                }-->
+        <!--              ]"-->
+        <!--          label="手机号"-->
+        <!--          prop="phone"-->
+        <!--        >-->
+        <!--          <el-input-->
+        <!--            v-model="addItem.phone"-->
+        <!--            clearable-->
+        <!--            placeholder="请输入手机号"-->
+        <!--          />-->
+        <!--        </el-form-item>-->
+
+        <!--        <el-form-item-->
+        <!--          :rules="[-->
+        <!--                {-->
+        <!--                  required: true,-->
+        <!--                  message: '请选择需要绑定的角色',-->
+        <!--                  trigger: 'blur'-->
+        <!--                }-->
+        <!--              ]"-->
+        <!--          label="角色"-->
+        <!--          prop="roleIds"-->
+        <!--        >-->
+        <!--          <el-select-->
+        <!--            v-model="addItem.roleIds"-->
+        <!--            clearable-->
+        <!--            filterable-->
+        <!--            multiple-->
+        <!--            placeholder="请选择需要绑定的角色"-->
+        <!--            style="width: 100%"-->
+        <!--          >-->
+        <!--            <el-option-->
+        <!--              v-for="item in roleList"-->
+        <!--              :key="item.id"-->
+        <!--              :label="-->
+        <!--                    item.roleDesc-->
+        <!--                      ? item.roleName + '-' + item.roleDesc-->
+        <!--                      : item.roleName-->
+        <!--                  "-->
+        <!--              :value="item.id"-->
+        <!--            >-->
+        <!--            </el-option>-->
+        <!--          </el-select>-->
+        <!--        </el-form-item>-->
+
+        <el-form-item :rules="[{ required: true, message: '请输入密码' }]" label="密码"
+                      prop="password"
+        >
+          <el-input
+            v-model="addItem.password"
+            clearable
+            placeholder="请输入密码"
+            type="password"
+          />
+        </el-form-item>
+
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogClose">取 消</el-button>
@@ -225,8 +218,8 @@
 </template>
 
 <script>
-import { addUser, editItem, pageList } from "../../api/system/sysUser";
-import { list } from "../../api/system/sysRole";
+import { addUser, editItem, pageList } from "@/api/system/sysUser";
+import { list } from "@/api/system/sysRole";
 
 export default {
   name: "accountManage",
@@ -253,9 +246,6 @@ export default {
       roleList: [] // 角色列表
     };
   },
-  components: {},
-  computed: {},
-  mounted() {},
   methods: {
     // 查询角色列表
     searchRoleList() {
@@ -278,11 +268,6 @@ export default {
           this.pageTotal = res.data.total;
         }
       });
-      // roleListByUserId({userId: 1}).then((res) => {
-      //   if (res) {
-      //     console.log(res)
-      //   }
-      // })
     },
     // 列表查询
     handleSearch() {
@@ -308,7 +293,7 @@ export default {
     handleAdd() {
       this.dialogTitle = "新增账号";
       this.dialogFormVisible = true;
-      this.searchRoleList();
+      // this.searchRoleList();
     },
     // 关闭弹窗
     dialogClose() {
@@ -335,11 +320,14 @@ export default {
               }
             });
           } else {
-            addUser(obj).then(res => {
+            addUser({
+              username: this.addItem.userName,
+              password: this.addItem.password
+            }).then(res => {
               if (res) {
                 this.$message.success("新增成功");
                 this.dialogClose();
-                this.handleSearch();
+                // this.handleSearch();
               }
             });
           }

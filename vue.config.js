@@ -1,9 +1,9 @@
 const path = require("path");
 const Timestamp = new Date().getTime();
 // webpack启用Gzip压缩
-const CompressionPlugin = require("compression-webpack-plugin");
-const productionGzipExtensions = ["js", "css"];
-const isPRD = process.env.NODE_ENV === "production";
+// const CompressionPlugin = require("compression-webpack-plugin");
+// const productionGzipExtensions = ["js", "css"];
+// const isPRD = process.env.NODE_ENV === "production";
 
 module.exports = {
   publicPath: "./",
@@ -68,22 +68,22 @@ module.exports = {
           }
         }
       }
-    },
-    plugins: isPRD
-      ? [
-          // 使用Gzip压缩文件 - https://segmentfault.com/a/1190000012571492
-          // 报错："TypeError: Cannot read property 'tapPromise' of undefined"是compression-webpack-plugin版本问题5.0.1
-          new CompressionPlugin({
-            filename: "[path].gz[query]",
-            algorithm: "gzip",
-            test: new RegExp(
-              "\\.(" + productionGzipExtensions.join("|") + ")$"
-            ),
-            threshold: 10240,
-            minRatio: 0.8,
-            deleteOriginalAssets: true
-          })
-        ]
-      : []
+    }
+    // plugins: isPRD
+    //   ? [
+    //       // 使用Gzip压缩文件 - https://segmentfault.com/a/1190000012571492
+    //       // 报错："TypeError: Cannot read property 'tapPromise' of undefined"是compression-webpack-plugin版本问题5.0.1
+    //       new CompressionPlugin({
+    //         filename: "[path].gz[query]",
+    //         algorithm: "gzip",
+    //         test: new RegExp(
+    //           "\\.(" + productionGzipExtensions.join("|") + ")$"
+    //         ),
+    //         threshold: 10240,
+    //         minRatio: 0.8,
+    //         deleteOriginalAssets: true
+    //       })
+    //     ]
+    //   : []
   }
 };

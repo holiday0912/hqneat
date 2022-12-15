@@ -48,8 +48,8 @@ export default {
   data: function() {
     return {
       param: {
-        username: "qianyucai",
-        password: "123456"
+        username: "",
+        password: ""
       },
       rules: {
         username: [
@@ -63,13 +63,10 @@ export default {
     submitForm() {
       this.$refs.login.validate(valid => {
         if (valid) {
+          sessionStorage.setItem("user", this.param.username);
           login(this.param).then(res => {
             if (res) {
-              // sessionStorage.setItem("token", res.data.token);
-              // sessionStorage.setItem(
-              //   "userLoginContext",
-              //   JSON.stringify(res.data.userLoginContext)
-              // );
+              sessionStorage.setItem("token", res.data.token);
               this.$router.push("/dashboard");
             }
           });

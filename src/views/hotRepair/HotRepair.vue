@@ -130,7 +130,6 @@ export default {
       };
       try {
         let res = await nyHotDepSelectAllInfo(params);
-        // console.log(res);
         if (res.message === "请求成功") {
           this.tableData = res.data.data.map((i) => {
             return {

@@ -12,12 +12,12 @@
       <el-form ref="edit" :model="form" label-width="150px">
         <el-upload
           :action="actions"
+          :file-list="fileList"
           :on-change="handleFileChange"
           :on-error="uploadError"
           :on-success="uploadSuccess"
           class="upload-demo"
           drag
-          multiple
         >
           <i class="el-icon-upload"></i>
           <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
@@ -56,7 +56,8 @@ export default {
         forwardUrl: "",
         imgUrl: ""
       },
-      actions: fileUpload
+      actions: fileUpload,
+      fileList: []
     };
   },
   methods: {
@@ -66,6 +67,7 @@ export default {
     dialogEditClose() {
       this.dialogFormVisible = false;
       this.$refs.edit.resetFields();
+      this.fileList = [];
       this.$emit("refresh");
     },
     carouselEditSubmit() {

@@ -9,14 +9,33 @@
       width="680px"
       @close="dialogEditClose"
     >
-      <el-form ref="edit" :model="form" label-width="150px">
+      <div :class="carousel.wp">
         <img
+          :class="carousel.img"
           :src="imgUrl"
           alt="轮播图"
-          style="margin-bottom: 20px"
-          width="100%"
+          width="40%"
         />
 
+        <el-upload
+          :action="actions"
+          :file-list="fileList"
+          :on-change="handleFileChange"
+          :on-error="uploadError"
+          :on-success="uploadSuccess"
+          class="upload-demo"
+          drag
+          multiple
+        >
+          <i class="el-icon-upload"></i>
+          <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+          <div slot="tip" class="el-upload__tip">
+            只能上传jpg/png文件，且不超过500kb，上传图片将替换当前图片
+          </div>
+        </el-upload>
+      </div>
+
+      <el-form ref="edit" :model="form" label-width="150px">
         <el-form-item
           :rules="[{ required: true, message: '请输入' }]"
           label="导航地址"
@@ -36,6 +55,7 @@
 
 <script>
 import { carouselImgUpdateVersion } from "@/api/carouselManage";
+import { fileUpload } from "@/api/htmlPackage";
 
 export default {
   name: "CarouselEdit",
@@ -45,8 +65,11 @@ export default {
       imgUrl: "",
       form: {
         forwardUrl: "",
-        id: ""
-      }
+        id: "",
+        imgUrl: ""
+      },
+      actions: fileUpload,
+      fileList: []
     };
   },
   methods: {
@@ -59,13 +82,17 @@ export default {
     dialogEditClose() {
       this.dialogFormVisible = false;
       this.$refs.edit.resetFields();
+      this.fileList = [];
       this.$emit("refresh");
     },
     carouselEditSubmit() {
       this.$refs.edit.validate(async valid => {
         if (valid) {
           try {
-            let res = await carouselImgUpdateVersion(this.form);
+            let res = await carouselImgUpdateVersion(this.form.imgUrl ? this.form : {
+              forwardUrl: this.form.forwardUrl,
+              id: this.form.id
+            });
             if (res?.message === "请求成功") {
               this.$message.success("修改成功");
               this.dialogEditClose();
@@ -77,13 +104,37 @@ export default {
           }
         }
       });
+    },
+    handleFileChange(file, fileList) {
+      this.selectFile = Boolean(fileList.length);
+    },
+    uploadError() {
+      this.$message.error(`请重新上传`);
+    },
+    async uploadSuccess({ message, data }) {
+      if (message === "请求成功") {
+        this.form.imgUrl = data;
+      } else {
+        this.$message.error(message);
+      }
     }
   }
 };
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
 .select-group:first-child {
   color: dodgerblue;
+}
+
+/deep/ .el-form-item {
+  margin-bottom: 0;
+}
+</style>
+
+<style module="carousel">
+.wp {
+  display: flex;
+  margin-bottom: 16px;
 }
 </style>

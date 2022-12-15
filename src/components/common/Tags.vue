@@ -2,38 +2,39 @@
   <div id="tabs-bar-container" class="tabs-bar-container">
     <el-tabs
       v-model="tabActive"
-      type="card"
       class="tabs-content"
+      type="card"
       @tab-click="handleTabClick"
       @tab-remove="handleTabRemove"
     >
       <el-tab-pane
         v-for="item in tagsList"
         :key="item.path"
+        :closable="!isAffix(item)"
         :label="item.title"
         :name="item.path"
-        :closable="!isAffix(item)"
         class="el-tabs_nav"
       ></el-tab-pane>
     </el-tabs>
 
     <div class="tags-close-box">
-        <el-dropdown @command="handleTags">
-            <el-button size="mini" type="primary">
-              标签选项<i class="el-icon-arrow-down el-icon--right"></i>
-            </el-button>
-            <el-dropdown-menu size="small" slot="dropdown">
-              <el-dropdown-item command="other">关闭其他</el-dropdown-item>
-              <el-dropdown-item command="all">关闭所有</el-dropdown-item>
-            </el-dropdown-menu>
-        </el-dropdown>
+      <el-dropdown @command="handleTags">
+        <el-button size="mini" type="primary">
+          标签选项<i class="el-icon-arrow-down el-icon--right"></i>
+        </el-button>
+        <el-dropdown-menu slot="dropdown" size="small">
+          <el-dropdown-item command="other">关闭其他</el-dropdown-item>
+          <el-dropdown-item command="all">关闭所有</el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
     </div>
   </div>
 </template>
 
 <script>
 import bus from "./bus";
-import Sortable from "sortablejs"
+import Sortable from "sortablejs";
+
 export default {
   data() {
     return {
@@ -45,11 +46,11 @@ export default {
         }
       ],
       affixtabs: [],
-      tabActive: "",
+      tabActive: ""
     };
   },
-  mounted(){
-    this.rowDrop();   //行拖拽效果
+  mounted() {
+    this.rowDrop(); //行拖拽效果
   },
   methods: {
     isActive(path) {
@@ -63,12 +64,12 @@ export default {
           path: "/dashboard",
           title: "系统首页"
         }
-      ]
-      this.$router.push("/");
+      ];
+      this.$router.push("/dashboard");
     },
     // 关闭其他标签
     closeOther() {
-      const curItem = this.tagsList.filter((item) => {
+      const curItem = this.tagsList.filter(item => {
         return item.path === this.$route.path;
       })[0];
       const tagsList = [
@@ -77,15 +78,15 @@ export default {
           path: "/dashboard",
           title: "系统首页"
         }
-      ]
-      if (this.$route.path !== '/dashboard') {
-        tagsList.push(curItem)
+      ];
+      if (this.$route.path !== "/dashboard") {
+        tagsList.push(curItem);
       }
       this.tagsList = tagsList;
     },
     // 设置标签
     setTags(route) {
-      const isExist = this.tagsList.some((item) => {
+      const isExist = this.tagsList.some(item => {
         return item.path === route.path;
       });
       if (!isExist) {
@@ -95,7 +96,7 @@ export default {
         this.tagsList.push({
           title: route.meta.title,
           path: route.path,
-          name: route.matched[1].components.default.name,
+          name: route.matched[1].components.default.name
         });
       }
       this.tagsList.forEach((item, index) => {
@@ -108,23 +109,25 @@ export default {
     handleTags(command) {
       command === "other" ? this.closeOther() : this.closeAll();
     },
-    handleTabClick(tab){
+    handleTabClick(tab) {
       const route = this.tagsList.filter((item, index) => {
-            if (tab.index == index) return item;
-        })[0];
-        if (this.$route.path !== route.path) {
-            this.$router.push({
-              path: route.path,
-              fullPath: route.fullPath,
-            });
-        } else {
-          return false;
-        }
+        if (tab.index == index) return item;
+      })[0];
+      if (this.$route.path !== route.path) {
+        this.$router.push({
+          path: route.path,
+          fullPath: route.fullPath
+        });
+      } else {
+        return false;
+      }
     },
     handleTabRemove(tabActive) {
-      const indexs = this.tagsList.findIndex((item)=>item.path==tabActive);
+      const indexs = this.tagsList.findIndex(item => item.path == tabActive);
       const delItem = this.tagsList.splice(indexs, 1)[0];
-      const item = this.tagsList[indexs] ? this.tagsList[indexs] : this.tagsList[indexs - 1];
+      const item = this.tagsList[indexs]
+        ? this.tagsList[indexs]
+        : this.tagsList[indexs - 1];
       if (item) {
         delItem.path === this.$route.path && this.$router.push(item.path);
       } else {
@@ -132,34 +135,35 @@ export default {
       }
     },
     isAffix(tag) {
-      return tag.path === '/dashboard';
+      return tag.path === "/dashboard";
     },
     rowDrop() {
-      const el= document.querySelector('.el-tabs__nav');
+      const el = document.querySelector(".el-tabs__nav");
       let _this = this;
       var sortable = new Sortable(el, {
         group: _this.tagsList,
         sort: true,
         animation: 150,
         delay: 10,
-        onEnd({ newIndex, oldIndex }) {                             //oldIIndex拖放前的位置， newIndex拖放后的位置
-          console.log(currRow)
-          const currRow = _this.tagsList.splice(oldIndex, 1)[0];    //鼠标拖拽当前的el-tabs-pane
-          _this.tagsList.splice(newIndex, 0, currRow);  //tableData 是存放所以el-tabs-pane的数组
+        onEnd({ newIndex, oldIndex }) {
+          //oldIIndex拖放前的位置， newIndex拖放后的位置
+          console.log(currRow);
+          const currRow = _this.tagsList.splice(oldIndex, 1)[0]; //鼠标拖拽当前的el-tabs-pane
+          _this.tagsList.splice(newIndex, 0, currRow); //tableData 是存放所以el-tabs-pane的数组
         },
-        direction: 'vertical'
-      })
+        direction: "vertical"
+      });
     }
   },
   computed: {
     showTags() {
       return this.tagsList.length > 0;
-    },
+    }
   },
   watch: {
     $route(newValue, oldValue) {
       this.setTags(newValue);
-    },
+    }
   },
   created() {
     this.setTags(this.$route);
@@ -180,7 +184,7 @@ export default {
         }
       }
     });
-  },
+  }
 };
 </script>
 
@@ -199,6 +203,7 @@ export default {
   background: $base-color-white;
   border-top: 1px solid #f6f6f6;
   box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
+
   ::v-deep {
     .fold-unfold {
       margin-right: $base-padding;
@@ -239,6 +244,7 @@ export default {
       }
     }
   }
+
   .more {
     display: flex;
     align-content: center;
@@ -247,4 +253,3 @@ export default {
   }
 }
 </style>
-

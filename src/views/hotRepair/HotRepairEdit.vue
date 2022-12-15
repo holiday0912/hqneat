@@ -31,6 +31,7 @@
           placeholder="请选择日期"
           style="width: 200px"
           type="date"
+          value-format="yyyy-MM-dd"
         >
         </el-date-picker>
       </el-form-item>
@@ -44,7 +45,6 @@
 </template>
 
 <script>
-import { fileUpload } from "@/api/htmlPackage";
 import { nyHotDepUpdateData } from "@/api/hotRepair";
 
 export default {
@@ -53,15 +53,12 @@ export default {
   data() {
     return {
       dialogFormVisible: false,
-      fileList: [],
       form: {
         pkVersion: "",
         pkName: "",
-        pubTime: ""
-      },
-      actions: fileUpload,
-      isUploading: false,
-      selectFile: false
+        pubTime: "",
+        id: ""
+      }
     };
   },
   methods: {
@@ -70,23 +67,19 @@ export default {
       this.form.pkVersion = val.pkVersion;
       this.form.pkName = val.pkName;
       this.form.pubTime = val.pubTime;
+      this.form.id = val.id;
     },
     dialogEditClose() {
-      if (!this.isUploading) {
-        this.dialogFormVisible = false;
-        this.fileList = [];
-        this.selectFile = false;
-        this.$refs.uploadMessage.resetFields();
-        this.$emit("refresh");
-      } else {
-        this.$message.info("文件正在上传中");
-      }
+      this.dialogFormVisible = false;
+      this.$refs.uploadMessage.resetFields();
+      this.$emit("refresh");
     },
     async dialogEdit() {
       try {
-        let res = await nyHotDepUpdateData({ pubTime: this.form.pubTime });
+        let res = await nyHotDepUpdateData({ pubTime: this.form.pubTime, id: this.form.id });
         if (res.message === "请求成功") {
           this.$message.success("修改成功");
+          this.dialogEditClose();
         } else {
           this.$message.error(res.message);
         }
