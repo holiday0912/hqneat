@@ -10,12 +10,7 @@
       @close="dialogEditClose"
     >
       <div :class="carousel.wp">
-        <img
-          :class="carousel.img"
-          :src="imgUrl"
-          alt="轮播图"
-          width="40%"
-        />
+        <img :class="carousel.img" :src="imgUrl" alt="轮播图" width="40%" />
 
         <el-upload
           :action="actions"
@@ -63,6 +58,7 @@ export default {
     return {
       dialogFormVisible: false,
       imgUrl: "",
+      imgSrc1: "http://192.168.10.240:8989/home/file/fafrghhfreee.jpeg",
       form: {
         forwardUrl: "",
         id: "",
@@ -89,10 +85,14 @@ export default {
       this.$refs.edit.validate(async valid => {
         if (valid) {
           try {
-            let res = await carouselImgUpdateVersion(this.form.imgUrl ? this.form : {
-              forwardUrl: this.form.forwardUrl,
-              id: this.form.id
-            });
+            let res = await carouselImgUpdateVersion(
+              this.form.imgUrl
+                ? this.form
+                : {
+                    forwardUrl: this.form.forwardUrl,
+                    id: this.form.id
+                  }
+            );
             if (res?.message === "请求成功") {
               this.$message.success("修改成功");
               this.dialogEditClose();

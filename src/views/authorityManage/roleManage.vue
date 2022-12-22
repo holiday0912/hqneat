@@ -317,7 +317,9 @@ export default {
   },
   components: {},
   computed: {},
-  mounted() {},
+  mounted() {
+    this.getData();
+  },
   methods: {
     // 表单重置
     formRest() {
@@ -461,7 +463,7 @@ export default {
           } else {
             editItem(this.addItem).then(res => {
               if (res) {
-                this.$message.success("新增成功");
+                this.$message.success("修改成功");
                 this.dialogClose();
                 this.handleSearch();
               }

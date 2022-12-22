@@ -1,16 +1,16 @@
 <template>
   <div>
     <el-table
-      ref="multipleTable"
       :data="tableData"
       border
       class="table"
-      header-cell-class-name="table-header"
+      v-bind="$attrs"
+      v-on="$listeners"
     >
       <el-table-column
         v-for="(item, index) in columns"
         :key="index"
-        v-bind="item"
+        v-bind="{ align: 'center', ...item }"
       >
         <template v-if="item.render" v-slot="scope">
           <slot :name="item.render" :scope="scope"></slot>
@@ -51,8 +51,6 @@ defineProps({
   }
 });
 
-const emits = defineEmits(["getData"]);
-
 const query = reactive({
   pageNum: 1,
   pageSize: 10
@@ -65,16 +63,22 @@ const pgaMethods = {
     query.pageNum = val;
     getData();
   },
-  // 改变页码
+  // 改变每页条数
   handleSizeChange(val) {
     query.pageSize = val;
     getData();
   }
 };
 
+const emits = defineEmits(["getData"]);
+
 const getData = () => {
-  emits("getData");
+  emits("getData", query);
 };
+
+defineExpose({
+  query
+});
 </script>
 
 <script>

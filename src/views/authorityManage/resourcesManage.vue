@@ -47,96 +47,49 @@
           >新增一级菜单
         </el-button>
       </div>
-      <el-table
-        ref="multipleTable"
-        :data="tableData"
-        border
-        class="table"
-        header-cell-class-name="table-header"
+
+      <BaseTable
+        ref="resourceTable"
+        row-key="resourceId"
+        :columns="columns"
+        :pageTotal="pageTotal"
+        :tableData="tableData"
+        :tree-props="{ children: 'children' }"
+        @getData="getData"
       >
-        <el-table-column align="center" label="序号" width="55">
-          <template slot-scope="scope">
+        <template #ordinal="{scope}">
+          <div>
             {{ scope.$index + 1 }}
-          </template>
-        </el-table-column>
-        <el-table-column
-          align="center"
-          label="资源ID"
-          prop="id"
-        ></el-table-column>
-        <el-table-column align="center" label="父资源ID" prop="parentId">
-          <template slot-scope="scope"
-            >{{ scope.row.parentId !== 0 ? scope.row.parentResourceName : "-" }}
-          </template>
-        </el-table-column>
-        <el-table-column
-          align="center"
-          label="父资源名称"
-          prop="parentResourceName"
-        >
-          <template slot-scope="scope"
-            >{{
-              scope.row.parentResourceName ? scope.row.parentResourceName : "-"
-            }}
-          </template>
-        </el-table-column>
-        <el-table-column
-          align="center"
-          label="资源名称"
-          prop="resourceName"
-        ></el-table-column>
-        <el-table-column align="center" label="前端路由" prop="router">
-          <template slot-scope="scope"
-            >{{ scope.row.router ? scope.row.router : "-" }}
-          </template>
-        </el-table-column>
-        <el-table-column align="center" label="资源类型" prop="type">
-          <template slot-scope="scope"
-            >{{ scope.row.type ? "菜单" : "按钮" }}
-          </template>
-        </el-table-column>
-        <el-table-column
-          align="center"
-          label="资源描述"
-          prop="resourceDesc"
-        ></el-table-column>
-        <el-table-column align="center" label="操作" width="220">
-          <template slot-scope="scope">
-            <el-button
-              v-if="scope.row.type"
-              icon="el-icon-document"
-              type="text"
-              @click="handleAddChild(scope.$index, scope.row)"
-              >新增子资源
-            </el-button>
-            <el-button
-              icon="el-icon-edit"
-              type="text"
-              @click="handleEdit(scope.$index, scope.row)"
-              >修改
-            </el-button>
-            <el-button
-              icon="el-icon-delete"
-              type="text"
-              @click="handleDelete(scope.$index, scope.row)"
-              >删除
-            </el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-      <div class="pagination">
-        <el-pagination
-          :current-page="query.pageNum"
-          :page-size="query.pageSize"
-          :page-sizes="[10, 20, 30, 40, 50]"
-          :total="pageTotal"
-          background
-          layout="sizes, total, prev, pager, next"
-          @current-change="handlePageChange"
-          @size-change="hanleSizeChange"
-        ></el-pagination>
-      </div>
+          </div>
+        </template>
+
+        <template #operation="{ scope }">
+          <el-button
+            v-if="scope.row.type"
+            icon="el-icon-document"
+            type="text"
+            @click="handleAddChild(scope.$index, scope.row)"
+            >新增子资源
+          </el-button>
+
+          <el-button
+            icon="el-icon-edit"
+            type="text"
+            @click="handleEdit(scope.$index, scope.row)"
+            >修改
+          </el-button>
+
+          <el-button
+            slot="reference"
+            icon="el-icon-delete"
+            type="text"
+            @click="handleDelete(scope.$index, scope.row)"
+            >删除
+          </el-button>
+        </template>
+      </BaseTable>
     </div>
+
     <el-dialog
       v-dialogDrag
       :close-on-click-modal="false"
@@ -155,6 +108,27 @@
           <el-col :span="24">
             <el-form-item label="父资源名称">
               <el-input v-model="resourceNameF" disabled />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="24">
+            <el-form-item
+              :rules="[
+                {
+                  required: false,
+                  message: '请输入资源id',
+                  trigger: 'blur'
+                }
+              ]"
+              label="资源id"
+              prop="resourceId"
+            >
+              <el-input
+                v-model="addItem.resourceId"
+                clearable
+                placeholder="请输入资源id"
+              />
             </el-form-item>
           </el-col>
         </el-row>
@@ -201,7 +175,7 @@
                 <el-option
                   v-for="(item, index) in typeList"
                   :key="index"
-                  :label="item.code + '-' + item.name"
+                  :label="item.name"
                   :value="item.code"
                 ></el-option>
               </el-select>
@@ -256,36 +230,23 @@ import {
   deleteBatch,
   editItem,
   pageList
-} from "../../api/system/sysResource";
+} from "@/api/system/sysResource";
 
 export default {
   name: "accountManage",
   data() {
     return {
-      query: {
-        pageNum: 1,
-        pageSize: 10
-      },
       searchForm: {
         resourceName: "", // 资源名称
         type: "" // 资源类型
       },
-      typeList: [
-        {
-          code: false,
-          name: "按钮"
-        },
-        {
-          code: true,
-          name: "菜单"
-        }
-      ],
       tableData: [],
       pageTotal: 0,
       dialogFormVisible: false,
       dialogTitle: "",
       addItem: {
         handlerUrl: "", // 资源对应接口地址
+        id: "",
         router: "", // 菜单对应的前端路由
         parentId: 0,
         resourceDesc: "",
@@ -296,42 +257,93 @@ export default {
       resourceNameF: "" // 父资源名称
     };
   },
-  components: {},
-  computed: {},
-  mounted() {},
+  computed: {
+    typeList() {
+      return [
+        {
+          code: false,
+          name: "按钮"
+        },
+        {
+          code: true,
+          name: "菜单"
+        }
+      ];
+    },
+    columns() {
+      return [
+        {
+          label: "序号",
+          width: "55",
+          render: "ordinal"
+        },
+        {
+          label: "资源ID",
+          prop: "resourceId"
+        },
+        {
+          label: "父资源ID",
+          prop: "parentId"
+        },
+        // {
+        //   label: "父资源名称",
+        //   prop: "parentResourceName"
+        // },
+        {
+          label: "资源名称",
+          prop: "resourceName"
+        },
+        {
+          label: "前端路由",
+          prop: "router"
+        },
+        {
+          label: "资源类型",
+          prop: "type"
+        },
+        {
+          label: "资源描述",
+          prop: "resourceDesc"
+        },
+        {
+          label: "操作",
+          render: "operation",
+          width: 220
+        }
+      ];
+    }
+  },
+  mounted() {
+    this.getData();
+  },
   methods: {
     // 表单重置
     formRest() {
       this.$refs.searchRorm.resetFields();
     },
-    getData() {
-      let obj = Object.assign(this.query, this.searchForm);
+    getData(query = { pageNum: 1, pageSize: 10 }) {
+      let obj = { ...query, ...this.searchForm };
       pageList(obj).then(res => {
         if (res) {
-          this.tableData = res.data.list;
+          this.tableData = res.data.list.map(i => {
+            let temp = {
+              ...i,
+              type: i.type ? "菜单" : "按钮",
+              router: i.router ?? this.$nodata,
+              resourceName: i.resourceName ?? this.$nodata,
+              parentResourceName: i.parentResourceName ?? this.$nodata,
+              parentId: i.parentId ?? this.$nodata,
+              resourceId: i.resourceId ?? this.$nodata,
+              resourceDesc: i.resourceDesc ?? this.$nodata
+            };
+            return temp;
+          });
           this.pageTotal = res.data.total;
         }
       });
     },
-    // 列表查询
     handleSearch() {
-      this.query = {
-        pageNum: 1,
-        pageSize: 10
-      };
-      this.getData();
-    },
-    // 分页导航
-    handlePageChange(val) {
-      this.$set(this.query, "pageNum", val);
-      this.getData();
-    },
-    // 改变页码
-    hanleSizeChange(val) {
-      this.$set(this.query, "pageSize", val);
-      if (this.tableData.length > 0) {
-        this.getData();
-      }
+      this.getData(this.$refs.resourceTable.query);
     },
     // 新增资源
     handleAdd() {
@@ -359,11 +371,11 @@ export default {
         type: "warning"
       })
         .then(() => {
-          let arr = [row.id];
+          let arr = [row.resourceId];
           deleteBatch(arr).then(res => {
             if (res) {
               this.$message.success("删除成功");
-              this.getData();
+              this.handleSearch();
             }
           });
         })
@@ -374,7 +386,7 @@ export default {
     // 增加子资源
     handleAddChild(index, row) {
       this.dialogTitle = "新增子资源";
-      this.addItem.parentId = row.id;
+      this.addItem.parentId = row.resourceId;
       this.resourceNameF = row.resourceName;
       this.dialogFormVisible = true;
     },
@@ -382,6 +394,11 @@ export default {
     handleEdit(index, row) {
       this.dialogTitle = "修改资源";
       this.addItem = JSON.parse(JSON.stringify(row));
+      if(row.type === "菜单") {
+        this.addItem.type = true
+      } else if(row.type === "按钮") {
+        this.addItem.type = false
+      }
       this.resourceNameF = row.resourceName;
       this.dialogFormVisible = true;
     },

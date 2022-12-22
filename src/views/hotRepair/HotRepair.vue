@@ -19,10 +19,10 @@
               icon="el-icon-search"
               type="primary"
               @click="handleSearch"
-            >查询
+              >查询
             </el-button>
             <el-button icon="el-icon-plus" type="primary" @click="handleAdd"
-            >文件上传
+              >文件上传
             </el-button>
           </div>
         </el-col>
@@ -46,15 +46,14 @@
             @confirm="handleDelete(scope.row)"
           >
             <el-button slot="reference" icon="el-icon-delete" type="text"
-            >删除
+              >删除
             </el-button>
           </el-popconfirm>
           <el-button
-            slot="reference"
             icon="el-icon-edit"
             type="text"
             @click="handleEdit(scope.row)"
-          >修改
+            >修改
           </el-button>
         </template>
       </BaseTable>
@@ -80,46 +79,45 @@ export default {
     return {
       searchForm: {
         pkVersion: ""
-      }, tableData: [],
-      pageTotal: 0,
-      columns: [
+      },
+      tableData: [],
+      pageTotal: 0
+    };
+  },
+  mounted() {
+    this.getData();
+  },
+  computed: {
+    columns() {
+      return [
         {
-          align: "center",
           label: "序号",
           width: "55",
           render: "ordinal"
         },
         {
-          align: "center",
           label: "包版本号",
           prop: "pkVersion"
         },
         {
-          align: "center",
           label: "包名字",
           prop: "pkName"
         },
         {
-          align: "center",
           label: "上传时间",
           prop: "createTime"
         },
         {
-          align: "center",
           label: "发布时间",
           prop: "pubTime"
         },
         {
-          align: "center",
           label: "操作",
           render: "operation",
           width: 150
         }
-      ]
-    };
-  },
-  mounted() {
-    this.getData();
+      ];
+    }
   },
   methods: {
     async getData(query = { pageNum: 1, pageSize: 10 }) {
@@ -131,7 +129,7 @@ export default {
       try {
         let res = await nyHotDepSelectAllInfo(params);
         if (res.message === "请求成功") {
-          this.tableData = res.data.data.map((i) => {
+          this.tableData = res.data.data.map(i => {
             return {
               ...i,
               createTime: this.$dayjs(i.createTime),

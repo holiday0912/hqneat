@@ -9,9 +9,9 @@
         class="ms-content"
         label-width="0"
       >
-        <el-form-item prop="username">
+        <el-form-item prop="userName">
           <el-input
-            v-model="param.username"
+            v-model="param.userName"
             clearable
             placeholder="请输入账号"
             @focus="onfocus($event)"
@@ -48,11 +48,11 @@ export default {
   data: function() {
     return {
       param: {
-        username: "",
+        userName: "",
         password: ""
       },
       rules: {
-        username: [
+        userName: [
           { required: true, message: "请输入用户名", trigger: "blur" }
         ],
         password: [{ required: true, message: "请输入密码", trigger: "blur" }]
@@ -63,10 +63,28 @@ export default {
     submitForm() {
       this.$refs.login.validate(valid => {
         if (valid) {
-          sessionStorage.setItem("user", this.param.username);
+          sessionStorage.setItem("user", this.param.userName);
           login(this.param).then(res => {
             if (res) {
-              sessionStorage.setItem("token", res.data.token);
+              sessionStorage.setItem("tk", res.data.token);
+              const temp = res.data.userLoginContext.resources.map(i=>{
+                const inner = {
+                  icon: i.icon,
+                  router: i.router,
+                  resourceName: i.resourceName
+                }
+                if(i.resources !== null && i.resources?.length !== 0) {
+                  inner.resources = i.resources.map(o=>{
+                    return {
+                      icon: o.icon,
+                      router: o.router,
+                      resourceName: o.resourceName
+                    }
+                  })
+                }
+                return inner
+              })
+              sessionStorage.setItem('userLoginContext', JSON.stringify(temp))
               this.$router.push("/dashboard");
             }
           });

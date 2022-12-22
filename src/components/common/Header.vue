@@ -46,7 +46,7 @@
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item command="changePsw">修改密码</el-dropdown-item>
             <el-dropdown-item command="loginout" divided
-            >退出登录
+              >退出登录
             </el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
@@ -159,8 +159,8 @@ export default {
   },
   computed: {
     username() {
-      let username = sessionStorage.getItem("ms_username");
-      return username ? username : this.name;
+      let username = sessionStorage.getItem("user");
+      return username ?? this.name;
     }
   },
   methods: {
@@ -173,10 +173,10 @@ export default {
           type: "warning"
         })
           .then(() => {
-            loginOut({ username: sessionStorage.getItem("user") }).then(res => {
+            loginOut({ userName: sessionStorage.getItem("user") }).then(res => {
               if (res) {
                 sessionStorage.removeItem("user");
-                sessionStorage.removeItem("token");
+                sessionStorage.removeItem("tk");
                 this.$router.push("/login");
               }
             });
@@ -226,7 +226,8 @@ export default {
         if (valid) {
           let obj = {
             oldPassword: this.form.oldPsw,
-            newPassword: this.form.psw
+            newPassword: this.form.psw,
+            userName: sessionStorage.getItem('user')
           };
           resetPasswd(obj).then(res => {
             if (res) {

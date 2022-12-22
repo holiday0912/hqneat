@@ -16,7 +16,7 @@
           <div style="display: inline-block">
             <div style="margin-left: 10px; display: inline-block">
               <el-button icon="el-icon-refresh" @click="formRest"
-              >重置
+                >重置
               </el-button>
             </div>
             <div style="margin-left: 10px; display: inline-block">
@@ -24,7 +24,7 @@
                 icon="el-icon-search"
                 type="primary"
                 @click="handleSearch"
-              >查询
+                >查询
               </el-button>
             </div>
           </div>
@@ -32,7 +32,7 @@
       </el-form>
       <div class="handle-box">
         <el-button icon="el-icon-plus" type="primary" @click="handleAdd"
-        >新增
+          >新增
         </el-button>
       </div>
       <el-table
@@ -82,15 +82,17 @@
             <el-button
               icon="el-icon-edit"
               type="text"
-              @click="handleEdit(scope.$index, scope.row)"
-            >修改
+              @click="handleEdit(scope.row)"
+              >修改
             </el-button>
-            <el-button
-              icon="el-icon-delete"
-              type="text"
-              @click="handleDelete(scope.$index, scope.row)"
-            >删除
-            </el-button>
+            <el-popconfirm
+              title="确定删除吗？"
+              @confirm="handleDelete(scope.row)"
+            >
+              <el-button slot="reference" icon="el-icon-delete" type="text"
+                >删除
+              </el-button>
+            </el-popconfirm>
           </template>
         </el-table-column>
       </el-table>
@@ -106,8 +108,8 @@
           @size-change="hanleSizeChange"
         ></el-pagination>
       </div>
-
     </div>
+
     <el-dialog
       v-dialogDrag
       :close-on-click-modal="false"
@@ -122,15 +124,14 @@
         :model="addItem"
         label-width="150px"
       >
-
         <el-form-item
           :rules="[
-                {
-                  required: true,
-                  message: '请输入用户名',
-                  trigger: 'blur'
-                }
-              ]"
+            {
+              required: true,
+              message: '请输入用户名',
+              trigger: 'blur',
+            },
+          ]"
           label="用户名"
           prop="userName"
         >
@@ -141,64 +142,64 @@
           />
         </el-form-item>
 
-        <!--        <el-form-item-->
-        <!--          :rules="[-->
-        <!--                {-->
-        <!--                  required: true,-->
-        <!--                  message: '请输入手机号',-->
-        <!--                  trigger: 'blur'-->
-        <!--                },-->
-        <!--                {-->
-        <!--                  pattern: /^1[3|5|7|8|9]\d{9}$/,-->
-        <!--                  message: '请输入正确的号码格式',-->
-        <!--                  trigger: 'change'-->
-        <!--                }-->
-        <!--              ]"-->
-        <!--          label="手机号"-->
-        <!--          prop="phone"-->
-        <!--        >-->
-        <!--          <el-input-->
-        <!--            v-model="addItem.phone"-->
-        <!--            clearable-->
-        <!--            placeholder="请输入手机号"-->
-        <!--          />-->
-        <!--        </el-form-item>-->
+        <el-form-item
+          :rules="[
+            {
+              required: true,
+              message: '请输入手机号',
+              trigger: 'blur',
+            },
+            {
+              pattern: /^1[3|5|7|8|9]\d{9}$/,
+              message: '请输入正确的号码格式',
+              trigger: 'change',
+            },
+          ]"
+          label="手机号"
+          prop="phone"
+        >
+          <el-input
+            v-model="addItem.phone"
+            :maxlength="11"
+            clearable
+            placeholder="请输入手机号"
+          />
+        </el-form-item>
 
-        <!--        <el-form-item-->
-        <!--          :rules="[-->
-        <!--                {-->
-        <!--                  required: true,-->
-        <!--                  message: '请选择需要绑定的角色',-->
-        <!--                  trigger: 'blur'-->
-        <!--                }-->
-        <!--              ]"-->
-        <!--          label="角色"-->
-        <!--          prop="roleIds"-->
-        <!--        >-->
-        <!--          <el-select-->
-        <!--            v-model="addItem.roleIds"-->
-        <!--            clearable-->
-        <!--            filterable-->
-        <!--            multiple-->
-        <!--            placeholder="请选择需要绑定的角色"-->
-        <!--            style="width: 100%"-->
-        <!--          >-->
-        <!--            <el-option-->
-        <!--              v-for="item in roleList"-->
-        <!--              :key="item.id"-->
-        <!--              :label="-->
-        <!--                    item.roleDesc-->
-        <!--                      ? item.roleName + '-' + item.roleDesc-->
-        <!--                      : item.roleName-->
-        <!--                  "-->
-        <!--              :value="item.id"-->
-        <!--            >-->
-        <!--            </el-option>-->
-        <!--          </el-select>-->
-        <!--        </el-form-item>-->
+        <el-form-item
+          :rules="[
+            {
+              required: true,
+              message: '请选择需要绑定的角色',
+              trigger: 'blur',
+            },
+          ]"
+          label="角色"
+          prop="roleIds"
+        >
+          <el-select
+            v-model="addItem.roleIds"
+            clearable
+            filterable
+            multiple
+            placeholder="请选择需要绑定的角色"
+            style="width: 100%"
+          >
+            <el-option
+              v-for="item in roleList"
+              :key="item.id"
+              :label="item.roleName"
+              :value="item.id"
+            >
+            </el-option>
+          </el-select>
+        </el-form-item>
 
-        <el-form-item :rules="[{ required: true, message: '请输入密码' }]" label="密码"
-                      prop="password"
+        <el-form-item
+          v-if="dialogTitle === '新增账号'"
+          :rules="[{ required: true, message: '请输入密码' }]"
+          label="密码"
+          prop="password"
         >
           <el-input
             v-model="addItem.password"
@@ -207,7 +208,6 @@
             type="password"
           />
         </el-form-item>
-
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogClose">取 消</el-button>
@@ -218,122 +218,162 @@
 </template>
 
 <script>
-import { addUser, editItem, pageList } from "@/api/system/sysUser";
-import { list } from "@/api/system/sysRole";
+import {
+  addUser,
+  deleteUser,
+  editItem,
+  pageList,
+  updateUserRoleById,
+} from '@/api/system/sysUser'
+import { list } from '@/api/system/sysRole'
 
 export default {
-  name: "accountManage",
+  name: 'accountManage',
   data() {
     return {
       query: {
         pageNum: 1,
-        pageSize: 10
+        pageSize: 10,
       },
       searchForm: {
-        userName: "", // 用户名
-        phone: "" // 手机号
+        userName: '', // 用户名
+        phone: '', // 手机号
       },
       tableData: [],
       pageTotal: 0,
-      dialogTitle: "",
+      dialogTitle: '',
       dialogFormVisible: false,
       addItem: {
-        password: "", // 登入密码
-        phone: "", // 手机号
-        roleIds: "", // 角色id
-        userName: "" // 用户名
+        password: '', // 登入密码
+        phone: '', // 手机号
+        roleIds: '', // 角色id
+        userName: '', // 用户名
+        id: '',
       },
-      roleList: [] // 角色列表
-    };
+      roleList: [], // 角色列表
+    }
+  },
+  created() {
+    this.getData()
+    this.searchRoleList()
   },
   methods: {
     // 查询角色列表
     searchRoleList() {
-      list({}).then(res => {
+      list({}).then((res) => {
         if (res) {
-          console.log(res);
-          this.roleList = res.data;
+          this.roleList = res.data
         }
-      });
+      })
     },
     // 表单重置
     formRest() {
-      this.$refs.searchRorm.resetFields();
+      this.$refs.searchRorm.resetFields()
     },
     getData() {
-      let obj = Object.assign(this.query, this.searchForm);
-      pageList(obj).then(res => {
+      let obj = Object.assign(this.query, this.searchForm)
+      pageList(obj).then((res) => {
         if (res) {
-          this.tableData = res.data.list;
-          this.pageTotal = res.data.total;
+          this.tableData = res.data.list
+          this.pageTotal = res.data.total
         }
-      });
+      })
     },
     // 列表查询
     handleSearch() {
       this.query = {
         pageNum: 1,
-        pageSize: 10
-      };
-      this.getData();
+        pageSize: 10,
+      }
+      this.getData()
     },
     // 分页导航
     handlePageChange(val) {
-      this.$set(this.query, "pageNum", val);
-      this.getData();
+      this.$set(this.query, 'pageNum', val)
+      this.getData()
     },
     // 改变页码
     hanleSizeChange(val) {
-      this.$set(this.query, "pageSize", val);
+      this.$set(this.query, 'pageSize', val)
       if (this.tableData.length > 0) {
-        this.getData();
+        this.getData()
       }
     },
     // 新增
     handleAdd() {
-      this.dialogTitle = "新增账号";
-      this.dialogFormVisible = true;
+      this.dialogTitle = '新增账号'
+      this.dialogFormVisible = true
       // this.searchRoleList();
+    },
+    // 编辑账号
+    handleEdit({ phone, roleNames, userName, id }) {
+      this.dialogTitle = '修改账号'
+      this.addItem.phone = phone
+      this.addItem.roleIds = roleNames.split(',').map(i=>{
+        return this.roleList.find(inner => inner.roleName === i).id
+      })
+      this.addItem.userName = userName
+      this.addItem.id = id
+      this.dialogFormVisible = true
+    },
+    // 删除账号
+    async handleDelete({ id }) {
+      try {
+        let res = await deleteUser({ id })
+        if (res?.code.slice(-5) === '00000') {
+          this.$message.success('删除成功')
+          this.handleSearch()
+        } else {
+          this.$message.error('请稍后重试')
+        }
+      } catch (e) {
+        throw new Error(e)
+      }
     },
     // 关闭弹窗
     dialogClose() {
-      this.dialogFormVisible = false;
+      this.dialogFormVisible = false
       this.addItem = {
-        password: "", // 登入密码
-        phone: "", // 手机号
-        roleIds: "", // 角色id
-        userName: "" // 用户名
-      };
+        password: '', // 登入密码
+        phone: '', // 手机号
+        roleIds: '', // 角色id
+        userName: '', // 用户名
+      }
     },
     // 新增资源提交
     handleComfire() {
-      this.$refs.add.validate(valid => {
+      this.$refs.add.validate(async (valid) => {
         if (valid) {
-          let obj = JSON.parse(JSON.stringify(this.addItem));
-          obj.roleIds = obj.roleIds.length > 0 ? obj.roleIds.join(",") : "";
-          if (this.dialogTitle === "修改账号") {
-            editItem(obj).then(res => {
-              if (res) {
-                this.$message.success("修改成功");
-                this.dialogClose();
-                this.handleSearch();
+          let obj = JSON.parse(JSON.stringify(this.addItem))
+          obj.roleIds = obj.roleIds.length > 0 ? obj.roleIds.join(',') : ''
+          if (this.dialogTitle === '修改账号') {
+            delete obj.password
+            try {
+              let res = await Promise.allSettled([
+                editItem(obj),
+                updateUserRoleById({ userId: obj.id, roleIds: obj.roleIds }),
+              ])
+              if (res.every((i) => i.status === 'fulfilled')) {
+                this.$message.success('修改成功')
+                this.dialogClose()
+                this.handleSearch()
               }
-            });
+            } catch (error) {
+              throw new Error(error)
+            }
           } else {
-            addUser({
-              username: this.addItem.userName,
-              password: this.addItem.password
-            }).then(res => {
+            delete obj.id
+            addUser(obj).then((res) => {
               if (res) {
-                this.$message.success("新增成功");
-                this.dialogClose();
-                // this.handleSearch();
+                this.$message.success('新增成功')
+                this.dialogClose()
+                this.handleSearch()
               }
-            });
+            })
           }
         }
-      });
-    }
-  }
-};
+      })
+    },
+  },
+}
 </script>

@@ -46,7 +46,7 @@ NProgress.configure({
 //使用钩子函数对路由进行权限跳转。
 router.beforeEach((to, from, next) => {
   NProgress.start();
-  const role = sessionStorage.getItem("token");
+  const role = sessionStorage.getItem("tk");
   if (!role && to.name !== "login") next({ name: "login" });
   else next();
 });
