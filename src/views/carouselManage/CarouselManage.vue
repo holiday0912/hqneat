@@ -2,22 +2,8 @@
   <div class="container">
     <div class="handle-box">
       <el-row>
-        <!--        <el-form ref="searchRorm" :model="searchForm" label-width="120px">-->
-        <!--          <el-col :span="6">-->
-        <!--            <el-form-item label="描述" prop="descr">-->
-        <!--              <el-input v-model="searchForm.descr"></el-input>-->
-        <!--            </el-form-item>-->
-        <!--          </el-col>-->
-        <!--        </el-form>-->
         <el-col :span="8" style="margin-left: 20px">
           <div class="handle-box">
-            <!--            <el-button icon="el-icon-refresh" @click="formRest">重置</el-button>-->
-            <!--            <el-button-->
-            <!--              icon="el-icon-search"-->
-            <!--              type="primary"-->
-            <!--              @click="handleSearch"-->
-            <!--              >查询-->
-            <!--            </el-button>-->
             <el-button icon="el-icon-plus" type="primary" @click="handleAdd"
               >新增
             </el-button>
@@ -41,7 +27,12 @@
         <!--图片地址-->
         <el-table-column align="center" label="图片地址" prop="imgUrl">
           <template v-slot="scope">
-            <img :src="`${scope.row.imgUrl}`" alt="" width="350px" />
+            <el-image 
+              style="width: 350px;"
+              :src="scope.row.imgUrl" 
+              :preview-src-list="[scope.row.imgUrl]"
+              lazy
+            />
           </template>
         </el-table-column>
 
@@ -115,13 +106,6 @@ export default {
       try {
         let res = await carouselImgList({ ...query, ...this.searchForm });
         if (res.message === "请求成功") {
-          // this.tableData = res.data.list.map(i => {
-          //   return {
-          //     ...i,
-          //     createTime: this.$dayjs(i.createTime),
-          //     updateTime: this.$dayjs(i.updateTime)
-          //   };
-          // });
           this.tableData = res.data.list;
           this.pageTotal = res.data.total;
         } else {
@@ -131,9 +115,6 @@ export default {
         throw new Error(e);
       }
     },
-    // formRest() {
-    //   this.$refs.searchRorm.resetFields();
-    // },
     // 列表查询
     handleSearch() {
       this.query = {

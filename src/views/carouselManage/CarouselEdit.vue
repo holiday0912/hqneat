@@ -10,7 +10,11 @@
       @close="dialogEditClose"
     >
       <div :class="carousel.wp">
-        <img :class="carousel.img" :src="imgUrl" alt="轮播图" width="40%" />
+        <el-image 
+          style="width: 40%;"
+          :src="imgUrl" 
+          :preview-src-list="[imgUrl]">
+        </el-image>
 
         <el-upload
           :action="actions"
@@ -18,7 +22,6 @@
           :on-change="handleFileChange"
           :on-error="uploadError"
           :on-success="uploadSuccess"
-          class="upload-demo"
           drag
           multiple
         >
@@ -58,7 +61,6 @@ export default {
     return {
       dialogFormVisible: false,
       imgUrl: "",
-      imgSrc1: "http://192.168.10.240:8989/home/file/fafrghhfreee.jpeg",
       form: {
         forwardUrl: "",
         id: "",
@@ -113,6 +115,7 @@ export default {
     },
     async uploadSuccess({ message, data }) {
       if (message === "请求成功") {
+        this.imgUrl = 'http://192.168.10.240:8989' + data
         this.form.imgUrl = data;
       } else {
         this.$message.error(message);
@@ -127,7 +130,7 @@ export default {
   color: dodgerblue;
 }
 
-/deep/ .el-form-item {
+.el-form-item {
   margin-bottom: 0;
 }
 </style>

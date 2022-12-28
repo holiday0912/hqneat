@@ -4,7 +4,7 @@ const baseUrl = "/sysResource";
 
 // 资源列表查询
 export const pageList = query => {
-  return post(baseUrl + "/pageList", query);
+  return post(baseUrl + "/pageListTree", query);
 };
 
 // 新增资源

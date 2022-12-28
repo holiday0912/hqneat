@@ -54,13 +54,11 @@
         :columns="columns"
         :pageTotal="pageTotal"
         :tableData="tableData"
-        :tree-props="{ children: 'children' }"
+        :tree-props="{ children: 'resources' }"
         @getData="getData"
       >
         <template #ordinal="{scope}">
-          <div>
             {{ scope.$index + 1 }}
-          </div>
         </template>
 
         <template #operation="{ scope }">
@@ -118,8 +116,8 @@
                 {
                   required: false,
                   message: '请输入资源id',
-                  trigger: 'blur'
-                }
+                  trigger: 'blur',
+                },
               ]"
               label="资源id"
               prop="resourceId"
@@ -139,8 +137,8 @@
                 {
                   required: true,
                   message: '请输入资源名称',
-                  trigger: 'blur'
-                }
+                  trigger: 'blur',
+                },
               ]"
               label="资源名称"
               prop="resourceName"
@@ -160,8 +158,8 @@
                 {
                   required: true,
                   message: '请选择资源类型',
-                  trigger: 'change'
-                }
+                  trigger: 'change',
+                },
               ]"
               label="资源类型"
               prop="type"
@@ -189,6 +187,17 @@
                 v-model="addItem.router"
                 clearable
                 placeholder="请输入菜单路由地址"
+              />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="24">
+            <el-form-item label="菜单图标" prop="icon">
+              <el-input
+                v-model="addItem.icon"
+                clearable
+                placeholder="请输入菜单图标代码"
               />
             </el-form-item>
           </el-col>
@@ -229,174 +238,199 @@ import {
   addItem,
   deleteBatch,
   editItem,
-  pageList
-} from "@/api/system/sysResource";
+  pageList,
+} from '@/api/system/sysResource'
 
 export default {
-  name: "accountManage",
+  name: 'accountManage',
   data() {
     return {
       searchForm: {
-        resourceName: "", // 资源名称
-        type: "" // 资源类型
+        resourceName: '', // 资源名称
+        type: '', // 资源类型
       },
       tableData: [],
       pageTotal: 0,
       dialogFormVisible: false,
-      dialogTitle: "",
+      dialogTitle: '',
       addItem: {
-        handlerUrl: "", // 资源对应接口地址
-        id: "",
-        router: "", // 菜单对应的前端路由
+        handlerUrl: '', // 资源对应接口地址
+        id: '',
+        router: '', // 菜单对应的前端路由
         parentId: 0,
-        resourceDesc: "",
-        resourceIdentifi: "", // 资源标识
-        resourceName: "", // 资源名称
-        type: true // 资源类型 false - 按钮 true - 菜单
+        icon: '',
+        resourceDesc: '',
+        resourceIdentifi: '', // 资源标识
+        resourceName: '', // 资源名称
+        type: true, // 资源类型 false - 按钮 true - 菜单
       },
-      resourceNameF: "" // 父资源名称
-    };
+      resourceNameF: '', // 父资源名称
+    }
   },
   computed: {
     typeList() {
       return [
         {
           code: false,
-          name: "按钮"
+          name: '按钮',
         },
         {
           code: true,
-          name: "菜单"
-        }
-      ];
+          name: '菜单',
+        },
+      ]
     },
     columns() {
       return [
         {
-          label: "序号",
-          width: "55",
-          render: "ordinal"
+          label: '序号',
+          width: '55',
+          render: 'ordinal',
         },
         {
-          label: "资源ID",
-          prop: "resourceId"
+          label: '资源ID',
+          prop: 'resourceId',
         },
         {
-          label: "父资源ID",
-          prop: "parentId"
+          label: '父资源ID',
+          prop: 'parentId',
         },
         // {
         //   label: "父资源名称",
         //   prop: "parentResourceName"
         // },
         {
-          label: "资源名称",
-          prop: "resourceName"
+          label: '资源名称',
+          prop: 'resourceName',
         },
         {
-          label: "前端路由",
-          prop: "router"
+          label: '前端路由',
+          prop: 'router',
         },
         {
-          label: "资源类型",
-          prop: "type"
+          label: '资源类型',
+          prop: 'type',
         },
         {
-          label: "资源描述",
-          prop: "resourceDesc"
+          label: '图标',
+          prop: 'icon',
         },
         {
-          label: "操作",
-          render: "operation",
-          width: 220
-        }
-      ];
-    }
+          label: '资源描述',
+          prop: 'resourceDesc',
+        },
+        {
+          label: '操作',
+          render: 'operation',
+          width: 220,
+        },
+      ]
+    },
   },
   mounted() {
-    this.getData();
+    this.getData()
   },
   methods: {
     // 表单重置
     formRest() {
-      this.$refs.searchRorm.resetFields();
+      this.$refs.searchRorm.resetFields()
     },
     getData(query = { pageNum: 1, pageSize: 10 }) {
-      let obj = { ...query, ...this.searchForm };
-      pageList(obj).then(res => {
+      let obj = { ...query, ...this.searchForm }
+      pageList(obj).then((res) => {
         if (res) {
-          this.tableData = res.data.list.map(i => {
+          this.tableData = res.data.list.map((i) => {
             let temp = {
               ...i,
-              type: i.type ? "菜单" : "按钮",
+              type: i.type ? '菜单' : '按钮',
               router: i.router ?? this.$nodata,
               resourceName: i.resourceName ?? this.$nodata,
               parentResourceName: i.parentResourceName ?? this.$nodata,
               parentId: i.parentId ?? this.$nodata,
               resourceId: i.resourceId ?? this.$nodata,
-              resourceDesc: i.resourceDesc ?? this.$nodata
-            };
-            return temp;
-          });
-          this.pageTotal = res.data.total;
+              resourceDesc: i.resourceDesc ?? this.$nodata,
+            }
+            return temp
+          })
+          this.pageTotal = res.data.total
         }
-      });
+      })
     },
     handleSearch() {
-      this.getData(this.$refs.resourceTable.query);
+      this.getData(this.$refs.resourceTable.query)
     },
     // 新增资源
     handleAdd() {
-      this.dialogTitle = "新增一级菜单";
-      this.dialogFormVisible = true;
+      this.dialogTitle = '新增一级菜单'
+      this.dialogFormVisible = true
     },
     // 关闭弹窗
     dialogClose() {
-      this.dialogFormVisible = false;
+      this.dialogFormVisible = false
       this.addItem = {
-        handlerUrl: "", // 资源对应接口地址
-        router: "", // 菜单对应的前端路由
+        handlerUrl: '', // 资源对应接口地址
+        router: '', // 菜单对应的前端路由
         parentId: 0,
-        resourceDesc: "",
-        resourceIdentifi: "", // 资源标识
-        resourceName: "", // 资源名称
-        type: true // 资源类型 false - 按钮 true - 菜单
-      };
+        resourceDesc: '',
+        resourceIdentifi: '', // 资源标识
+        resourceName: '', // 资源名称
+        type: true, // 资源类型 false - 按钮 true - 菜单
+      }
     },
     // 删除资源
     handleDelete(index, row) {
-      this.$confirm("您确定要删除" + row.resourceName + "资源么?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
+      this.$confirm('您确定要删除' + row.resourceName + '资源么?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning',
       })
         .then(() => {
-          let arr = [row.resourceId];
-          deleteBatch(arr).then(res => {
+          let arr = [row.resourceId]
+          deleteBatch(arr).then((res) => {
             if (res) {
-              this.$message.success("删除成功");
-              this.handleSearch();
+              this.$message.success('删除成功')
+              this.handleSearch()
             }
-          });
+          })
         })
-        .catch(error => {
-          console.log(error);
-        });
+        .catch((error) => {
+          console.log(error)
+        })
     },
     // 增加子资源
     handleAddChild(index, row) {
-      this.dialogTitle = "新增子资源";
-      this.addItem.parentId = row.resourceId;
-      this.resourceNameF = row.resourceName;
-      this.dialogFormVisible = true;
+      this.dialogTitle = '新增子资源'
+      this.addItem.parentId = row.resourceId
+      this.resourceNameF = row.resourceName
+      this.dialogFormVisible = true
     },
     // 修改资源
     handleEdit(index, row) {
-      this.dialogTitle = "修改资源";
-      this.addItem = JSON.parse(JSON.stringify(row));
-      if(row.type === "菜单") {
+      this.dialogTitle = '修改资源'
+      const {
+        icon,
+        parentId,
+        parentResourceName,
+        resourceDesc,
+        resourceId,
+        resourceIdentifi,
+        resourceName,
+        router,
+      } = row
+      this.addItem = {
+        icon,
+        parentId,
+        parentResourceName,
+        resourceDesc,
+        id: resourceId,
+        resourceIdentifi,
+        resourceName,
+        router,
+      }
+      console.log(this.addItem)
+      if (row.type === '菜单') {
         this.addItem.type = true
-      } else if(row.type === "按钮") {
+      } else if (row.type === '按钮') {
         this.addItem.type = false
       }
       this.resourceNameF = row.resourceName;
@@ -404,28 +438,28 @@ export default {
     },
     // 新增资源提交
     handleComfire() {
-      this.$refs.add.validate(valid => {
+      this.$refs.add.validate((valid) => {
         if (valid) {
-          if (this.dialogTitle === "修改资源") {
-            editItem(this.addItem).then(res => {
+          if (this.dialogTitle === '修改资源') {
+            editItem(this.addItem).then((res) => {
               if (res) {
-                this.$message.success("修改成功");
-                this.dialogClose();
-                this.handleSearch();
+                this.$message.success('修改成功')
+                this.dialogClose()
+                this.handleSearch()
               }
-            });
+            })
           } else {
-            addItem(this.addItem).then(res => {
+            addItem(this.addItem).then((res) => {
               if (res) {
-                this.$message.success("新增成功");
-                this.dialogClose();
-                this.handleSearch();
+                this.$message.success('新增成功')
+                this.dialogClose()
+                this.handleSearch()
               }
-            });
+            })
           }
         }
-      });
-    }
-  }
-};
+      })
+    },
+  },
+}
 </script>
