@@ -27,9 +27,9 @@
         <!--图片地址-->
         <el-table-column align="center" label="图片地址" prop="imgUrl">
           <template v-slot="scope">
-            <el-image 
+            <el-image
               style="width: 350px;"
-              :src="scope.row.imgUrl" 
+              :src="scope.row.imgUrl"
               :preview-src-list="[scope.row.imgUrl]"
               lazy
             />
@@ -43,7 +43,34 @@
           prop="forwardUrl"
         ></el-table-column>
 
-        <el-table-column align="center" label="操作" width="150">
+        <!--广告名-->
+        <el-table-column
+          align="center"
+          label="广告名"
+          prop="adName"
+          width="120"
+        ></el-table-column>
+
+        <!--是否登录-->
+        <el-table-column
+          align="center"
+          label="是否登录"
+          prop="isLogin"
+          width="80"
+        >
+        <template v-slot="scope">
+          {{scope.row.isLogin === 1 ? "是" : "否" }}
+        </template>
+        </el-table-column>
+
+        <!--状态-->
+        <el-table-column align="center" label="状态" prop="status" width="80">
+          <template v-slot="scope">
+            {{ scope.row.status | getStatus }}
+          </template>
+        </el-table-column>
+
+        <el-table-column align="center" label="操作" width="180">
           <template v-slot="scope">
             <el-popconfirm
               title="确定删除吗？"
@@ -54,11 +81,17 @@
               </el-button>
             </el-popconfirm>
             <el-button
-              slot="reference"
               icon="el-icon-edit"
               type="text"
               @click="handleEdit(scope.row)"
               >编辑
+            </el-button>
+            <!-- v-if="scope.row.status !== '2'" -->
+            <el-button
+              icon="el-icon-check"
+              type="text"
+              @click="handleAppro(scope.row)"
+              >审核
             </el-button>
           </template>
         </el-table-column>
@@ -70,80 +103,164 @@
       ></BasePagination>
     </div>
 
+    <el-dialog
+      v-dialogDrag
+      :close-on-click-modal="false"
+      :visible.sync="dialogVisible"
+      title="轮播图审核"
+      width="680px"
+      @close="dialogEditClose"
+    >
+      <el-image
+        style="width: 350px;"
+        :src="imgUrl"
+        :preview-src-list="[imgUrl]"
+      />
+      <el-form label-width="100px" ref="approForm" :model="form">
+        <el-form-item
+          label="审核："
+          prop="approvalStatus"
+          :rules="[{ required: true, message: '请选择' }]"
+        >
+          <el-select
+            v-model="form.approvalStatus"
+            clearable
+            placeholder="请选择"
+          >
+            <el-option value="1" label="不通过">不通过</el-option>
+            <el-option value="2" label="通过">通过</el-option>
+          </el-select>
+        </el-form-item>
+      </el-form>
+
+      <div style="text-align: right;">
+        <el-button type="primary" @click="approval">审核</el-button>
+      </div>
+    </el-dialog>
+
     <CarouselEdit ref="carouselEdit" @refresh="getData"></CarouselEdit>
     <CarouselAddNew ref="carouselAddNew" @refresh="getData"></CarouselAddNew>
   </div>
 </template>
 
 <script>
-import CarouselEdit from "@/views/carouselManage/CarouselEdit.vue";
-import CarouselAddNew from "@/views/carouselManage/CarouselAddNew.vue";
-import {
-  carouselImgDeleteVersion,
-  carouselImgList
-} from "@/api/carouselManage";
-import { baseUrl } from "@/config/setting";
+import CarouselEdit from '@/views/carouselManage/CarouselEdit.vue'
+import CarouselAddNew from '@/views/carouselManage/CarouselAddNew.vue'
+import { carouselImgDeleteVersion, carouselImgList, checkCarouselImg  } from '@/api/carouselManage'
 
 export default {
-  name: "carouselManage",
+  name: 'carouselManage',
   components: {
     CarouselEdit,
-    CarouselAddNew
+    CarouselAddNew,
   },
   data() {
     return {
       searchForm: {},
       tableData: [],
       pageTotal: 0,
-      baseUrl: baseUrl
-    };
+      dialogVisible: false,
+      id: '',
+      imgUrl: '',
+      form: {
+        approvalStatus: '',
+      },
+    }
   },
   mounted() {
-    this.getData();
+    this.getData()
+  },
+  filters: {
+    getStatus(target) {
+      if (target === '2') {
+        return '审核通过'
+      } else if (target === '0') {
+        return '待审核'
+      } else if (target === '1') {
+        return '审核未通过'
+      }
+    },
   },
   methods: {
     async getData(query = { pageNum: 1, pageSize: 10 }) {
       try {
-        let res = await carouselImgList({ ...query, ...this.searchForm });
-        if (res.message === "请求成功") {
-          this.tableData = res.data.list;
-          this.pageTotal = res.data.total;
+        let res = await carouselImgList({
+          ...query,
+          ...this.searchForm,
+          userId: sessionStorage.getItem('ud'),
+        })
+        if (res.message === '请求成功') {
+          this.tableData = res.data.list
+          this.pageTotal = res.data.total
         } else {
-          this.$message.error(res.message);
+          this.$message.error(res.message)
         }
       } catch (e) {
-        throw new Error(e);
+        throw new Error(e)
       }
     },
     // 列表查询
     handleSearch() {
       this.query = {
         pageNum: 1,
-        pageSize: 10
-      };
-      this.getData();
+        pageSize: 10,
+      }
+      this.getData()
     },
     // 新增推送
     handleAdd() {
-      this.$refs.carouselAddNew.showDialog();
+      this.$refs.carouselAddNew.showDialog()
+    },
+    handleAppro({ id, imgUrl }) {
+      this.id = id
+      this.imgUrl = imgUrl
+      this.dialogVisible = true
+    },
+    dialogEditClose() {
+      this.dialogVisible = false
+      this.getData()
+    },
+    approval() {
+      this.$refs.approForm.validate(async (valid) => {
+        if (valid) {
+          try {
+            let res = await checkCarouselImg({
+              id: this.id,
+              status: this.form.approvalStatus,
+            })
+            if(res.code.slice(-5) === "00000") {
+              this.$message.success('审核成功')
+              this.dialogEditClose()
+            }
+          } catch (error) {
+            throw new Error(error)
+          }
+        }
+      })
     },
     // 删除toast
     async handleDelete({ id }) {
       try {
-        let res = await carouselImgDeleteVersion(id);
-        if (res.message === "请求成功") {
-          this.$message.success("删除成功");
-          await this.getData();
+        let res = await carouselImgDeleteVersion(id)
+        if (res.message === '请求成功') {
+          this.$message.success('删除成功')
+          await this.getData()
         } else {
-          this.$message.error(res.message);
+          this.$message.error(res.message)
         }
       } catch (e) {
-        throw new Error(e);
+        throw new Error(e)
       }
     },
     handleEdit(val) {
-      this.$refs.carouselEdit.showDialog(val);
-    }
-  }
-};
+      this.$refs.carouselEdit.showDialog(val)
+    },
+  },
+}
 </script>
+
+<style>
+.el-dialog__body {
+  text-align: center;
+}
+</style>

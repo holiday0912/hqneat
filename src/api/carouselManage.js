@@ -24,6 +24,14 @@ export const carouselImgUpdateVersion = query => {
   });
 };
 
+// 轮播图审核
+export const checkCarouselImg = query => {
+  return post("/carouselImg/checkCarouselImg", {
+    body: { ...query },
+    channel: ""
+  });
+};
+
 // 轮播图删除
 export const carouselImgDeleteVersion = query => {
   return post("/carouselImg/deleteVersion", {

@@ -15,23 +15,15 @@
           label="标题"
           prop="tittle"
         >
-          <el-input v-model="form.tittle"></el-input>
+          <el-input v-model="form.tittle" disabled></el-input>
         </el-form-item>
 
         <el-form-item
           :rules="[{ required: true, message: '请输入' }]"
-          label="属性"
+          label="内容"
           prop="property"
         >
           <el-input v-model="form.property"></el-input>
-        </el-form-item>
-
-        <el-form-item
-          :rules="[{ required: true, message: '请输入' }]"
-          label="样式"
-          prop="picPath"
-        >
-          <el-input v-model="form.picPath"></el-input>
         </el-form-item>
 
         <el-form-item
@@ -42,6 +34,7 @@
           <el-autocomplete
             v-model="form.type"
             :fetch-suggestions="querySearch"
+            disabled
             placeholder="请输入内容"
             @select="handleSelect"
           >

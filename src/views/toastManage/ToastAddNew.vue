@@ -5,7 +5,7 @@
       v-dialogDrag
       :close-on-click-modal="false"
       :visible.sync="dialogFormVisible"
-      title="提示配置新增"
+      title="新增提示配置"
       width="680px"
       @close="dialogEditClose"
     >
@@ -55,7 +55,7 @@
           prop="property"
         >
           <div class="input-wp">
-            <el-input v-model="form.property"></el-input>
+            <el-input v-model="form.property" maxlength="60"></el-input>
             <span>(中文)</span>
           </div>
         </el-form-item>
@@ -65,7 +65,7 @@
           prop="propertyE"
         >
           <div class="input-wp">
-            <el-input v-model="form.propertyE"></el-input>
+            <el-input v-model="form.propertyE" maxlength="60"></el-input>
             <span>(英文)</span>
           </div>
         </el-form-item>
@@ -75,7 +75,7 @@
           prop="propertyF"
         >
           <div class="input-wp">
-            <el-input v-model="form.propertyF"></el-input>
+            <el-input v-model="form.propertyF" maxlength="60"></el-input>
             <span>(繁体)</span>
           </div>
         </el-form-item>

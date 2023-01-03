@@ -50,15 +50,29 @@
           </template>
         </el-table-column>
 
-        <!--标题-->
-        <el-table-column align="center" label="标题" prop="tittle">
+        <!--业务类型-->
+        <el-table-column align="center" label="业务类型" prop="tittle">
         </el-table-column>
 
-        <!--属性-->
+        <!--温馨提示内容-->
         <el-table-column
           align="center"
-          label="内容"
+          label="温馨提示内容"
           prop="property"
+        ></el-table-column>
+
+        <!--操作人员-->
+        <el-table-column
+          align="center"
+          label="操作人员"
+          prop="updateUser"
+        ></el-table-column>
+
+        <!--更新时间-->
+        <el-table-column
+          align="center"
+          label="更新时间"
+          prop="updateTime"
         ></el-table-column>
 
         <!--类型-->
@@ -66,13 +80,6 @@
           align="center"
           label="类型"
           prop="type"
-        ></el-table-column>
-
-        <!--样式-->
-        <el-table-column
-          align="center"
-          label="样式"
-          prop="picPath"
         ></el-table-column>
 
         <el-table-column align="center" label="操作" width="150">
@@ -145,7 +152,6 @@ export default {
           this.tableData = data.map(i => {
             return {
               ...i,
-              createTime: this.$dayjs(i.createTime),
               updateTime: this.$dayjs(i.updateTime)
             };
           });

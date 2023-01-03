@@ -67,6 +67,7 @@ export default {
           login(this.param).then(res => {
             if (res) {
               sessionStorage.setItem("tk", res.data.token);
+              sessionStorage.setItem('ud',res.data.userId)
               const temp = res.data.userLoginContext.resources.map(i=>{
                 const inner = {
                   icon: i.icon,

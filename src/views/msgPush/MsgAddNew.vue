@@ -35,7 +35,7 @@
         </el-form-item>
 
         <el-form-item
-          :rules="[{ required: true, message: '请输入' }]"
+          :rules="[{ required: true, message: '请选择' }]"
           label="分组"
           prop="filterGroup"
         >
@@ -52,8 +52,7 @@
               :label="item.filterGroup"
               :value="item.filterGroup"
               class="select-group"
-            >
-            </el-option>
+            />
           </el-select>
         </el-form-item>
       </el-form>
