@@ -1,6 +1,39 @@
 <template>
   <div class="container">
     <div class="handle-box">
+      <el-form ref="searchform" :model="searchForm" label-width="120px">
+        <el-row>
+          <el-col :span="6">
+            <el-form-item label="状态" prop="status">
+              <el-select v-model="searchForm.status" placeholder="请选择">
+                <el-option
+                  v-for="item in carouStatus"
+                  :key="item.key"
+                  :label="item.val"
+                  :value="item.key"
+                />
+              </el-select>
+            </el-form-item>
+          </el-col>
+
+          <el-col :span="12">
+            <div style="margin-left: 50px; display: inline-block">
+              <el-button icon="el-icon-refresh" @click="formReset"
+                >重置
+              </el-button>
+            </div>
+            <div style="margin-left: 10px; display: inline-block">
+              <el-button
+                icon="el-icon-search"
+                type="primary"
+                @click="handleSearch"
+                >查询
+              </el-button>
+            </div>
+          </el-col>
+        </el-row>
+      </el-form>
+
       <el-row>
         <el-col :span="8" style="margin-left: 20px">
           <div class="handle-box">
@@ -65,8 +98,8 @@
 
         <!--状态-->
         <el-table-column align="center" label="状态" prop="status" width="80">
-          <template v-slot="scope">
-            {{ scope.row.status | getStatus }}
+          <template v-slot="{ row }">
+            {{ row.status | getStatus }}
           </template>
         </el-table-column>
 
@@ -147,6 +180,7 @@
 import CarouselEdit from '@/views/carouselManage/CarouselEdit.vue'
 import CarouselAddNew from '@/views/carouselManage/CarouselAddNew.vue'
 import { carouselImgDeleteVersion, carouselImgList, checkCarouselImg  } from '@/api/carouselManage'
+import { carouStatus } from "@/config/enum"
 
 export default {
   name: 'carouselManage',
@@ -156,7 +190,10 @@ export default {
   },
   data() {
     return {
-      searchForm: {},
+      searchForm: {
+        status: ""
+      },
+      carouStatus: carouStatus,
       tableData: [],
       pageTotal: 0,
       dialogVisible: false,
@@ -172,13 +209,7 @@ export default {
   },
   filters: {
     getStatus(target) {
-      if (target === '2') {
-        return '审核通过'
-      } else if (target === '0') {
-        return '待审核'
-      } else if (target === '1') {
-        return '审核未通过'
-      }
+      return carouStatus.find(i=>i.key === target).val
     },
   },
   methods: {
@@ -255,6 +286,9 @@ export default {
     handleEdit(val) {
       this.$refs.carouselEdit.showDialog(val)
     },
+    formReset() {
+      this.$refs.searchform.resetFields()
+    }
   },
 }
 </script>

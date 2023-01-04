@@ -6,7 +6,7 @@
         <i v-if="!collapse" class="el-icon-s-fold"></i>
         <i v-else class="el-icon-s-unfold"></i>
       </div>
-      <div class="logo">泓齐后台管理系统</div>
+      <div class="logo">{{title}}</div>
     </div>
     <div class="header-right">
       <div class="header-user-con">
@@ -98,6 +98,7 @@
 <script>
 import bus from "../common/bus";
 import { loginOut, resetPasswd } from "@/api/system/sysUser";
+import { sysTitle } from '@/config/dev'
 
 export default {
   data() {
@@ -128,6 +129,7 @@ export default {
     return {
       collapse: false,
       fullscreen: false,
+      title: sysTitle,
       name: "linxin",
       message: 2,
       dialogFormVisible: false,

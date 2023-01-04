@@ -20,6 +20,19 @@
               <el-input v-model="searchForm.type"></el-input>
             </el-form-item>
           </el-col>
+
+          <el-col :span="6">
+            <el-form-item label="状态" prop="status">
+              <el-select v-model="searchForm.status" placeholder="请选择">
+                <el-option
+                  v-for="item in ToastStatus"
+                  :key="item.key"
+                  :label="item.val"
+                  :value="item.key"
+                />
+              </el-select>
+            </el-form-item>
+          </el-col>
         </el-form>
         <el-col :span="8" style="margin-left: 20px">
           <div class="handle-box">
@@ -51,7 +64,10 @@
         </el-table-column>
 
         <!--业务类型-->
-        <el-table-column align="center" label="业务类型" prop="tittle">
+        <el-table-column 
+          align="center" 
+          label="业务类型" 
+          prop="type">
         </el-table-column>
 
         <!--温馨提示内容-->
@@ -75,29 +91,34 @@
           prop="updateTime"
         ></el-table-column>
 
-        <!--类型-->
+        <!--状态-->
         <el-table-column
           align="center"
-          label="类型"
-          prop="type"
+          label="状态"
+          prop="status"
         ></el-table-column>
 
-        <el-table-column align="center" label="操作" width="150">
-          <template v-slot="scope">
-            <el-popconfirm
-              title="确定删除吗？"
-              @confirm="handleDelete(scope.row)"
-            >
-              <el-button slot="reference" icon="el-icon-delete" type="text"
-                >删除
-              </el-button>
-            </el-popconfirm>
+        <el-table-column align="center" label="操作" >
+          <template v-slot="{row}">
+            <el-button 
+              icon="el-icon-delete" 
+              type="text"
+              :disabled="row.status === '删除审核中' || row.status === '审核中'"
+              @click="handleDelete(row)"
+              >删除
+            </el-button>
             <el-button
-              slot="reference"
               icon="el-icon-edit"
               type="text"
-              @click="handleEdit(scope.row)"
+              :disabled="row.status !== '复核生效' || row.status !== '复核拒绝'"
+              @click="handleEdit(row)"
               >编辑
+            </el-button>
+            <el-button
+              icon="el-icon-check"
+              type="text"
+              @click="handleAppro(row)"
+              >审核
             </el-button>
           </template>
         </el-table-column>
@@ -111,6 +132,7 @@
 
     <ToastEdit ref="toastEdit" @refresh="getData"></ToastEdit>
     <ToastAddNew ref="toastAddNew" @refresh="getData"></ToastAddNew>
+    <ToastApproval ref="toastApproval" @refresh="getData"></ToastApproval>
   </div>
 </template>
 
@@ -118,22 +140,27 @@
 import { toastDeleteById, toastManageList } from "@/api/toastManage";
 import ToastEdit from "@/views/toastManage/ToastEdit.vue";
 import ToastAddNew from "@/views/toastManage/ToastAddNew.vue";
+import ToastApproval from "@/views/toastManage/ToastApproval.vue";
+import { ToastStatus } from '@/config/enum'
 
 export default {
   name: "roleManage",
   components: {
     ToastEdit,
-    ToastAddNew
+    ToastAddNew,
+    ToastApproval
   },
   data() {
     return {
       searchForm: {
         title: "",
         property: "",
-        type: ""
+        type: "",
+        status: ""
       },
       tableData: [],
-      pageTotal: 0
+      pageTotal: 0,
+      ToastStatus: ToastStatus,
     };
   },
   mounted() {
@@ -152,7 +179,8 @@ export default {
           this.tableData = data.map(i => {
             return {
               ...i,
-              updateTime: this.$dayjs(i.updateTime)
+              updateTime: this.$dayjs(i.updateTime),
+              status: this.getStatus(i.status)
             };
           });
           this.pageTotal = total;
@@ -163,6 +191,9 @@ export default {
     },
     formRest() {
       this.$refs.searchRorm.resetFields();
+    },
+    getStatus(target) {
+      return ToastStatus.find(i=> i.key === target).val;
     },
     // 列表查询
     handleSearch() {
@@ -177,7 +208,22 @@ export default {
       this.$refs.toastAddNew.showDialog();
     },
     // 删除toast
-    async handleDelete({ id }) {
+    async handleDelete({ id, status }) {
+      if(status === '审核通过') {
+        this.$confirm("生效状态的提示配置需审核才能删除，是否发起审核？", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {},()=>{
+          return
+        })
+        .catch(error => {
+          console.log(error);
+          return
+        });
+        return
+      }
       try {
         let res = await toastDeleteById({ id });
         if (res.message === "请求成功") {
@@ -190,6 +236,9 @@ export default {
     },
     handleEdit(val) {
       this.$refs.toastEdit.showDialog(val);
+    },
+    handleAppro(target) {
+      this.$refs.toastApproval.openDrawer(target)
     }
   }
 };

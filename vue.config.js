@@ -50,25 +50,25 @@ module.exports = {
       chunkFilename: `static/js/[name].${process.env.VUE_APP_Version}.${Timestamp}.js`
     },
     // 开启分离 js
-    optimization: {
-      runtimeChunk: "single",
-      splitChunks: {
-        chunks: "all",
-        maxInitialRequests: Infinity,
-        minSize: 20000,
-        cacheGroups: {
-          vendor: {
-            test: /[\\/]node_modules[\\/]/,
-            name(module) {
-              const packageName = module.context.match(
-                /[\\/]node_modules[\\/](.*?)([\\/]|$)/
-              )[1];
-              return `npm.${packageName.replace("@", "")}`;
-            }
-          }
-        }
-      }
-    }
+    // optimization: {
+    //   runtimeChunk: "single",
+    //   splitChunks: {
+    //     chunks: "all",
+    //     maxInitialRequests: Infinity,
+    //     minSize: 20000,
+    //     cacheGroups: {
+    //       vendor: {
+    //         test: /[\\/]node_modules[\\/]/,
+    //         name(module) {
+    //           const packageName = module.context.match(
+    //             /[\\/]node_modules[\\/](.*?)([\\/]|$)/
+    //           )[1];
+    //           return `npm.${packageName.replace("@", "")}`;
+    //         }
+    //       }
+    //     }
+    //   }
+    // }
     // plugins: isPRD
     //   ? [
     //       // 使用Gzip压缩文件 - https://segmentfault.com/a/1190000012571492

@@ -12,45 +12,6 @@
       <el-form ref="edit" :model="form" label-width="150px">
         <el-form-item
           :rules="[{ required: true, message: '请输入' }]"
-          label="样式"
-          prop="picPath"
-        >
-          <el-input v-model="form.picPath" style="width: 82.2%;"></el-input>
-        </el-form-item>
-
-        <el-form-item
-          :rules="[{ required: true, message: '请输入' }]"
-          label="标题"
-          prop="tittle"
-        >
-          <div class="input-wp">
-            <el-input v-model="form.tittle"></el-input>
-            <span>(中文)</span>
-          </div>
-        </el-form-item>
-
-        <el-form-item
-          :rules="[{ required: true, message: '请输入' }]"
-          prop="tittleE"
-        >
-          <div class="input-wp">
-            <el-input v-model="form.tittleE"></el-input>
-            <span>(英文)</span>
-          </div>
-        </el-form-item>
-
-        <el-form-item
-          :rules="[{ required: true, message: '请输入' }]"
-          prop="tittleF"
-        >
-          <div class="input-wp">
-            <el-input v-model="form.tittleF"></el-input>
-            <span>(繁体)</span>
-          </div>
-        </el-form-item>
-
-        <el-form-item
-          :rules="[{ required: true, message: '请输入' }]"
           label="内容"
           prop="property"
         >
@@ -82,7 +43,7 @@
 
         <el-form-item
           :rules="[{ required: true, message: '请输入' }]"
-          label="类型"
+          label="业务类型"
           prop="type"
         >
           <el-autocomplete
@@ -96,8 +57,6 @@
             </template>
           </el-autocomplete>
         </el-form-item>
-
-        <!--          @select="handleSelect"-->
       </el-form>
 
       <div slot="footer" class="dialog-footer">
@@ -126,12 +85,7 @@ export default {
         property: "",
         propertyE: "",
         propertyF: "",
-        tittle: "",
-        tittleE: "",
-        tittleF: "",
         type: "",
-        imgUrl: "",
-        picPath: ""
       },
       typeList: []
     };

@@ -1,7 +1,7 @@
 <template>
   <div class="login-wrap">
     <div class="ms-login">
-      <div class="ms-title">后台管理系统模板</div>
+      <div class="ms-title">{{title}}</div>
       <el-form
         ref="login"
         :model="param"
@@ -16,7 +16,7 @@
             placeholder="请输入账号"
             @focus="onfocus($event)"
           >
-            <el-button slot="prepend" icon="el-icon-lx-people"></el-button>
+            <i slot="prepend" class="el-icon-lx-people"></i>
           </el-input>
         </el-form-item>
         <el-form-item prop="password">
@@ -28,7 +28,7 @@
             @focus="onfocus($event)"
             @keyup.enter.native="submitForm()"
           >
-            <el-button slot="prepend" icon="el-icon-lx-lock"></el-button>
+            <i slot="prepend" class="el-icon-lx-lock"></i>
           </el-input>
         </el-form-item>
         <div class="login-btn">
@@ -43,6 +43,7 @@
 
 <script>
 import { login } from "@/api/system/sysUser";
+import { sysTitle } from '@/config/dev'
 
 export default {
   data: function() {
@@ -51,6 +52,7 @@ export default {
         userName: "",
         password: ""
       },
+      title: sysTitle,
       rules: {
         userName: [
           { required: true, message: "请输入用户名", trigger: "blur" }
