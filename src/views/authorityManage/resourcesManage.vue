@@ -61,6 +61,11 @@
           {{ scope.$index + 1 }}
         </template>
 
+        <!-- 资源图标 -->
+        <template #iconRender="{ scope }">
+          <i :class="scope.row.icon" style="font-size: 20px"></i>
+        </template>
+
         <template #operation="{ scope }">
           <el-button
             v-if="scope.row.type"
@@ -296,6 +301,12 @@ export default {
           prop: "parentId"
         },
         {
+          label: "图标",
+          prop: "icon",
+          render: "iconRender",
+          width: "60"
+        },
+        {
           label: "资源名称",
           prop: "resourceName"
         },
@@ -306,10 +317,6 @@ export default {
         {
           label: "资源类型",
           prop: "type"
-        },
-        {
-          label: "图标",
-          prop: "icon"
         },
         {
           label: "资源描述",

@@ -138,6 +138,16 @@ const routes = [
             /* webpackChunkName: "toastManage" */ "@/views/toastManage/ToastManage.vue"
           ),
         meta: { permission: false, title: "提示配置" }
+      },
+      // 业务类型
+      {
+        path: "/serviceType",
+        name: "serviceType",
+        component: () =>
+          import(
+            /* webpackChunkName: "serviceType" */ "@/views/serviceType/ServiceType.vue"
+          ),
+        meta: { permission: false, title: "业务类型" }
       }
     ]
   },

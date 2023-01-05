@@ -38,3 +38,19 @@ export const ToastStatus = [
     val: '审核通过'
   },
 ]
+
+// 业务员类型的枚举
+export const serviceType = [
+  {
+    key: "regular",
+    val: '定期'
+  },
+  {
+    key: "fund",
+    val: '基金'
+  },
+  {
+    key: "loan",
+    val: '贷款'
+  },
+]
