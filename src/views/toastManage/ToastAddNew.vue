@@ -51,6 +51,7 @@
             :fetch-suggestions="querySearch"
             placeholder="请输入内容"
             @select="handleSelect"
+            style="display: block;width: 200px"
           >
             <template v-slot="{ item }">
               <span>{{ item.type }}</span>

@@ -111,5 +111,10 @@ export default {
 
 .upload-demo {
   margin: 0 0 20px 120px;
+  transform: translateX(-213px);
+}
+
+.el-upload__tip {
+  transform: translateX(107px);
 }
 </style>

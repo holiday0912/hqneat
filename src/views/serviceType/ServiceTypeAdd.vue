@@ -4,8 +4,8 @@
     <el-dialog
       v-dialogDrag
       :close-on-click-modal="false"
-      :visible.sync="dialogFormVisible"
       :title="isEdit ? '业务类型修改' : '业务类型新增'"
+      :visible.sync="dialogFormVisible"
       width="680px"
       @close="dialogEditClose"
     >
@@ -15,7 +15,12 @@
           label="业务类型"
           prop="serviceTypeCode"
         >
-          <el-select v-model="form.serviceTypeCode" placeholder="请选择" @change="serviceTypeChange">
+          <el-select
+            v-model="form.serviceTypeCode"
+            placeholder="请选择"
+            style="display: block;width: 200px"
+            @change="serviceTypeChange"
+          >
             <el-option
               v-for="item in serviceType"
               :key="item.key"
@@ -28,7 +33,9 @@
 
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogEditClose">取 消</el-button>
-        <el-button type="primary" @click="handleConfirm">{{isEdit ? '修 改': '新 增' }}</el-button>
+        <el-button type="primary" @click="handleConfirm"
+          >{{ isEdit ? "修 改" : "新 增" }}
+        </el-button>
       </div>
     </el-dialog>
   </div>
@@ -36,7 +43,7 @@
 
 <script>
 import { insertServiceType, updateServiceType } from "@/api/serviceType";
-import {serviceType} from "@/config/enum"
+import { serviceType } from "@/config/enum";
 
 export default {
   name: "ServiceTypeAdd",
@@ -58,9 +65,9 @@ export default {
       this.dialogFormVisible = true;
     },
     editConfirm(target) {
-      this.showDialog()
-      this.form = JSON.parse(JSON.stringify(target))
-      this.isEdit = true
+      this.showDialog();
+      this.form = JSON.parse(JSON.stringify(target));
+      this.isEdit = true;
     },
     dialogEditClose() {
       this.dialogFormVisible = false;
@@ -68,33 +75,40 @@ export default {
       this.$emit("refresh");
     },
     serviceTypeChange() {
-      this.form.serviceTypeName = this.serviceType.find(i=>i.key === this.form.serviceTypeCode).val
+      this.form.serviceTypeName = this.serviceType.find(
+        i => i.key === this.form.serviceTypeCode
+      ).val;
     },
     async handleConfirm() {
-      if(this.isEdit) {
+      if (this.isEdit) {
         try {
-          const { id, serviceTypeCode, serviceTypeName } = this.form
-          const res = await updateServiceType({id, serviceTypeCode, serviceTypeName})
-          if(res.code.slice(-5) === '00000') {
-            this.$message.success('修改成功')
-            this.dialogEditClose()
+          const { id, serviceTypeCode, serviceTypeName } = this.form;
+          const res = await updateServiceType({
+            id,
+            serviceTypeCode,
+            serviceTypeName
+          });
+          if (res.code.slice(-5) === "00000") {
+            // this.$message.success('修改成功')
+            this.$notify({ title: "提示", message: "修改成功" });
+            this.dialogEditClose();
           }
         } catch (error) {
-          throw new Error(error.message)
+          throw new Error(error.message);
         }
       } else {
         try {
-          const res = await insertServiceType(this.form)
-          if(res.code.slice(-5) === '00000') {
-            this.$message.success('新增成功')
-            this.dialogEditClose()
+          const res = await insertServiceType(this.form);
+          if (res.code.slice(-5) === "00000") {
+            // this.$message.success('新增成功')
+            this.$notify({ title: "提示", message: "新增成功" });
+            this.dialogEditClose();
           }
         } catch (error) {
-          throw new Error(error.message)
+          throw new Error(error.message);
         }
       }
     }
   }
 };
 </script>
-

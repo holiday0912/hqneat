@@ -61,10 +61,10 @@
         <el-table-column align="center" label="图片地址" prop="imgUrl">
           <template v-slot="scope">
             <el-image
-              style="width: 350px;"
-              :src="scope.row.imgUrl"
               :preview-src-list="[scope.row.imgUrl]"
+              :src="scope.row.imgUrl"
               lazy
+              style="width: 350px;"
             />
           </template>
         </el-table-column>
@@ -91,9 +91,9 @@
           prop="isLogin"
           width="80"
         >
-        <template v-slot="scope">
-          {{scope.row.isLogin === 1 ? "是" : "否" }}
-        </template>
+          <template v-slot="scope">
+            {{ scope.row.isLogin === 1 ? "是" : "否" }}
+          </template>
         </el-table-column>
 
         <!--状态-->
@@ -145,23 +145,23 @@
       @close="dialogEditClose"
     >
       <el-image
-        style="width: 350px;"
-        :src="imgUrl"
         :preview-src-list="[imgUrl]"
+        :src="imgUrl"
+        style="width: 350px;"
       />
-      <el-form label-width="100px" ref="approForm" :model="form">
+      <el-form ref="approForm" :model="form" label-width="100px">
         <el-form-item
+          :rules="[{ required: true, message: '请选择' }]"
           label="审核："
           prop="approvalStatus"
-          :rules="[{ required: true, message: '请选择' }]"
         >
           <el-select
             v-model="form.approvalStatus"
             clearable
             placeholder="请选择"
           >
-            <el-option value="1" label="不通过">不通过</el-option>
-            <el-option value="2" label="通过">通过</el-option>
+            <el-option label="不通过" value="1">不通过</el-option>
+            <el-option label="通过" value="2">通过</el-option>
           </el-select>
         </el-form-item>
       </el-form>
@@ -177,16 +177,20 @@
 </template>
 
 <script>
-import CarouselEdit from '@/views/carouselManage/CarouselEdit.vue'
-import CarouselAddNew from '@/views/carouselManage/CarouselAddNew.vue'
-import { carouselImgDeleteVersion, carouselImgList, checkCarouselImg  } from '@/api/carouselManage'
-import { carouStatus } from "@/config/enum"
+import CarouselEdit from "@/views/carouselManage/CarouselEdit.vue";
+import CarouselAddNew from "@/views/carouselManage/CarouselAddNew.vue";
+import {
+  carouselImgDeleteVersion,
+  carouselImgList,
+  checkCarouselImg
+} from "@/api/carouselManage";
+import { carouStatus } from "@/config/enum";
 
 export default {
-  name: 'carouselManage',
+  name: "carouselManage",
   components: {
     CarouselEdit,
-    CarouselAddNew,
+    CarouselAddNew
   },
   data() {
     return {
@@ -197,20 +201,20 @@ export default {
       tableData: [],
       pageTotal: 0,
       dialogVisible: false,
-      id: '',
-      imgUrl: '',
+      id: "",
+      imgUrl: "",
       form: {
-        approvalStatus: '',
-      },
-    }
+        approvalStatus: ""
+      }
+    };
   },
   mounted() {
-    this.getData()
+    this.getData();
   },
   filters: {
     getStatus(target) {
-      return carouStatus.find(i=>i.key === target).val
-    },
+      return carouStatus.find(i => i.key === target).val;
+    }
   },
   methods: {
     async getData(query = { pageNum: 1, pageSize: 10 }) {
@@ -218,79 +222,79 @@ export default {
         let res = await carouselImgList({
           ...query,
           ...this.searchForm,
-          userId: sessionStorage.getItem('ud'),
-        })
-        if (res.message === '请求成功') {
-          this.tableData = res.data.list
-          this.pageTotal = res.data.total
+          userId: sessionStorage.getItem("ud")
+        });
+        if (res.message === "请求成功") {
+          this.tableData = res.data.list;
+          this.pageTotal = res.data.total;
         } else {
-          this.$message.error(res.message)
+          this.$message.error(res.message);
         }
       } catch (e) {
-        throw new Error(e)
+        throw new Error(e);
       }
     },
     // 列表查询
     handleSearch() {
       this.query = {
         pageNum: 1,
-        pageSize: 10,
-      }
-      this.getData()
+        pageSize: 10
+      };
+      this.getData();
     },
     // 新增推送
     handleAdd() {
-      this.$refs.carouselAddNew.showDialog()
+      this.$refs.carouselAddNew.showDialog();
     },
     handleAppro({ id, imgUrl }) {
-      this.id = id
-      this.imgUrl = imgUrl
-      this.dialogVisible = true
+      this.id = id;
+      this.imgUrl = imgUrl;
+      this.dialogVisible = true;
     },
     dialogEditClose() {
-      this.dialogVisible = false
-      this.getData()
+      this.dialogVisible = false;
+      this.getData();
     },
     approval() {
-      this.$refs.approForm.validate(async (valid) => {
+      this.$refs.approForm.validate(async valid => {
         if (valid) {
           try {
             let res = await checkCarouselImg({
               id: this.id,
-              status: this.form.approvalStatus,
-            })
-            if(res.code.slice(-5) === "00000") {
-              this.$message.success('审核成功')
-              this.dialogEditClose()
+              status: this.form.approvalStatus
+            });
+            if (res.code.slice(-5) === "00000") {
+              this.$message.success("审核成功");
+              this.dialogEditClose();
             }
           } catch (error) {
-            throw new Error(error)
+            throw new Error(error);
           }
         }
-      })
+      });
     },
     // 删除toast
     async handleDelete({ id }) {
       try {
-        let res = await carouselImgDeleteVersion(id)
-        if (res.message === '请求成功') {
-          this.$message.success('删除成功')
-          await this.getData()
+        let res = await carouselImgDeleteVersion(id);
+        if (res.message === "请求成功") {
+          this.$message.success("删除成功");
+          await this.getData();
         } else {
-          this.$message.error(res.message)
+          this.$message.error(res.message);
         }
       } catch (e) {
-        throw new Error(e)
+        throw new Error(e);
       }
     },
     handleEdit(val) {
-      this.$refs.carouselEdit.showDialog(val)
+      this.$refs.carouselEdit.showDialog(val);
     },
     formReset() {
-      this.$refs.searchform.resetFields()
+      this.$refs.searchform.resetFields();
     }
-  },
-}
+  }
+};
 </script>
 
 <style>

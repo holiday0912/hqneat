@@ -10,10 +10,11 @@
       @close="dialogEditClose"
     >
       <div :class="carousel.wp">
-        <el-image 
+        <el-image
+          :preview-src-list="[imgUrl]"
+          :src="imgUrl"
           style="width: 40%;"
-          :src="imgUrl" 
-          :preview-src-list="[imgUrl]">
+        >
         </el-image>
 
         <el-upload
@@ -115,7 +116,7 @@ export default {
     },
     async uploadSuccess({ message, data }) {
       if (message === "请求成功") {
-        this.imgUrl = 'http://192.168.10.240:8989' + data
+        this.imgUrl = "http://192.168.10.240:8989" + data;
         this.form.imgUrl = data;
       } else {
         this.$message.error(message);

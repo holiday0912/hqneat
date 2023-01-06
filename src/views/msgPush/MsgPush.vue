@@ -53,11 +53,11 @@
             {{ scope.$index + 1 }}
           </template>
         </el-table-column>
-        <el-table-column
+        <!-- <el-table-column
           align="center"
           label="账号ID"
           prop="id"
-        ></el-table-column>
+        ></el-table-column> -->
 
         <el-table-column
           align="center"

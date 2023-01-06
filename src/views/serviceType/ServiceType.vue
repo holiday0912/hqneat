@@ -5,14 +5,17 @@
         <el-row>
           <el-col :span="6">
             <el-form-item label="业务类型代码" prop="serviceTypeCode">
-              <el-select v-model="searchForm.serviceTypeCode" placeholder="请选择">
+              <el-select
+                v-model="searchForm.serviceTypeCode"
+                placeholder="请选择"
+              >
                 <el-option
                   v-for="item in serviceType"
                   :key="item.key"
                   :label="item.val"
                   :value="item.key"
                 />
-             </el-select>
+              </el-select>
             </el-form-item>
           </el-col>
 
@@ -80,71 +83,70 @@
 </template>
 
 <script>
-import { getServiceTypeList, deleteServiceType } from '@/api/serviceType'
-import ServiceTypeAdd from "@/views/serviceType/ServiceTypeAdd.vue"
-import {serviceType} from "@/config/enum"
+import { deleteServiceType, getServiceTypeList } from "@/api/serviceType";
+import ServiceTypeAdd from "@/views/serviceType/ServiceTypeAdd.vue";
+import { serviceType } from "@/config/enum";
 
 export default {
-  name: 'ServiceType',
+  name: "ServiceType",
   components: {
     ServiceTypeAdd
   },
   data() {
     return {
       searchForm: {
-        serviceTypeCode: '',
+        serviceTypeCode: ""
       },
       serviceType: serviceType,
       tableData: [],
-      pageTotal: 0,
-      logDetail: '',
-    }
+      pageTotal: 0
+    };
   },
   computed: {
     columns() {
       return [
         {
-          label: '序号',
-          width: '55',
-          render: 'ordinal',
+          label: "序号",
+          width: "55",
+          render: "ordinal"
         },
         {
-          label: '业务类型代码',
-          prop: 'serviceTypeCode',
+          label: "业务类型代码",
+          prop: "serviceTypeCode"
         },
         {
-          label: '业务类型',
-          prop: 'serviceTypeName',
+          label: "业务类型",
+          prop: "serviceTypeName"
         },
         // {
         //   label: "状态",
         //   prop: "status"
         // },
         {
-          label: '创建时间',
-          prop: 'createTime',
+          label: "创建时间",
+          prop: "createTime"
         },
         {
-          label: '更新时间',
-          prop: 'updateTime',
+          label: "更新时间",
+          prop: "updateTime"
         },
         {
-          label: '操作',
-          render: 'operation',
-        },
-      ]
-    },
+          label: "操作",
+          render: "operation"
+        }
+      ];
+    }
   },
   mounted() {
-    this.getData()
+    this.getData();
   },
   methods: {
     async getData(query = { pageNum: 1, pageSize: 10 }) {
-      const obj = Object.assign(query, this.searchForm)
+      const obj = Object.assign(query, this.searchForm);
       try {
-        const res = await getServiceTypeList(obj)
+        const res = await getServiceTypeList(obj);
         if (res) {
-          this.tableData = res.data.list.map((i) => {
+          this.tableData = res.data.list.map(i => {
             return {
               ...i,
               createTime: i.createTime
@@ -152,49 +154,44 @@ export default {
                 : this.$nodata,
               updateTime: i.updateTime
                 ? this.$dayjs(i.updateTime)
-                : this.$nodata,
-            }
-          })
-          this.pageTotal = res.data.total
+                : this.$nodata
+            };
+          });
+          this.pageTotal = res.data.total;
         }
       } catch (e) {
-        throw new Error(e)
+        throw new Error(e);
       }
     },
     formRest() {
-      this.$refs.searchRorm.resetFields()
+      this.$refs.searchRorm.resetFields();
     },
     // 列表查询
     handleSearch() {
       this.query = {
         pageNum: 1,
-        pageSize: 10,
-      }
-      this.getData()
+        pageSize: 10
+      };
+      this.getData();
     },
-    async handleDelete({id}) {
+    async handleDelete({ id }) {
       try {
-        const res = await deleteServiceType(id)
-        if(res) {
-          this.$message.success('删除成功')
-          this.getData()
+        const res = await deleteServiceType(id);
+        if (res) {
+          // this.$message.success('删除成功')
+          this.$notify({ title: "提示", message: "删除成功" });
+          await this.getData();
         }
       } catch (error) {
-        throw new Error(error.message)
+        throw new Error(error.message);
       }
     },
     handleAdd() {
-      this.$refs.serviceTypeAdd.showDialog()
+      this.$refs.serviceTypeAdd.showDialog();
     },
     handleEdit(target) {
-      this.$refs.serviceTypeAdd.editConfirm(target)
+      this.$refs.serviceTypeAdd.editConfirm(target);
     }
-  },
-}
+  }
+};
 </script>
-
-<style>
-.error-log {
-  padding: 20px;
-}
-</style>
