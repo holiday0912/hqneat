@@ -29,6 +29,7 @@
       </el-row>
 
       <BaseTable
+        ref="hotRepaireTable"
         :columns="columns"
         :pageTotal="pageTotal"
         :tableData="tableData"
@@ -160,6 +161,9 @@ export default {
         let res = await nyHotDepDeleteById({ id });
         if (res.message === "请求成功") {
           this.$message.success("删除成功");
+          if (this.tableData.length === 1) {
+            this.$refs.hotRepaireTable.query.pageNum--;
+          }
           await this.getData();
         } else {
           this.$message.error(res.message);

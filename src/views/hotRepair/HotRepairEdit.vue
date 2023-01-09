@@ -3,6 +3,7 @@
   <el-dialog
     v-dialogDrag
     :close-on-click-modal="false"
+    :destroy-on-close="true"
     :visible.sync="dialogFormVisible"
     title="热修复修改"
     width="680px"
@@ -76,7 +77,10 @@ export default {
     },
     async dialogEdit() {
       try {
-        let res = await nyHotDepUpdateData({ pubTime: this.form.pubTime, id: this.form.id });
+        let res = await nyHotDepUpdateData({
+          pubTime: this.form.pubTime,
+          id: this.form.id
+        });
         if (res.message === "请求成功") {
           this.$message.success("修改成功");
           this.dialogEditClose();

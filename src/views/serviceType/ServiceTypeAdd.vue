@@ -4,6 +4,7 @@
     <el-dialog
       v-dialogDrag
       :close-on-click-modal="false"
+      :destroy-on-close="true"
       :title="isEdit ? '业务类型修改' : '业务类型新增'"
       :visible.sync="dialogFormVisible"
       width="680px"
@@ -43,7 +44,7 @@
 
 <script>
 import { insertServiceType, updateServiceType } from "@/api/serviceType";
-import { serviceType } from "@/config/enum";
+import { serviceType } from "@/common/enum";
 
 export default {
   name: "ServiceTypeAdd",
@@ -63,6 +64,7 @@ export default {
   methods: {
     showDialog() {
       this.dialogFormVisible = true;
+      this.isEdit = false;
     },
     editConfirm(target) {
       this.showDialog();

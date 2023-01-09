@@ -184,7 +184,7 @@ import {
   carouselImgList,
   checkCarouselImg
 } from "@/api/carouselManage";
-import { carouStatus } from "@/config/enum";
+import { carouStatus } from "@/common/enum";
 
 export default {
   name: "carouselManage",

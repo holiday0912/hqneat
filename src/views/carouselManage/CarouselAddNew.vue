@@ -4,6 +4,7 @@
     <el-dialog
       v-dialogDrag
       :close-on-click-modal="false"
+      :destroy-on-close="true"
       :visible.sync="dialogFormVisible"
       title="轮播图新增"
       width="680px"

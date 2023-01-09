@@ -13,13 +13,6 @@ export const fileUpload = baseUrl + "/file/uploadRemoteServer";
  * @param query
  * @returns {Promise<unknown>}
  */
-// export const fileDownload = query => {
-//   return post(
-//     "/file/downloadRemoteServer1",
-//     { path: query }
-//   );
-// };
-
 export const fileDownload = query => {
   return http.post(
     "/file/downloadRemoteServer1",

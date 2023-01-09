@@ -138,7 +138,7 @@ import { toastDeleteById, toastManageList } from "@/api/toastManage";
 import ToastEdit from "@/views/toastManage/ToastEdit.vue";
 import ToastAddNew from "@/views/toastManage/ToastAddNew.vue";
 import ToastApproval from "@/views/toastManage/ToastApproval.vue";
-import { ToastStatus } from "@/config/enum";
+import { ToastStatus } from "@/common/enum";
 
 export default {
   name: "roleManage",

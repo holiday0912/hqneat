@@ -3,6 +3,7 @@
   <el-dialog
     v-dialogDrag
     :close-on-click-modal="false"
+    :destroy-on-close="true"
     :visible.sync="dialogFormVisible"
     title="h5包上传"
     width="680px"
@@ -74,16 +75,7 @@
       <el-button slot="trigger" size="small" type="primary"
         >选取文件
       </el-button>
-      <el-button
-        :disabled="!selectFile"
-        :loading="isUploading"
-        class="upload-btn"
-        size="small"
-        style="margin-left: 10px;"
-        type="success"
-        @click="submitUpload"
-        >上传到服务器
-      </el-button>
+
       <div slot="tip" class="el-upload__tip">
         只能上传zip格式的压缩包，并请直接压缩所需文件，不要直接压缩文件夹
       </div>
@@ -91,6 +83,15 @@
 
     <template #footer class="dialog-footer">
       <el-button @click="dialogEditClose">取 消</el-button>
+      <el-button
+        :disabled="!selectFile"
+        :loading="isUploading"
+        size="small"
+        style="margin-left: 10px;"
+        type="primary"
+        @click="submitUpload"
+        >上传到服务器
+      </el-button>
     </template>
   </el-dialog>
 </template>
@@ -163,18 +164,15 @@ export default {
       if (message === "请求成功") {
         try {
           let res = await insertVersion({ fileUrl: data, ...this.form });
-          console.log(res);
           if (res.message === "请求成功") {
             this.isUploading = false;
             this.$message.success(res.message);
             this.dialogEditClose();
           } else {
             this.isUploading = false;
-            console.log("response error");
             this.$message.error(res.message);
           }
         } catch (e) {
-          console.log("req error");
           this.isUploading = false;
           throw new Error(e);
         }

@@ -3,6 +3,7 @@
   <el-dialog
     v-dialogDrag
     :close-on-click-modal="false"
+    :destroy-on-close="true"
     :visible.sync="dialogFormVisible"
     title="热修复"
     width="680px"
@@ -45,16 +46,6 @@
       accept=".jar"
     >
       <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
-      <el-button
-        :disabled="!selectFile"
-        :loading="isUploading"
-        class="upload-btn"
-        size="small"
-        style="margin-left: 10px;"
-        type="success"
-        @click="submitUpload"
-        >上传到服务器
-      </el-button>
       <div slot="tip" class="el-upload__tip">
         只能上传jar包
       </div>
@@ -62,6 +53,15 @@
 
     <template #footer class="dialog-footer">
       <el-button @click="dialogEditClose">取 消</el-button>
+      <el-button
+        :disabled="!selectFile"
+        :loading="isUploading"
+        size="small"
+        style="margin-left: 10px;"
+        type="primary"
+        @click="submitUpload"
+        >上传到服务器
+      </el-button>
     </template>
   </el-dialog>
 </template>
@@ -150,10 +150,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.upload-btn {
-  transform: translateX(80px);
-}
-
 .el-upload__tip {
   margin-left: 10px;
 }

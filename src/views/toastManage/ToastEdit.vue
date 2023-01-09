@@ -4,6 +4,7 @@
     <el-dialog
       v-dialogDrag
       :close-on-click-modal="false"
+      :destroy-on-close="true"
       :visible.sync="dialogFormVisible"
       title="提示配置修改"
       width="680px"

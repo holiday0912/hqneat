@@ -148,7 +148,17 @@ const routes = [
             /* webpackChunkName: "serviceType" */ "@/views/serviceType/ServiceType.vue"
           ),
         meta: { permission: false, title: "业务类型" }
-      }
+      },
+      // 导航栏管理
+      {
+        path: "/tabbarCon",
+        name: "tabbarCon",
+        component: () =>
+          import(
+            /* webpackChunkName: "tabbarCon" */ "@/views/tabbarCon/TabbarCon.vue"
+          ),
+        meta: { permission: false, title: "导航栏管理" }
+      },
     ]
   },
   {

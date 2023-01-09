@@ -45,14 +45,36 @@ NProgress.configure({
 
 //使用钩子函数对路由进行权限跳转。
 router.beforeEach((to, from, next) => {
-  NProgress.start();
   const role = sessionStorage.getItem("tk");
-  if (!role && to.name !== "login") next({ name: "login" });
-  else next();
+  if (!role && to.name !== "login") {
+    NProgress.start();
+    next({ name: "login" });
+  } else if (to.name === "login") {
+    next();
+  } else {
+    const router = JSON.parse(sessionStorage.getItem("userLoginContext"));
+    const temp1 = router.map(i => {
+      if (i.resources) {
+        return i.resources.map(i => i.router);
+      }
+      return i.router;
+    });
+    const routes = temp1.flat();
+    if (to.path === "/404" || to.path === "/403") {
+      next();
+    } else if (routes.includes(to.name)) {
+      NProgress.start();
+      next();
+    } else {
+      next({ path: "/404" });
+    }
+  }
 });
+
 router.afterEach(to => {
   NProgress.done();
 });
+
 router.onError(error => {
   const pattern = /Loading chunk (\d)+ failed/g;
   const isChunkLoadFailed = error.message.match(pattern);

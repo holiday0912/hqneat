@@ -9,15 +9,16 @@
       @dragover="dragover($event)"
       @dragstart="dragstart(index)"
     >
-      {{ item.label }}
-      <el-switch v-model="value1"></el-switch>
+      {{ item.text }}
+      <el-switch v-model="item.status"></el-switch>
     </li>
   </transition-group>
 </template>
 
 <script>
 export default {
-  name: "DragAbleTest",
+  name: "DragAbleCom",
+  props: ["value"],
   data() {
     return {
       list: [
@@ -32,6 +33,9 @@ export default {
       enterIndex: "",
       value1: true
     };
+  },
+  mounted() {
+    this.list = this.value;
   },
   methods: {
     dragenter(e, index) {
@@ -56,6 +60,7 @@ export default {
 <style lang="scss" scoped>
 .list {
   list-style: none;
+  display: flex;
 
   .drag-move {
     transition: transform 0.3s;

@@ -114,27 +114,7 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row>
-          <el-col :span="24">
-            <el-form-item
-              :rules="[
-                {
-                  required: false,
-                  message: '请输入资源id',
-                  trigger: 'blur'
-                }
-              ]"
-              label="资源id"
-              prop="resourceId"
-            >
-              <el-input
-                v-model="addItem.resourceId"
-                clearable
-                placeholder="请输入资源id"
-              />
-            </el-form-item>
-          </el-col>
-        </el-row>
+
         <el-row>
           <el-col :span="24">
             <el-form-item
@@ -296,19 +276,19 @@ export default {
           label: "资源ID",
           prop: "resourceId"
         },
+        // {
+        //   label: "父资源ID",
+        //   prop: "parentId"
+        // },
         {
-          label: "父资源ID",
-          prop: "parentId"
+          label: "资源名称",
+          prop: "resourceName"
         },
         {
           label: "图标",
           prop: "icon",
           render: "iconRender",
           width: "60"
-        },
-        {
-          label: "资源名称",
-          prop: "resourceName"
         },
         {
           label: "前端路由",
@@ -392,6 +372,9 @@ export default {
           deleteBatch(arr).then(res => {
             if (res) {
               this.$message.success("删除成功");
+              if (this.tableData.length === 1) {
+                this.$refs.resourceTable.query.pageNum--;
+              }
               this.handleSearch();
             }
           });

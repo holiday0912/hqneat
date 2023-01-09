@@ -4,6 +4,7 @@
     <el-dialog
       v-dialogDrag
       :close-on-click-modal="false"
+      :destroy-on-close="true"
       :visible.sync="dialogFormVisible"
       title="新增提示配置"
       width="680px"
@@ -50,8 +51,8 @@
             v-model="form.type"
             :fetch-suggestions="querySearch"
             placeholder="请输入内容"
-            @select="handleSelect"
             style="display: block;width: 200px"
+            @select="handleSelect"
           >
             <template v-slot="{ item }">
               <span>{{ item.type }}</span>
@@ -86,7 +87,7 @@ export default {
         property: "",
         propertyE: "",
         propertyF: "",
-        type: "",
+        type: ""
       },
       typeList: []
     };
