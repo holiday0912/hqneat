@@ -92,7 +92,11 @@ export default {
           });
           if (res.code.slice(-5) === "00000") {
             // this.$message.success('修改成功')
-            this.$notify({ title: "提示", message: "修改成功" });
+            this.$notify({
+              title: "提示",
+              message: "修改成功",
+              type: "success"
+            });
             this.dialogEditClose();
           }
         } catch (error) {
@@ -103,7 +107,11 @@ export default {
           const res = await insertServiceType(this.form);
           if (res.code.slice(-5) === "00000") {
             // this.$message.success('新增成功')
-            this.$notify({ title: "提示", message: "新增成功" });
+            this.$notify({
+              title: "提示",
+              message: "新增成功",
+              type: "success"
+            });
             this.dialogEditClose();
           }
         } catch (error) {

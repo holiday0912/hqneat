@@ -220,3 +220,10 @@ input:-webkit-autofill {
 .el-pagination.is-background .el-pager li:not(.disabled).active {
     background-color: #006ECA
 }
+
+.icon-url {
+    display: inline-block;
+    margin-left: 20px;
+    text-decoration: underline;
+    padding-top: 7px;
+}

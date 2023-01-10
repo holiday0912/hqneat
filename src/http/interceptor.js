@@ -16,7 +16,7 @@ export const http = axios.create({
 });
 
 // request 拦截器
-const options = { text: "拼命加载中", fullscreen: true };
+const options = { text: "拼命加载中" };
 let loadingRequestCount = 0;
 let loadingInstance;
 const showLoading = () => {

@@ -68,7 +68,6 @@
       :multiple="false"
       :on-change="handleFileChange"
       :on-error="uploadError"
-      :on-remove="handleRemove"
       :on-success="uploadSuccess"
       accept="application/zip"
     >
@@ -177,15 +176,13 @@ export default {
           throw new Error(e);
         }
       } else {
+        this.isUploading = false;
         this.$message.error(message);
       }
     },
     uploadError(res) {
       this.$message.error(res.message);
       this.isUploading = false;
-    },
-    handleRemove(file, fileList) {
-      console.log(file, fileList);
     },
     handleFileChange(file, fileList) {
       this.selectFile = Boolean(fileList.length);

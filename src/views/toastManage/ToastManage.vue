@@ -64,7 +64,7 @@
         </el-table-column>
 
         <!--业务类型-->
-        <el-table-column align="center" label="业务类型" prop="type">
+        <el-table-column align="center" label="业务类型" prop="serviceTypeName">
         </el-table-column>
 
         <!--温馨提示内容-->
@@ -78,7 +78,7 @@
         <el-table-column
           align="center"
           label="操作人员"
-          prop="updateUser"
+          prop="createUserName"
         ></el-table-column>
 
         <!--更新时间-->
@@ -176,7 +176,9 @@ export default {
           this.tableData = data.map(i => {
             return {
               ...i,
-              updateTime: this.$dayjs(i.updateTime),
+              updateTime: i.updateTime
+                ? this.$dayjs(i.updateTime)
+                : this.$nodata,
               status: this.getStatus(i.status)
             };
           });

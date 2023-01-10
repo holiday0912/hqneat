@@ -16,7 +16,7 @@
             </el-form-item>
           </el-col>
 
-          <el-col :span="12">
+          <el-col :span="18">
             <div style="margin-left: 50px; display: inline-block">
               <el-button icon="el-icon-refresh" @click="formReset"
                 >重置
@@ -30,19 +30,17 @@
                 >查询
               </el-button>
             </div>
+
+            <el-button
+              icon="el-icon-plus"
+              style="margin-left: 10px; display: inline-block"
+              type="primary"
+              @click="handleAdd"
+              >新增
+            </el-button>
           </el-col>
         </el-row>
       </el-form>
-
-      <el-row>
-        <el-col :span="8" style="margin-left: 20px">
-          <div class="handle-box">
-            <el-button icon="el-icon-plus" type="primary" @click="handleAdd"
-              >新增
-            </el-button>
-          </div>
-        </el-col>
-      </el-row>
 
       <el-table
         ref="multipleTable"
@@ -58,7 +56,12 @@
         </el-table-column>
 
         <!--图片地址-->
-        <el-table-column align="center" label="图片地址" prop="imgUrl">
+        <el-table-column
+          align="center"
+          label="图片地址"
+          prop="imgUrl"
+          width="350"
+        >
           <template v-slot="scope">
             <el-image
               :preview-src-list="[scope.row.imgUrl]"

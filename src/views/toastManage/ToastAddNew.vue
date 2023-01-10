@@ -45,17 +45,17 @@
         <el-form-item
           :rules="[{ required: true, message: '请输入' }]"
           label="业务类型"
-          prop="type"
+          prop="serviceTypeName"
         >
           <el-autocomplete
-            v-model="form.type"
+            v-model="form.serviceTypeName"
             :fetch-suggestions="querySearch"
             placeholder="请输入内容"
             style="display: block;width: 200px"
             @select="handleSelect"
           >
             <template v-slot="{ item }">
-              <span>{{ item.type }}</span>
+              <span>{{ item.serviceTypeName }}</span>
             </template>
           </el-autocomplete>
         </el-form-item>
@@ -87,7 +87,8 @@ export default {
         property: "",
         propertyE: "",
         propertyF: "",
-        type: ""
+        serviceTypeCode: "",
+        serviceTypeName: ""
       },
       typeList: []
     };
@@ -131,7 +132,8 @@ export default {
       }
     },
     handleSelect(val) {
-      this.form.type = val.type;
+      this.form.serviceTypeCode = val.serviceTypeCode;
+      this.form.serviceTypeName = val.serviceTypeName;
     },
     addMessagePush() {
       this.$refs.edit.validate(async valid => {

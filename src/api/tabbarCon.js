@@ -1,10 +1,8 @@
-import { post } from "@/http/request";
+import { get, post } from "@/http/request";
 
 // 删除tabbar
-export const deleteTabbarInfo = query => {
-  return post("/tabbarInfo/delete", {
-    id: query
-  });
+export const deleteTabbarInfo = id => {
+  return get("/tabbarInfo/delete", { id });
 };
 
 // 新增tabbar
@@ -26,4 +24,9 @@ export const updateTabbarInfo = query => {
   return post("/tabbarInfo/update", {
     ...query
   });
+};
+
+// 修改顺序updateOrder
+export const updateOrder = query => {
+  return post("/tabbarInfo/updateOrder", query);
 };

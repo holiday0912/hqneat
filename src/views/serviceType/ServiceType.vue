@@ -25,25 +25,32 @@
             </el-form-item>
           </el-col> -->
 
-          <el-col :span="12">
-            <div style="margin-left: 50px; display: inline-block">
-              <el-button icon="el-icon-refresh" @click="formRest"
-                >重置
-              </el-button>
-            </div>
-            <div style="margin-left: 10px; display: inline-block">
-              <el-button
-                icon="el-icon-search"
-                type="primary"
-                @click="handleSearch"
-                >查询
-              </el-button>
-            </div>
+          <el-col :span="18">
+            <el-button
+              icon="el-icon-refresh"
+              style="margin-left: 50px; display: inline-block"
+              @click="formRest"
+              >重置
+            </el-button>
+
+            <el-button
+              icon="el-icon-search"
+              style="margin-left: 10px; display: inline-block"
+              type="primary"
+              @click="handleSearch"
+              >查询
+            </el-button>
+
+            <el-button
+              icon="el-icon-plus"
+              style="margin-left: 10px; display: inline-block"
+              type="primary"
+              @click="handleAdd"
+            >
+              新增
+            </el-button>
           </el-col>
         </el-row>
-        <el-button icon="el-icon-plus" type="primary" @click="handleAdd">
-          新增
-        </el-button>
       </el-form>
 
       <BaseTable
@@ -85,7 +92,7 @@
 
 <script>
 import { deleteServiceType, getServiceTypeList } from "@/api/serviceType";
-import ServiceTypeAdd from "@/views/serviceType/ServiceTypeAdd.vue";
+import ServiceTypeAdd from "@/views/serviceType/ServiceTypeMan.vue";
 import { serviceType } from "@/common/enum";
 
 export default {
@@ -181,7 +188,7 @@ export default {
         const res = await deleteServiceType(id);
         if (res) {
           // this.$message.success('删除成功')
-          this.$notify({ title: "提示", message: "删除成功" });
+          this.$notify({ title: "提示", message: "删除成功", type: "success" });
           if (this.tableData.length === 1) {
             this.$refs.serviceTypeTable.query.pageNum--;
           }

@@ -176,8 +176,9 @@
             </el-form-item>
           </el-col>
         </el-row>
+
         <el-row>
-          <el-col :span="24">
+          <el-col :span="16">
             <el-form-item label="菜单图标" prop="icon">
               <el-input
                 v-model="addItem.icon"
@@ -186,7 +187,17 @@
               />
             </el-form-item>
           </el-col>
+          <el-col :span="8">
+            <a
+              alt="图标库地址"
+              class="icon-url"
+              href="https://element.eleme.cn/#/zh-CN/component/icon"
+              target="_blank"
+              >图标库地址</a
+            >
+          </el-col>
         </el-row>
+
         <el-row>
           <el-col :span="24">
             <el-form-item label="资源请求后台地址" prop="handlerUrl">
@@ -413,7 +424,6 @@ export default {
         resourceName,
         router
       };
-      console.log(this.addItem);
       if (row.type === "菜单") {
         this.addItem.type = true;
       } else if (row.type === "按钮") {

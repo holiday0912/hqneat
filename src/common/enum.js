@@ -54,17 +54,3 @@ export const serviceType = [
     val: "贷款"
   }
 ];
-
-/**
- * 导航栏菜单 0 停用 1 启用
- */
-export const tabBarStatus = [
-  {
-    key: "0",
-    val: "停用"
-  },
-  {
-    key: "1",
-    val: "启用"
-  }
-];
