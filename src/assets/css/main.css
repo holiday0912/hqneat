@@ -230,4 +230,8 @@ input:-webkit-autofill {
 
 .menu-icon-select {
     display: flex;
+    overflow-y: auto;
+    flex-wrap: wrap;
+    height: 300px;
+    width: 410px;
 }

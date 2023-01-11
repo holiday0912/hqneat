@@ -83,6 +83,11 @@ axios.interceptors.response.use(
         // }
         return res;
       } else if (res.code.slice(-5) === "50001") {
+        new Vue().$notify({
+          title: "提示",
+          message: "请重新登陆",
+          type: "error"
+        });
         // token失效，跳转登入页
         router.push({ path: "/login" });
       } else {
