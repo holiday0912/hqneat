@@ -52,21 +52,25 @@ router.beforeEach((to, from, next) => {
   } else if (to.name === "login") {
     next();
   } else {
-    const router = JSON.parse(sessionStorage.getItem("userLoginContext"));
-    const temp1 = router.map(i => {
-      if (i.resources) {
-        return i.resources.map(i => i.router);
-      }
-      return i.router;
-    });
-    const routes = temp1.flat();
-    if (to.path === "/404" || to.path === "/403") {
-      next();
-    } else if (routes.includes(to.name)) {
-      NProgress.start();
+    if (to.meta.permission) {
       next();
     } else {
-      next({ path: "/404" });
+      const router = JSON.parse(sessionStorage.getItem("userLoginContext"));
+      const temp1 = router.map(i => {
+        if (i.resources) {
+          return i.resources.map(i => i.router);
+        }
+        return i.router;
+      });
+      const routes = temp1.flat();
+      if (to.path === "/404" || to.path === "/403") {
+        next();
+      } else if (routes.includes(to.name)) {
+        NProgress.start();
+        next();
+      } else {
+        next({ path: "/404" });
+      }
     }
   }
 });

@@ -159,6 +159,16 @@ const routes = [
           ),
         meta: { permission: false, title: "导航栏管理" }
       },
+      // 待办事项
+      {
+        path: "/todoList",
+        name: "todoList",
+        component: () =>
+          import(
+            /* webpackChunkName: "todoList" */ "@/views/todoList/TodoList.vue"
+          ),
+        meta: { permission: false, title: "待办事项" }
+      },
     ]
   },
   {

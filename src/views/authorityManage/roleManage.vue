@@ -257,16 +257,9 @@
 </template>
 
 <script>
-import {
-  addItem,
-  deleteBatch,
-  editItem,
-  pageList
-} from "../../api/system/sysRole";
-import {
-  authResource,
-  queryResourceTree
-} from "../../api/system/sysRoleResource";
+import { addItem, deleteBatch, editItem, pageList } from "@/api/system/sysRole";
+import { authResource, queryResourceTree } from "@/api/system/sysRoleResource";
+import { updateMenuMethod } from "@/common/toolFunc";
 
 export default {
   name: "roleManage",
@@ -427,11 +420,12 @@ export default {
         roleId: this.resourceInfo.roleId,
         resourceIds: idArrs.join(",")
       };
-      authResource(obj).then(res => {
+      authResource(obj).then(async res => {
         if (res) {
           this.$message.success("授权成功");
           this.dialogEditClose();
           this.getData();
+          await updateMenuMethod();
         }
       });
     },

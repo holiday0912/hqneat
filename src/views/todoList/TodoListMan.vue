@@ -5,27 +5,26 @@
       v-dialogDrag
       :close-on-click-modal="false"
       :destroy-on-close="true"
-      :title="isEdit ? '导航菜单修改' : '导航菜单新增'"
+      :title="isEdit ? '待办事项修改' : '待办事项新增'"
       :visible.sync="dialogFormVisible"
       width="680px"
       @close="dialogEditClose"
-      @open="openOrderEdit = true"
     >
       <el-form ref="edit" :model="form" label-width="150px">
         <el-form-item
           :rules="[{ required: true, message: '请输入' }]"
-          label="菜单名称"
-          prop="text"
+          label="待办事件"
+          prop="eventName"
         >
-          <el-input v-model="form.text"></el-input>
+          <el-input v-model="form.eventName"></el-input>
         </el-form-item>
 
         <el-form-item
           :rules="[{ required: true, message: '请输入' }]"
-          label="路由"
-          prop="router"
+          label="事件类型"
+          prop="eventType"
         >
-          <el-input v-model="form.router"></el-input>
+          <el-input v-model="form.eventType"></el-input>
         </el-form-item>
 
         <el-form-item label="图标">
@@ -58,32 +57,6 @@
             </el-col>
           </el-row>
         </el-form-item>
-
-        <!--        <el-form-item-->
-        <!--          :rules="[{ required: true, message: '请输入' }]"-->
-        <!--          label="激活图标"-->
-        <!--          prop="selectedIconUrl"-->
-        <!--        >-->
-        <!--          <el-input v-model="form.selectedIconUrl"></el-input>-->
-        <!--        </el-form-item>-->
-
-        <el-form-item
-          :rules="[{ required: true, message: '请输入' }]"
-          label="状态"
-          prop="status"
-        >
-          <el-switch
-            v-model="form.status"
-            :active-value="1"
-            :inactive-value="0"
-          ></el-switch>
-        </el-form-item>
-
-        <el-form-item v-if="!isEdit" label="调整菜单顺序">
-          <el-checkbox v-model="openOrderEdit">
-            新增成功打开菜单顺序调整页面
-          </el-checkbox>
-        </el-form-item>
       </el-form>
 
       <div slot="footer" class="dialog-footer">
@@ -97,22 +70,21 @@
 </template>
 
 <script>
-import { insertTabbarInfo, updateTabbarInfo } from "@/api/tabbarCon";
 import { fileUpload } from "@/api/htmlPackage";
+import { insertEventInfo, updateEventInfo } from "@/api/todoList";
 
 export default {
-  name: "TabbarConAdd",
+  name: "TodoListMan",
   data() {
     return {
       dialogFormVisible: false,
       form: {
-        text: "",
-        router: "",
-        status: 1,
+        eventName: "",
+        eventType: "",
         iconUrl: ""
       },
-      iconUrl: "",
       id: "",
+      iconUrl: "",
       target: {},
       // 判断是否是编辑页面
       isEdit: false,
@@ -120,8 +92,6 @@ export default {
       fileList: [],
       //   文件上传的地址
       actions: fileUpload,
-      // 打开顺序调整页面
-      openOrderEdit: true,
       uploadNew: false
     };
   },
@@ -129,25 +99,23 @@ export default {
     showDialog() {
       this.isEdit = false;
       this.dialogFormVisible = true;
-      this.form.text = "";
+      this.form.eventName = "";
       this.form.iconUrl = "";
-      this.form.router = "";
-      this.form.status = 1;
+      this.form.eventType = "";
     },
     editConfirm(target) {
       this.showDialog();
       const temp = JSON.parse(JSON.stringify(target));
-      for (let i in this.form) {
-        this.form[i] = temp[i];
-      }
+      this.form.eventName = temp.eventName;
+      this.form.eventType = temp.eventType;
       const target1 = temp.iconUrl;
       if (target1) {
         this.iconUrl = target1;
         this.form.iconUrl = target1.slice(target1.indexOf("/home"));
       }
       this.id = temp.id;
-      this.isEdit = true;
       this.uploadNew = false;
+      this.isEdit = true;
     },
     dialogEditClose() {
       this.dialogFormVisible = false;
@@ -158,7 +126,7 @@ export default {
         if (valid) {
           if (this.isEdit) {
             try {
-              const res = await updateTabbarInfo({ ...this.form, id: this.id });
+              const res = await updateEventInfo({ ...this.form, id: this.id });
               if (res.code.slice(-5) === "00000") {
                 this.$notify({
                   title: "提示",
@@ -174,7 +142,7 @@ export default {
           } else {
             this.isUploading = true;
             try {
-              const res = await insertTabbarInfo(this.form);
+              const res = await insertEventInfo(this.form);
               if (res.code.slice(-5) === "00000") {
                 this.$notify({
                   title: "提示",
@@ -183,9 +151,6 @@ export default {
                 });
                 this.dialogEditClose();
                 this.$emit("refresh");
-                if (this.openOrderEdit) {
-                  this.$emit("openOrderEdit");
-                }
               } else {
                 this.$message.error(res.message);
               }

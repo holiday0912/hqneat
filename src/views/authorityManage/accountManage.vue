@@ -129,8 +129,8 @@
             {
               required: true,
               message: '请输入用户名',
-              trigger: 'blur',
-            },
+              trigger: 'blur'
+            }
           ]"
           label="用户名"
           prop="userName"
@@ -147,13 +147,13 @@
             {
               required: true,
               message: '请输入手机号',
-              trigger: 'blur',
+              trigger: 'blur'
             },
             {
               pattern: /^1[3|5|7|8|9]\d{9}$/,
               message: '请输入正确的号码格式',
-              trigger: 'change',
-            },
+              trigger: 'change'
+            }
           ]"
           label="手机号"
           prop="phone"
@@ -171,8 +171,8 @@
             {
               required: true,
               message: '请选择需要绑定的角色',
-              trigger: 'blur',
-            },
+              trigger: 'blur'
+            }
           ]"
           label="角色"
           prop="roleIds"
@@ -223,157 +223,159 @@ import {
   deleteUser,
   editItem,
   pageList,
-  updateUserRoleById,
-} from '@/api/system/sysUser'
-import { list } from '@/api/system/sysRole'
+  updateUserRoleById
+} from "@/api/system/sysUser";
+import { list } from "@/api/system/sysRole";
+import { updateMenuMethod } from "@/common/toolFunc";
 
 export default {
-  name: 'accountManage',
+  name: "accountManage",
   data() {
     return {
       query: {
         pageNum: 1,
-        pageSize: 10,
+        pageSize: 10
       },
       searchForm: {
-        userName: '', // 用户名
-        phone: '', // 手机号
+        userName: "", // 用户名
+        phone: "" // 手机号
       },
       tableData: [],
       pageTotal: 0,
-      dialogTitle: '',
+      dialogTitle: "",
       dialogFormVisible: false,
       addItem: {
-        password: '', // 登入密码
-        phone: '', // 手机号
-        roleIds: '', // 角色id
-        userName: '', // 用户名
-        id: '',
+        password: "", // 登入密码
+        phone: "", // 手机号
+        roleIds: "", // 角色id
+        userName: "", // 用户名
+        id: ""
       },
-      roleList: [], // 角色列表
-    }
+      roleList: [] // 角色列表
+    };
   },
   created() {
-    this.getData()
-    this.searchRoleList()
+    this.getData();
+    this.searchRoleList();
   },
   methods: {
     // 查询角色列表
     searchRoleList() {
-      list({}).then((res) => {
+      list({}).then(res => {
         if (res) {
-          this.roleList = res.data
+          this.roleList = res.data;
         }
-      })
+      });
     },
     // 表单重置
     formRest() {
-      this.$refs.searchRorm.resetFields()
+      this.$refs.searchRorm.resetFields();
     },
     getData() {
-      let obj = Object.assign(this.query, this.searchForm)
-      pageList(obj).then((res) => {
+      let obj = Object.assign(this.query, this.searchForm);
+      pageList(obj).then(res => {
         if (res) {
-          this.tableData = res.data.list
-          this.pageTotal = res.data.total
+          this.tableData = res.data.list;
+          this.pageTotal = res.data.total;
         }
-      })
+      });
     },
     // 列表查询
     handleSearch() {
       this.query = {
         pageNum: 1,
-        pageSize: 10,
-      }
-      this.getData()
+        pageSize: 10
+      };
+      this.getData();
     },
     // 分页导航
     handlePageChange(val) {
-      this.$set(this.query, 'pageNum', val)
-      this.getData()
+      this.$set(this.query, "pageNum", val);
+      this.getData();
     },
     // 改变页码
     hanleSizeChange(val) {
-      this.$set(this.query, 'pageSize', val)
+      this.$set(this.query, "pageSize", val);
       if (this.tableData.length > 0) {
-        this.getData()
+        this.getData();
       }
     },
     // 新增
     handleAdd() {
-      this.dialogTitle = '新增账号'
-      this.dialogFormVisible = true
+      this.dialogTitle = "新增账号";
+      this.dialogFormVisible = true;
       // this.searchRoleList();
     },
     // 编辑账号
     handleEdit({ phone, roleNames, userName, id }) {
-      this.dialogTitle = '修改账号'
-      this.addItem.phone = phone
-      this.addItem.roleIds = roleNames.split(',').map(i=>{
-        return this.roleList.find(inner => inner.roleName === i).id
-      })
-      this.addItem.userName = userName
-      this.addItem.id = id
-      this.dialogFormVisible = true
+      this.dialogTitle = "修改账号";
+      this.addItem.phone = phone;
+      this.addItem.roleIds = roleNames.split(",").map(i => {
+        return this.roleList.find(inner => inner.roleName === i).id;
+      });
+      this.addItem.userName = userName;
+      this.addItem.id = id;
+      this.dialogFormVisible = true;
     },
     // 删除账号
     async handleDelete({ id }) {
       try {
-        let res = await deleteUser({ id })
-        if (res?.code.slice(-5) === '00000') {
-          this.$message.success('删除成功')
-          this.handleSearch()
+        let res = await deleteUser({ id });
+        if (res?.code.slice(-5) === "00000") {
+          this.$message.success("删除成功");
+          this.handleSearch();
         } else {
-          this.$message.error('请稍后重试')
+          this.$message.error("请稍后重试");
         }
       } catch (e) {
-        throw new Error(e)
+        throw new Error(e);
       }
     },
     // 关闭弹窗
     dialogClose() {
-      this.dialogFormVisible = false
+      this.dialogFormVisible = false;
       this.addItem = {
-        password: '', // 登入密码
-        phone: '', // 手机号
-        roleIds: '', // 角色id
-        userName: '', // 用户名
-      }
+        password: "", // 登入密码
+        phone: "", // 手机号
+        roleIds: "", // 角色id
+        userName: "" // 用户名
+      };
     },
     // 新增资源提交
     handleComfire() {
-      this.$refs.add.validate(async (valid) => {
+      this.$refs.add.validate(async valid => {
         if (valid) {
-          let obj = JSON.parse(JSON.stringify(this.addItem))
-          obj.roleIds = obj.roleIds.length > 0 ? obj.roleIds.join(',') : ''
-          if (this.dialogTitle === '修改账号') {
-            delete obj.password
+          let obj = JSON.parse(JSON.stringify(this.addItem));
+          obj.roleIds = obj.roleIds.length > 0 ? obj.roleIds.join(",") : "";
+          if (this.dialogTitle === "修改账号") {
+            delete obj.password;
             try {
               let res = await Promise.allSettled([
                 editItem(obj),
-                updateUserRoleById({ userId: obj.id, roleIds: obj.roleIds }),
-              ])
-              if (res.every((i) => i.status === 'fulfilled')) {
-                this.$message.success('修改成功')
-                this.dialogClose()
-                this.handleSearch()
+                updateUserRoleById({ userId: obj.id, roleIds: obj.roleIds })
+              ]);
+              if (res.every(i => i.status === "fulfilled")) {
+                this.$message.success("修改成功");
+                this.dialogClose();
+                this.handleSearch();
+                await updateMenuMethod();
               }
             } catch (error) {
-              throw new Error(error)
+              throw new Error(error);
             }
           } else {
-            delete obj.id
-            addUser(obj).then((res) => {
+            delete obj.id;
+            addUser(obj).then(res => {
               if (res) {
-                this.$message.success('新增成功')
-                this.dialogClose()
-                this.handleSearch()
+                this.$message.success("新增成功");
+                this.dialogClose();
+                this.handleSearch();
               }
-            })
+            });
           }
         }
-      })
-    },
-  },
-}
+      });
+    }
+  }
+};
 </script>

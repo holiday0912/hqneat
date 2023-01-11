@@ -227,3 +227,7 @@ input:-webkit-autofill {
     text-decoration: underline;
     padding-top: 7px;
 }
+
+.menu-icon-select {
+    display: flex;
+}

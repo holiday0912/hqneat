@@ -188,6 +188,7 @@ import {
   checkCarouselImg
 } from "@/api/carouselManage";
 import { carouStatus } from "@/common/enum";
+import Big from "big.js";
 
 export default {
   name: "carouselManage",
@@ -225,7 +226,8 @@ export default {
         let res = await carouselImgList({
           ...query,
           ...this.searchForm,
-          userId: sessionStorage.getItem("ud")
+          userId:
+            parseFloat(new Big(sessionStorage.getItem("ud")).div(87687)) + ""
         });
         if (res.message === "请求成功") {
           this.tableData = res.data.list;

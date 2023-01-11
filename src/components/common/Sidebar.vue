@@ -74,7 +74,7 @@ export default {
       //     ]
       //   },
       // ]
-      items: [],
+      items: []
     };
   },
   computed: {
@@ -89,10 +89,11 @@ export default {
       bus.$emit("collapse-content", msg);
     });
     if (sessionStorage.getItem("userLoginContext")) {
-      this.items =  JSON.parse(
-        sessionStorage.getItem("userLoginContext")
-      );
+      this.items = JSON.parse(sessionStorage.getItem("userLoginContext"));
     }
+    bus.$on("updateMenu", target => {
+      this.items = target;
+    });
   }
 };
 </script>

@@ -1,7 +1,7 @@
 <template>
   <div class="login-wrap">
     <div class="ms-login">
-      <div class="ms-title">{{title}}</div>
+      <div class="ms-title">{{ title }}</div>
       <el-form
         ref="login"
         :model="param"
@@ -43,7 +43,9 @@
 
 <script>
 import { login } from "@/api/system/sysUser";
-import { sysTitle } from '@/config/dev'
+import { sysTitle } from "@/config/dev";
+import Big from "big.js";
+import { updateMenuMethod } from "@/common/toolFunc";
 
 export default {
   data: function() {
@@ -58,8 +60,14 @@ export default {
           { required: true, message: "请输入用户名", trigger: "blur" }
         ],
         password: [{ required: true, message: "请输入密码", trigger: "blur" }]
-      }
+      },
+      timer: ""
     };
+  },
+  beforeDestroy() {
+    if (this.timer) {
+      clearInterval(this.timer);
+    }
   },
   methods: {
     submitForm() {
@@ -69,26 +77,32 @@ export default {
           login(this.param).then(res => {
             if (res) {
               sessionStorage.setItem("tk", res.data.token);
-              sessionStorage.setItem('ud',res.data.userId)
-              const temp = res.data.userLoginContext.resources.map(i=>{
+              sessionStorage.setItem(
+                "ud",
+                parseFloat(new Big(res.data.userId).times(87687)) + ""
+              );
+              const temp = res.data.userLoginContext.resources.map(i => {
                 const inner = {
                   icon: i.icon,
                   router: i.router,
                   resourceName: i.resourceName
-                }
-                if(i.resources !== null && i.resources?.length !== 0) {
-                  inner.resources = i.resources.map(o=>{
+                };
+                if (i.resources !== null && i.resources?.length !== 0) {
+                  inner.resources = i.resources.map(o => {
                     return {
                       icon: o.icon,
                       router: o.router,
                       resourceName: o.resourceName
-                    }
-                  })
+                    };
+                  });
                 }
-                return inner
-              })
-              sessionStorage.setItem('userLoginContext', JSON.stringify(temp))
+                return inner;
+              });
+              sessionStorage.setItem("userLoginContext", JSON.stringify(temp));
               this.$router.push("/dashboard");
+              this.timer = setInterval(() => {
+                updateMenuMethod();
+              }, 10 * 60 * 1000);
             }
           });
         } else {

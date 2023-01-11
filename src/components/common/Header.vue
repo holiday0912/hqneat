@@ -6,7 +6,7 @@
         <i v-if="!collapse" class="el-icon-s-fold"></i>
         <i v-else class="el-icon-s-unfold"></i>
       </div>
-      <div class="logo">{{title}}</div>
+      <div class="logo">{{ title }}</div>
     </div>
     <div class="header-right">
       <div class="header-user-con">
@@ -98,7 +98,7 @@
 <script>
 import bus from "../common/bus";
 import { loginOut, resetPasswd } from "@/api/system/sysUser";
-import { sysTitle } from '@/config/dev'
+import { sysTitle } from "@/config/dev";
 
 export default {
   data() {
@@ -179,6 +179,7 @@ export default {
               if (res) {
                 sessionStorage.removeItem("user");
                 sessionStorage.removeItem("tk");
+                sessionStorage.removeItem("ud");
                 this.$router.push("/login");
               }
             });
@@ -229,7 +230,7 @@ export default {
           let obj = {
             oldPassword: this.form.oldPsw,
             newPassword: this.form.psw,
-            userName: sessionStorage.getItem('user')
+            userName: sessionStorage.getItem("user")
           };
           resetPasswd(obj).then(res => {
             if (res) {

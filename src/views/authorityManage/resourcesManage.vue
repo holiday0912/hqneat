@@ -180,11 +180,21 @@
         <el-row>
           <el-col :span="16">
             <el-form-item label="菜单图标" prop="icon">
-              <el-input
-                v-model="addItem.icon"
-                clearable
-                placeholder="请输入菜单图标代码"
-              />
+              <!--              <el-input-->
+              <!--                v-model="addItem.icon"-->
+              <!--                clearable-->
+              <!--                placeholder="请输入菜单图标代码"-->
+              <!--              />-->
+              <el-select v-model="addItem.icon" placeholder="请选择">
+                <el-option
+                  v-for="item in options"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                  class="menu-icon-select"
+                >
+                </el-option>
+              </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="8">
@@ -260,7 +270,29 @@ export default {
         resourceName: "", // 资源名称
         type: true // 资源类型 false - 按钮 true - 菜单
       },
-      resourceNameF: "" // 父资源名称
+      resourceNameF: "", // 父资源名称
+      options: [
+        {
+          value: "选项1",
+          label: "黄金糕"
+        },
+        {
+          value: "选项2",
+          label: "双皮奶"
+        },
+        {
+          value: "选项3",
+          label: "蚵仔煎"
+        },
+        {
+          value: "选项4",
+          label: "龙须面"
+        },
+        {
+          value: "选项5",
+          label: "北京烤鸭"
+        }
+      ]
     };
   },
   computed: {

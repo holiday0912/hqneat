@@ -46,3 +46,8 @@ export const updateUserRoleById = query => {
 export const resetPasswd = query => {
   return post("/sysUser/updatePwd", query);
 };
+
+// 刷新资源列表
+export const loginResourceList = query => {
+  return get("/sysUser/login/resourceList", { id: query });
+};

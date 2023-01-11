@@ -218,13 +218,13 @@ export default {
         if (res) {
           this.tableData = res.data.list.map(i => {
             return {
-              ...i,
-              createTime: i.createTime
-                ? this.$dayjs(i.createTime)
-                : this.$nodata,
-              updateTime: i.updateTime
-                ? this.$dayjs(i.updateTime)
-                : this.$nodata
+              ...i
+              // createTime: i.createTime
+              //   ? this.$dayjs(i.createTime)
+              //   : this.$nodata,
+              // updateTime: i.updateTime
+              //   ? this.$dayjs(i.updateTime)
+              //   : this.$nodata
             };
           });
           this.menuOrderList = JSON.parse(JSON.stringify(this.tableData));
