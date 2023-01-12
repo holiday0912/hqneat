@@ -48,11 +48,7 @@
       </el-form-item>
     </el-form>
 
-    <BuryDataChart
-      v-if="chartLoaded"
-      :chartData="chartData"
-      :labelData="labelData"
-    />
+    <div id="myChart" style="width: 100%;height: 300px"></div>
     <!--      </el-tab-pane>-->
 
     <!--      <el-tab-pane label="事件记录" name="second">-->
@@ -89,13 +85,9 @@
 
 <script>
 import { createCookieView } from "@/api/buryData";
-import BuryDataChart from "@/views/buryData/BuryDataChart.vue";
 
 export default {
   name: "BuryDataDrawer",
-  components: {
-    BuryDataChart
-  },
   data() {
     return {
       drawer: false,
@@ -107,7 +99,37 @@ export default {
       jsonData: ""
     };
   },
+  mounted() {
+    this.$nextTick(() => {
+      this.drawChart();
+    });
+  },
   methods: {
+    drawChart() {
+      const myChart = this.$ECharts.init(
+        document.getElementById("myChart"),
+        null,
+        { renderer: "svg" }
+      );
+      myChart.setOption({
+        title: {
+          text: "事件占比",
+          left: "240"
+        },
+        tooltip: {},
+        xAxis: {
+          data: this.labelData
+        },
+        yAxis: {},
+        series: [
+          {
+            name: "事件7天趋势",
+            type: "line",
+            data: this.chartData
+          }
+        ]
+      });
+    },
     showDrawer(val) {
       this.drawer = true;
       this.formData = val;

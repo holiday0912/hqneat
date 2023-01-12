@@ -16,10 +16,12 @@ import BaseTable from "@/components/BaseTable.vue";
 import { day } from "@/common/toolFunc";
 // import './utils/rem'
 import axios from "axios";
+import * as ECharts from "echarts";
 
 Vue.prototype.$axios = axios;
 Vue.prototype.$dayjs = day;
 Vue.prototype.$nodata = "——";
+Vue.prototype.$ECharts = ECharts;
 
 Vue.component("BasePagination", BasePagination);
 Vue.component("BaseTable", BaseTable);
