@@ -2,15 +2,18 @@
 export const carouStatus = [
   {
     key: "0",
-    val: "待审核"
+    val: "待审核",
+    color: "info"
   },
   {
     key: "1",
-    val: "审核未通过"
+    val: "审核未通过",
+    color: "danger"
   },
   {
     key: "2",
-    val: "审核通过"
+    val: "审核通过",
+    color: "success"
   }
 ];
 
@@ -19,27 +22,32 @@ export const carouStatus = [
 export const ToastStatus = [
   {
     key: "0",
-    val: "审核中"
+    val: "审核中",
+    color: "info"
   },
   {
     key: "1",
-    val: "复核生效"
+    val: "复核生效",
+    color: "warning"
   },
   {
     key: "2",
-    val: "复核拒绝"
+    val: "复核拒绝",
+    color: "danger"
   },
   {
     key: "3",
-    val: "删除审核中"
+    val: "删除审核中",
+    color: ""
   },
   {
     key: "4",
-    val: "审核通过"
+    val: "审核通过",
+    color: "success"
   }
 ];
 
-// 业务员类型的枚举
+// 业务类型的枚举
 export const serviceType = [
   {
     key: "regular",

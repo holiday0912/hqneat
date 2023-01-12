@@ -45,31 +45,37 @@ NProgress.configure({
 
 //使用钩子函数对路由进行权限跳转。
 router.beforeEach((to, from, next) => {
-  const role = sessionStorage.getItem("tk");
-  if (!role && to.name !== "login") {
-    NProgress.start();
-    next({ name: "login" });
-  } else if (to.name === "login") {
+  // 判断进入的页面需不需要授权
+  if (to.meta.everyOne) {
+    // 需要授权
     next();
   } else {
-    if (to.meta.permission) {
-      next();
+    // 不需要授权
+    const role = sessionStorage.getItem("tk");
+    // 判断是否登陆
+    if (!role) {
+      // 没有登陆跳转到登陆页面
+      next({ name: "login" });
     } else {
-      const router = JSON.parse(sessionStorage.getItem("userLoginContext"));
-      const temp1 = router.map(i => {
-        if (i.resources) {
-          return i.resources.map(i => i.router);
-        }
-        return i.router;
-      });
-      const routes = temp1.flat();
-      if (to.path === "/404" || to.path === "/403") {
-        next();
-      } else if (routes.includes(to.name)) {
-        NProgress.start();
+      // 登陆了判断是否是首页，首页默认放行
+      if (to.path.slice(1) === "dashboard") {
         next();
       } else {
-        next({ path: "/404" });
+        // 其它页面检查是否有相关权限
+        const router = JSON.parse(sessionStorage.getItem("userLoginContext"));
+        const temp1 = router.map(i => {
+          if (i.resources) {
+            return i.resources.map(i => i.router);
+          }
+          return i.router;
+        });
+        const routes = temp1.flat();
+        if (routes.includes(to.name)) {
+          NProgress.start();
+          next();
+        } else {
+          next({ path: "/404" });
+        }
       }
     }
   }

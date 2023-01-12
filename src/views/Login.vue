@@ -45,7 +45,6 @@
 import { login } from "@/api/system/sysUser";
 import { sysTitle } from "@/config/dev";
 import Big from "big.js";
-import { updateMenuMethod } from "@/common/toolFunc";
 
 export default {
   data: function() {
@@ -60,14 +59,8 @@ export default {
           { required: true, message: "请输入用户名", trigger: "blur" }
         ],
         password: [{ required: true, message: "请输入密码", trigger: "blur" }]
-      },
-      timer: ""
+      }
     };
-  },
-  beforeDestroy() {
-    if (this.timer) {
-      clearInterval(this.timer);
-    }
   },
   methods: {
     submitForm() {
@@ -100,9 +93,6 @@ export default {
               });
               sessionStorage.setItem("userLoginContext", JSON.stringify(temp));
               this.$router.push("/dashboard");
-              this.timer = setInterval(() => {
-                updateMenuMethod();
-              }, 10 * 60 * 1000);
             }
           });
         } else {

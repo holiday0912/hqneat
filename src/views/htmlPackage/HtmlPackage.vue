@@ -26,8 +26,12 @@
           </el-col>
 
           <el-col :span="6">
-            <el-form-item label="类型" prop="createTime">
-              <el-select v-model="searchForm.type" placeholder="请选择">
+            <el-form-item label="类型" prop="type">
+              <el-select
+                v-model="searchForm.type"
+                :clearable="true"
+                placeholder="请选择"
+              >
                 <el-option
                   v-for="item in typeList"
                   :key="item.value"

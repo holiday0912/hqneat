@@ -147,7 +147,6 @@ export default {
         delay: 10,
         onEnd({ newIndex, oldIndex }) {
           //oldIIndex拖放前的位置， newIndex拖放后的位置
-          console.log(currRow);
           const currRow = _this.tagsList.splice(oldIndex, 1)[0]; //鼠标拖拽当前的el-tabs-pane
           _this.tagsList.splice(newIndex, 0, currRow); //tableData 是存放所以el-tabs-pane的数组
         },

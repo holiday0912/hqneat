@@ -3,7 +3,6 @@ import { dateFormat } from "@/config/setting";
 import { loginResourceList } from "@/api/system/sysUser";
 import Big from "big.js";
 import bus from "@/components/common/bus";
-import router from "@/router";
 
 /**
  * 日期的格式化函数
@@ -14,6 +13,10 @@ export function day(target) {
   return dayjs(target).format(dateFormat);
 }
 
+/**
+ * 更新用户菜单
+ * @returns {Promise<void>}
+ */
 export async function updateMenuMethod() {
   try {
     const res = await loginResourceList(
@@ -39,16 +42,6 @@ export async function updateMenuMethod() {
       });
       sessionStorage.setItem("userLoginContext", JSON.stringify(temp));
       bus.$emit("updateMenu", temp);
-      const temp1 = temp.map(i => {
-        if (i.resources) {
-          return i.resources.map(i => i.router);
-        }
-        return i.router;
-      });
-      const routes = temp1.flat();
-      if (!routes.includes(router?.currentRoute.name)) {
-        await router.push({ name: "dashboard" });
-      }
     }
   } catch (e) {
     throw new Error(e.message);

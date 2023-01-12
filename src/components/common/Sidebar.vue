@@ -36,7 +36,7 @@
                   v-else
                   :key="subItem.router"
                   :index="subItem.router"
-                  >{{ subItem.resourceName }}
+                  ><i :class="subItem.icon"></i>{{ subItem.resourceName }}
                 </el-menu-item>
               </template>
             </el-submenu>

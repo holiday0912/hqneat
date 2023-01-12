@@ -75,7 +75,6 @@ export default {
   },
   methods: {
     openDrawer(target) {
-      console.log(target);
       this.form = target;
       this.drawer = true;
     },

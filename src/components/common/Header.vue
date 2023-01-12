@@ -180,6 +180,7 @@ export default {
                 sessionStorage.removeItem("user");
                 sessionStorage.removeItem("tk");
                 sessionStorage.removeItem("ud");
+                sessionStorage.removeItem("userLoginContext");
                 this.$router.push("/login");
               }
             });

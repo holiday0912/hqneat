@@ -57,14 +57,9 @@
         </template>
 
         <template #operation="{ scope }">
-          <el-popconfirm
-            title="确定删除吗？"
-            @confirm="handleDelete(scope.row)"
-          >
-            <el-button slot="reference" icon="el-icon-delete" type="text"
-              >删除
-            </el-button>
-          </el-popconfirm>
+          <el-button slot="reference" icon="el-icon-delete" type="text" @click="handleDelete(scope.row)"
+            >删除
+          </el-button>
 
           <el-button
             icon="el-icon-edit"
@@ -81,71 +76,71 @@
 </template>
 
 <script>
-import TodoListMan from "@/views/todoList/TodoListMan.vue";
-import { deleteEventInfo, eventInfoList } from "@/api/todoList";
+import TodoListMan from '@/views/todoList/TodoListMan.vue'
+import { deleteEventInfo, eventInfoList } from '@/api/todoList'
 
 export default {
-  name: "TodoList",
+  name: 'TodoList',
   components: {
-    TodoListMan
+    TodoListMan,
   },
   data() {
     return {
       searchForm: {
-        eventName: ""
+        eventName: '',
       },
       tableData: [],
       pageTotal: 0,
       dialogFormVisible: false,
-      editLoading: false
-    };
+      editLoading: false,
+    }
   },
   computed: {
     columns() {
       return [
         {
-          label: "序号",
-          width: "55",
-          render: "ordinal"
+          label: '序号',
+          width: '55',
+          render: 'ordinal',
         },
         {
-          label: "图标",
-          prop: "iconUrl",
-          render: "iconUrl"
+          label: '图标',
+          prop: 'iconUrl',
+          render: 'iconUrl',
         },
         {
-          label: "待办事件",
-          prop: "eventName"
+          label: '待办事件',
+          prop: 'eventName',
         },
         {
-          label: "事件类型",
-          prop: "eventType"
+          label: '事件类型',
+          prop: 'eventType',
         },
         {
-          label: "创建时间",
-          prop: "createTime"
+          label: '创建时间',
+          prop: 'createTime',
         },
         {
-          label: "更新时间",
-          prop: "updateTime"
+          label: '更新时间',
+          prop: 'updateTime',
         },
         {
-          label: "操作",
-          render: "operation"
-        }
-      ];
-    }
+          label: '操作',
+          render: 'operation',
+        },
+      ]
+    },
   },
   created() {
-    this.getData();
+    this.getData()
   },
   methods: {
     async getData(query = { pageNum: 1, pageSize: 10 }) {
-      const obj = Object.assign(query, this.searchForm);
+      const obj = Object.assign(query, this.searchForm)
       try {
-        const res = await eventInfoList(obj);
+        const res = await eventInfoList(obj)
         if (res) {
-          this.tableData = res.data.list.map(i => {
+          this.tableData = res.data.list.map((i) => {
             return {
               ...i,
               createTime: i.createTime
@@ -153,57 +148,73 @@ export default {
                 : this.$nodata,
               updateTime: i.updateTime
                 ? this.$dayjs(i.updateTime)
-                : this.$nodata
-            };
-          });
-          this.menuOrderList = JSON.parse(JSON.stringify(this.tableData));
-          this.pageTotal = res.data.total;
+                : this.$nodata,
+            }
+          })
+          this.menuOrderList = JSON.parse(JSON.stringify(this.tableData))
+          this.pageTotal = res.data.total
         }
       } catch (e) {
-        throw new Error(e);
+        throw new Error(e)
       }
     },
     formReset() {
-      this.$refs.searchForm.resetFields();
-      this.getData();
+      this.$refs.searchForm.resetFields()
+      this.getData()
     },
     // 列表查询
     handleSearch() {
       this.query = {
         pageNum: 1,
-        pageSize: 10
-      };
-      this.getData();
-    },
-    async handleDelete({ id }) {
-      try {
-        const res = await deleteEventInfo(id);
-        if (res) {
-          this.$notify({ title: "提示", message: "删除成功", type: "success" });
-          if (this.tableData.length === 1) {
-            this.$refs.tabbarConTable.query.pageNum--;
-          }
-          await this.getData();
-        }
-      } catch (error) {
-        throw new Error(error.message);
+        pageSize: 10,
       }
+      this.getData()
+    },
+    handleDelete({ id }) {
+      this.$confirm(
+        '确认删除？',
+        '提示',
+        {
+          type: 'warning',
+        }
+      )
+        .then(async () => {
+          try {
+            const res = await deleteEventInfo(id)
+            if (res) {
+              this.$notify({
+                title: '提示',
+                message: '删除成功',
+                type: 'success',
+              })
+              if (this.tableData.length === 1) {
+                this.$refs.tabbarConTable.query.pageNum--
+              }
+              await this.getData()
+            }
+          } catch (error) {
+            throw new Error(error.message)
+          }
+        })
+        .catch((error) => {
+          console.log(error)
+        })
     },
     handleAdd() {
-      this.$refs.tabbarConAdd.showDialog();
+      this.$refs.tabbarConAdd.showDialog()
     },
     handleEdit(target) {
-      this.$refs.tabbarConAdd.editConfirm(target);
+      this.$refs.tabbarConAdd.editConfirm(target)
     },
     openEditOrderModal() {
       if (this.tableData.length !== 0) {
-        this.dialogFormVisible = true;
+        this.dialogFormVisible = true
       } else {
-        this.$message.error("请稍后重试");
+        this.$message.error('请稍后重试')
       }
-    }
-  }
-};
+    },
+  },
+}
 </script>
 
 <style lang="scss" scoped>

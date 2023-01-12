@@ -66,6 +66,10 @@
           <i :class="scope.row.icon" style="font-size: 20px"></i>
         </template>
 
+        <template #router="{ scope }">
+          <p>/{{ scope.row.router }}</p>
+        </template>
+
         <template #operation="{ scope }">
           <el-button
             v-if="scope.row.type"
@@ -147,7 +151,6 @@
             v-model="addItem.type"
             :disabled="dialogTitle === '新增一级菜单'"
             placeholder="请选择资源类型"
-            style="width: 100%"
           >
             <el-option
               v-for="(item, index) in typeList"
@@ -159,11 +162,18 @@
         </el-form-item>
 
         <el-form-item v-if="addItem.type" label="菜单路由地址" prop="router">
-          <el-input
+          <el-select
             v-model="addItem.router"
             clearable
-            placeholder="请输入菜单路由地址"
-          />
+            placeholder="请选择菜单路由地址"
+          >
+            <el-option
+              v-for="item in routeList"
+              :key="item"
+              :label="`/${item}`"
+              :value="item"
+            ></el-option>
+          </el-select>
         </el-form-item>
 
         <el-form-item label="资源请求后台地址" prop="handlerUrl">
@@ -225,6 +235,7 @@ import {
   editItem,
   pageList
 } from "@/api/system/sysResource";
+import { updateMenuMethod } from "@/common/toolFunc";
 
 export default {
   name: "accountManage",
@@ -249,7 +260,8 @@ export default {
         resourceName: "", // 资源名称
         type: true // 资源类型 false - 按钮 true - 菜单
       },
-      resourceNameF: "" // 父资源名称
+      resourceNameF: "", // 父资源名称
+      routeList: []
     };
   },
   computed: {
@@ -292,7 +304,8 @@ export default {
         },
         {
           label: "前端路由",
-          prop: "router"
+          prop: "router",
+          render: "router"
         },
         {
           label: "资源类型",
@@ -524,6 +537,7 @@ export default {
   },
   mounted() {
     this.getData();
+    this.routeList = this.$router.options.routes[1].children.map(i => i.name);
   },
   methods: {
     // 表单重置
@@ -643,6 +657,7 @@ export default {
                 this.$message.success("修改成功");
                 this.dialogClose();
                 this.handleSearch();
+                updateMenuMethod();
               }
             });
           } else {

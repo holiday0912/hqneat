@@ -259,7 +259,6 @@ export default {
       let obj = Object.assign(this.query, this.searchForm);
       queryLimitInfoList({}).then(res => {
         if (res) {
-          console.log(res);
           this.tableData = res.data.creditPayInfoBodyList;
           this.pageTotal = res.data.total;
         }

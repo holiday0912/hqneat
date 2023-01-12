@@ -102,7 +102,7 @@
         <!--状态-->
         <el-table-column align="center" label="状态" prop="status" width="80">
           <template v-slot="{ row }">
-            {{ row.status | getStatus }}
+            <el-tag :type="row.status.color">{{ row.status.val }} </el-tag>
           </template>
         </el-table-column>
 
@@ -122,7 +122,6 @@
               @click="handleEdit(scope.row)"
               >编辑
             </el-button>
-            <!-- v-if="scope.row.status !== '2'" -->
             <el-button
               icon="el-icon-check"
               type="text"
@@ -215,11 +214,6 @@ export default {
   mounted() {
     this.getData();
   },
-  filters: {
-    getStatus(target) {
-      return carouStatus.find(i => i.key === target).val;
-    }
-  },
   methods: {
     async getData(query = { pageNum: 1, pageSize: 10 }) {
       try {
@@ -230,7 +224,12 @@ export default {
             parseFloat(new Big(sessionStorage.getItem("ud")).div(87687)) + ""
         });
         if (res.message === "请求成功") {
-          this.tableData = res.data.list;
+          this.tableData = res.data.list.map(i => {
+            return {
+              ...i,
+              status: carouStatus.find(b => b.key === i.status)
+            };
+          });
           this.pageTotal = res.data.total;
         } else {
           this.$message.error(res.message);

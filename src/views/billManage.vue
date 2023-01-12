@@ -255,7 +255,6 @@ export default {
     searchRoleList() {
       list({}).then(res => {
         if (res) {
-          console.log(res);
           this.roleList = res.data;
         }
       });

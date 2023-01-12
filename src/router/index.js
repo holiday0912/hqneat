@@ -168,7 +168,7 @@ const routes = [
             /* webpackChunkName: "todoList" */ "@/views/todoList/TodoList.vue"
           ),
         meta: { permission: false, title: "待办事项" }
-      },
+      }
     ]
   },
   {
@@ -176,7 +176,7 @@ const routes = [
     name: "login",
     component: () =>
       import(/* webpackChunkName: "login" */ "@/views/Login.vue"),
-    meta: { permission: false, title: "登录" }
+    meta: { permission: false, everyOne: true, title: "登录" }
   },
   {
     path: "*",
@@ -185,17 +185,17 @@ const routes = [
   {
     path: "/404",
     component: () => import(/* webpackChunkName: "404" */ "@/views/404.vue"),
-    meta: { permission: false, title: "404 Not Found" }
+    meta: { permission: false, everyOne: true, title: "404 Not Found" }
   },
   {
     path: "/403",
     component: () => import(/* webpackChunkName: "403" */ "@/views/403.vue"),
-    meta: { permission: false, title: "403" }
+    meta: { permission: false, everyOne: true, title: "403" }
   }
 ];
 
 const router = new VueRouter({
-  mode: 'history',
+  mode: "history",
   routes
 });
 

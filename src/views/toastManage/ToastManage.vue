@@ -89,11 +89,11 @@
         ></el-table-column>
 
         <!--状态-->
-        <el-table-column
-          align="center"
-          label="状态"
-          prop="status"
-        ></el-table-column>
+        <el-table-column align="center" label="状态" prop="status">
+          <template v-slot="{ row }">
+            <el-tag :type="row.status.color">{{ row.status.val }} </el-tag>
+          </template>
+        </el-table-column>
 
         <el-table-column align="center" label="操作">
           <template v-slot="{ row }">
@@ -192,7 +192,7 @@ export default {
       this.$refs.searchRorm.resetFields();
     },
     getStatus(target) {
-      return ToastStatus.find(i => i.key === target).val;
+      return ToastStatus.find(i => i.key === target);
     },
     // 列表查询
     handleSearch() {
@@ -218,10 +218,7 @@ export default {
             type: "warning"
           }
         )
-          .then(
-            () => {},
-            () => {}
-          )
+          .then()
           .catch(error => {
             console.log(error);
           });
