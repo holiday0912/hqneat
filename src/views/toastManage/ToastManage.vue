@@ -83,6 +83,7 @@
 
         <!--更新时间-->
         <el-table-column
+          :sortable="true"
           align="center"
           label="更新时间"
           prop="updateTime"

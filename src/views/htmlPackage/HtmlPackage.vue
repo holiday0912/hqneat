@@ -90,6 +90,7 @@
 
         <!-- 上传时间-->
         <el-table-column
+          :sortable="true"
           align="center"
           label="上传时间"
           prop="createTime"

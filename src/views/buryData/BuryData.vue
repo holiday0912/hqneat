@@ -81,6 +81,7 @@
 
         <!-- 创建时间-->
         <el-table-column
+          :sortable="true"
           align="center"
           label="创建时间"
           prop="createTime"

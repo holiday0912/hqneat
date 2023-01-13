@@ -106,11 +106,13 @@ export default {
         },
         {
           label: "上传时间",
-          prop: "createTime"
+          prop: "createTime",
+          sortable: true
         },
         {
           label: "发布时间",
-          prop: "pubTime"
+          prop: "pubTime",
+          sortable: true
         },
         {
           label: "操作",

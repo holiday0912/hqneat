@@ -120,7 +120,8 @@ export default {
         },
         {
           label: "登录时间",
-          prop: "createTime"
+          prop: "createTime",
+          sortable: true
         },
         {
           label: "操作",

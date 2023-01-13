@@ -133,11 +133,13 @@ export default {
         // },
         {
           label: "创建时间",
-          prop: "createTime"
+          prop: "createTime",
+          sortable: true
         },
         {
           label: "更新时间",
-          prop: "updateTime"
+          prop: "updateTime",
+          sortable: true
         },
         {
           label: "操作",

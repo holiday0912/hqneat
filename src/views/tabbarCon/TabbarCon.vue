@@ -166,7 +166,8 @@ export default {
         // },
         {
           label: "菜单顺序",
-          prop: "tabbarOrder"
+          prop: "tabbarOrder",
+          sortable: true
         },
         {
           label: "路由",
