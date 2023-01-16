@@ -85,7 +85,14 @@
           align="center"
           label="创建时间"
           prop="createTime"
-        ></el-table-column>
+        >
+          <template v-slot="{ row }">
+            <div>
+              <i class="el-icon-time" style="margin-right: 10px"></i>
+              {{ row.createTime }}
+            </div>
+          </template>
+        </el-table-column>
 
         <!--统计数据-->
         <el-table-column

@@ -60,12 +60,6 @@
         :tableData="tableData"
         @getData="getData"
       >
-        <template #ordinal="{scope}">
-          <div>
-            {{ scope.$index + 1 }}
-          </div>
-        </template>
-
         <template #operation="{ scope }">
           <el-popconfirm
             title="确定删除吗？"
@@ -94,6 +88,7 @@
 import { deleteServiceType, getServiceTypeList } from "@/api/serviceType";
 import ServiceTypeAdd from "@/views/serviceType/ServiceTypeMan.vue";
 import { serviceType } from "@/common/enum";
+import { addTimeIcon } from "@/common/tableFormat";
 
 export default {
   name: "ServiceType",
@@ -117,7 +112,7 @@ export default {
         {
           label: "序号",
           width: "55",
-          render: "ordinal"
+          formatter: (row, column, val, index) => index + 1
         },
         {
           label: "业务类型代码",
@@ -134,11 +129,13 @@ export default {
         {
           label: "创建时间",
           prop: "createTime",
+          formatter: (row, column, val) => addTimeIcon(row, column, val),
           sortable: true
         },
         {
           label: "更新时间",
           prop: "updateTime",
+          formatter: (row, column, val) => addTimeIcon(row, column, val),
           sortable: true
         },
         {

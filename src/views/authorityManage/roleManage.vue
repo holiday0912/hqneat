@@ -144,50 +144,26 @@
         v-if="dialogFormVisible"
         ref="add"
         :model="addItem"
+        :rules="rules"
         label-width="150px"
       >
-        <el-row>
-          <el-col :span="24">
-            <el-form-item
-              :rules="[
-                {
-                  required: true,
-                  message: '请输入角色名称',
-                  trigger: 'blur'
-                }
-              ]"
-              label="角色名称"
-              prop="roleName"
-            >
-              <el-input
-                v-model="addItem.roleName"
-                clearable
-                placeholder="请输入角色名称"
-              />
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="24">
-            <el-form-item
-              :rules="[
-                {
-                  required: true,
-                  message: '请输入角色描述',
-                  trigger: 'blur'
-                }
-              ]"
-              label="角色描述"
-              prop="roleDesc"
-            >
-              <el-input
-                v-model="addItem.roleDesc"
-                clearable
-                placeholder="请输入角色描述"
-              />
-            </el-form-item>
-          </el-col>
-        </el-row>
+        <el-form-item label="角色名称" prop="roleName">
+          <el-input
+            v-model="addItem.roleName"
+            clearable
+            placeholder="请输入角色名称"
+          />
+        </el-form-item>
+
+        <el-form-item label="角色描述" prop="roleDesc">
+          <el-input
+            v-model="addItem.roleDesc"
+            :rows="2"
+            clearable
+            placeholder="请输入角色描述"
+            type="textarea"
+          />
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogClose">取 消</el-button>
@@ -309,7 +285,18 @@ export default {
     };
   },
   components: {},
-  computed: {},
+  computed: {
+    rules() {
+      return {
+        roleName: [
+          { required: true, message: "请输入角色名称", trigger: "blur" }
+        ],
+        roleDesc: [
+          { required: true, message: "请输入角色描述", trigger: "blur" }
+        ]
+      };
+    }
+  },
   mounted() {
     this.getData();
   },

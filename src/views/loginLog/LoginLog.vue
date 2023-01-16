@@ -63,6 +63,7 @@
 
 <script>
 import { LogInfo } from "@/api/loginLog";
+import { addTimeIcon } from "@/common/tableFormat";
 
 export default {
   name: "LoginLog",
@@ -121,6 +122,7 @@ export default {
         {
           label: "登录时间",
           prop: "createTime",
+          formatter: (row, column, val) => addTimeIcon(row, column, val),
           sortable: true
         },
         {

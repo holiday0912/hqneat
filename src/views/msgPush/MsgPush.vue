@@ -48,10 +48,12 @@
         class="table"
         header-cell-class-name="table-header"
       >
-        <el-table-column align="center" label="序号" width="55">
-          <template v-slot="scope">
-            {{ scope.$index + 1 }}
-          </template>
+        <el-table-column
+          :formatter="(row, column, val, index) => index + 1"
+          align="center"
+          label="序号"
+          width="55"
+        >
         </el-table-column>
         <!-- <el-table-column
           align="center"
@@ -88,14 +90,28 @@
           align="center"
           label="创建时间"
           prop="createTime"
-        ></el-table-column>
+        >
+          <template v-slot="{ row }">
+            <div>
+              <i class="el-icon-time" style="margin-right: 10px"></i>
+              {{ row.createTime }}
+            </div>
+          </template>
+        </el-table-column>
 
         <el-table-column
           :sortable="true"
           align="center"
           label="更新时间"
           prop="updateTime"
-        ></el-table-column>
+        >
+          <template v-slot="{ row }">
+            <div>
+              <i class="el-icon-time" style="margin-right: 10px"></i>
+              {{ row.updateTime }}
+            </div>
+          </template>
+        </el-table-column>
         <el-table-column align="center" label="操作" width="190">
           <template v-slot="scope">
             <el-popconfirm

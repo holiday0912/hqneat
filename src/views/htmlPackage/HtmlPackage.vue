@@ -94,7 +94,14 @@
           align="center"
           label="上传时间"
           prop="createTime"
-        ></el-table-column>
+        >
+          <template v-slot="{ row }">
+            <div>
+              <i class="el-icon-time" style="margin-right: 10px"></i>
+              {{ row.createTime }}
+            </div>
+          </template>
+        </el-table-column>
 
         <!--是否最新-->
         <el-table-column

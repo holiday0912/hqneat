@@ -5,86 +5,89 @@
     size="600px"
     title="埋点数据详情"
   >
-    <!--    <el-tabs v-model="activeName" class="event-record" @tab-click="handleClick">-->
-    <!--      <el-tab-pane label="基本信息" name="first">-->
-    <el-form ref="uploadMessage" :model="formData" label-width="110px">
-      <el-form-item
-        :rules="[{ required: true, message: '请输入' }]"
-        label="事件id"
-        prop="eventId"
-      >
-        <el-input v-model="formData.eventId"></el-input>
-      </el-form-item>
-      <el-form-item
-        :rules="[{ required: true, message: '请输入' }]"
-        label="事件名称"
-        prop="eventName"
-      >
-        <el-input v-model="formData.eventName"></el-input>
-      </el-form-item>
+    <div v-if="drawer">
+      <!--    <el-tabs v-model="activeName" class="event-record" @tab-click="handleClick">-->
+      <!--      <el-tab-pane label="基本信息" name="first">-->
+      <el-form ref="uploadMessage" :model="formData" label-width="110px">
+        <el-form-item
+          :rules="[{ required: true, message: '请输入' }]"
+          label="事件id"
+          prop="eventId"
+        >
+          <el-input v-model="formData.eventId"></el-input>
+        </el-form-item>
+        <el-form-item
+          :rules="[{ required: true, message: '请输入' }]"
+          label="事件名称"
+          prop="eventName"
+        >
+          <el-input v-model="formData.eventName"></el-input>
+        </el-form-item>
 
-      <el-form-item
-        :rules="[{ required: true, message: '请输入' }]"
-        label="触发时机"
-        prop="triggerTiming"
-      >
-        <el-input v-model="formData.triggerTiming" type="textarea"></el-input>
-      </el-form-item>
+        <el-form-item
+          :rules="[{ required: true, message: '请输入' }]"
+          label="触发时机"
+          prop="triggerTiming"
+        >
+          <el-input v-model="formData.triggerTiming" type="textarea"></el-input>
+        </el-form-item>
 
-      <el-form-item
-        :rules="[{ required: true, message: '请输入' }]"
-        label="类型"
-        prop="type"
-      >
-        <el-input v-model="formData.type"></el-input>
-      </el-form-item>
+        <el-form-item
+          :rules="[{ required: true, message: '请输入' }]"
+          label="类型"
+          prop="type"
+        >
+          <el-input v-model="formData.type"></el-input>
+        </el-form-item>
 
-      <el-form-item
-        :rules="[{ required: true, message: '请输入' }]"
-        label="分类标签"
-        prop="classLabels"
-      >
-        <el-input v-model="formData.classLabels"></el-input>
-      </el-form-item>
-    </el-form>
+        <el-form-item
+          :rules="[{ required: true, message: '请输入' }]"
+          label="分类标签"
+          prop="classLabels"
+        >
+          <el-input v-model="formData.classLabels"></el-input>
+        </el-form-item>
+      </el-form>
 
-    <div id="myChart" style="width: 100%;height: 300px"></div>
-    <!--      </el-tab-pane>-->
+      <div id="myChart" style="width: 100%;height: 300px"></div>
+      <!--      </el-tab-pane>-->
 
-    <!--      <el-tab-pane label="事件记录" name="second">-->
-    <!--        <el-form-->
-    <!--          :disabled="true"-->
-    <!--          class="event-record"-->
-    <!--          label-position="left"-->
-    <!--          label-width="130px"-->
-    <!--        >-->
-    <!--          <el-form-item label="创建人">-->
-    <!--            <el-input v-model="formData.createUser"></el-input>-->
-    <!--          </el-form-item>-->
-    <!--          <el-form-item label="创建时间">-->
-    <!--            <el-input v-model="formData.createTime"></el-input>-->
-    <!--          </el-form-item>-->
-    <!--          <el-form-item label="最近更新人">-->
-    <!--            <el-input v-model="formData.updateUser"></el-input>-->
-    <!--          </el-form-item>-->
-    <!--          <el-form-item label="首次上报时间">-->
-    <!--            <el-input v-model="formData.firstAppear"></el-input>-->
-    <!--          </el-form-item>-->
-    <!--          <el-form-item label="最近上报时间">-->
-    <!--            <el-input v-model="formData.lastAppear"></el-input>-->
-    <!--          </el-form-item>-->
-    <!--        </el-form>-->
-    <!--      </el-tab-pane>-->
+      <!--      <el-tab-pane label="事件记录" name="second">-->
+      <!--        <el-form-->
+      <!--          :disabled="true"-->
+      <!--          class="event-record"-->
+      <!--          label-position="left"-->
+      <!--          label-width="130px"-->
+      <!--        >-->
+      <!--          <el-form-item label="创建人">-->
+      <!--            <el-input v-model="formData.createUser"></el-input>-->
+      <!--          </el-form-item>-->
+      <!--          <el-form-item label="创建时间">-->
+      <!--            <el-input v-model="formData.createTime"></el-input>-->
+      <!--          </el-form-item>-->
+      <!--          <el-form-item label="最近更新人">-->
+      <!--            <el-input v-model="formData.updateUser"></el-input>-->
+      <!--          </el-form-item>-->
+      <!--          <el-form-item label="首次上报时间">-->
+      <!--            <el-input v-model="formData.firstAppear"></el-input>-->
+      <!--          </el-form-item>-->
+      <!--          <el-form-item label="最近上报时间">-->
+      <!--            <el-input v-model="formData.lastAppear"></el-input>-->
+      <!--          </el-form-item>-->
+      <!--        </el-form>-->
+      <!--      </el-tab-pane>-->
 
-    <!--      <el-tab-pane label="事件详情" name="third">-->
-    <!--        <pre class="json-data">{{ jsonData }} </pre>-->
-    <!--      </el-tab-pane>-->
-    <!--    </el-tabs>-->
+      <!--      <el-tab-pane label="事件详情" name="third">-->
+      <!--        <pre class="json-data">{{ jsonData }} </pre>-->
+      <!--      </el-tab-pane>-->
+      <!--    </el-tabs>-->
+    </div>
   </el-drawer>
 </template>
 
 <script>
 import { createCookieView } from "@/api/buryData";
+import * as ECharts from "echarts";
 
 export default {
   name: "BuryDataDrawer",
@@ -99,18 +102,23 @@ export default {
       jsonData: ""
     };
   },
-  mounted() {
-    this.$nextTick(() => {
-      this.drawChart();
-    });
+  watch: {
+    drawer: {
+      handler(val) {
+        if (val) {
+          this.$nextTick(() => {
+            this.drawChart();
+          });
+        }
+      }
+    }
   },
+  mounted() {},
   methods: {
     drawChart() {
-      const myChart = this.$ECharts.init(
-        document.getElementById("myChart"),
-        null,
-        { renderer: "svg" }
-      );
+      const myChart = ECharts.init(document.getElementById("myChart"), null, {
+        renderer: "svg"
+      });
       myChart.setOption({
         title: {
           text: "事件占比",

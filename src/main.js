@@ -16,12 +16,21 @@ import BaseTable from "@/components/BaseTable.vue";
 import { day } from "@/common/toolFunc";
 // import './utils/rem'
 import axios from "axios";
-import * as ECharts from "echarts";
+// elementui按需全局引入
+// import { elementUI } from "@/plugins/elementui";
+// import { Message, MessageBox, Notification } from "element-ui";
 
+// Vue.prototype.$ELEMENT = { size: "small" };
+// elementUI.forEach(i => {
+//   Vue.use(i);
+// });
+
+// Vue.prototype.$confirm = MessageBox.confirm;
+// Vue.prototype.$notify = Notification;
+// Vue.prototype.$message = Message;
 Vue.prototype.$axios = axios;
 Vue.prototype.$dayjs = day;
 Vue.prototype.$nodata = "——";
-Vue.prototype.$ECharts = ECharts;
 
 Vue.component("BasePagination", BasePagination);
 Vue.component("BaseTable", BaseTable);

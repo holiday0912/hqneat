@@ -28,9 +28,9 @@
           multiple
         >
           <i class="el-icon-upload"></i>
-          <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-          <div slot="tip" class="el-upload__tip">
-            只能上传jpg/png文件，且不超过500kb，上传图片将替换当前图片
+          <div class="el-upload__text">
+            将文件拖到此处，或<em>点击上传</em>
+            <p>只能上传jpg/png文件，且不超过500kb，上传图片将替换当前图片</p>
           </div>
         </el-upload>
       </div>
@@ -126,16 +126,6 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-.select-group:first-child {
-  color: dodgerblue;
-}
-
-.el-form-item {
-  margin-bottom: 0;
-}
-</style>
 
 <style module="carousel">
 .wp {

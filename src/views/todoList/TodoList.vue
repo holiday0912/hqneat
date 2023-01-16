@@ -38,12 +38,6 @@
         :tableData="tableData"
         @getData="getData"
       >
-        <template #ordinal="{ scope }">
-          <div>
-            {{ scope.$index + 1 }}
-          </div>
-        </template>
-
         <template #iconUrl="{ scope }">
           <img :alt="scope.row.text" :src="scope.row.iconUrl" width="30px" />
         </template>
@@ -82,6 +76,7 @@
 <script>
 import TodoListMan from "@/views/todoList/TodoListMan.vue";
 import { deleteEventInfo, eventInfoList } from "@/api/todoList";
+import { addTimeIcon } from "@/common/tableFormat";
 
 export default {
   name: "TodoList",
@@ -105,7 +100,7 @@ export default {
         {
           label: "序号",
           width: "55",
-          render: "ordinal"
+          formatter: (row, column, val, index) => index + 1
         },
         {
           label: "图标",
@@ -123,11 +118,13 @@ export default {
         {
           label: "创建时间",
           prop: "createTime",
+          formatter: (row, column, val) => addTimeIcon(row, column, val),
           sortable: true
         },
         {
           label: "更新时间",
           prop: "updateTime",
+          formatter: (row, column, val) => addTimeIcon(row, column, val),
           sortable: true
         },
         {

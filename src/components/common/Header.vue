@@ -75,6 +75,7 @@
             autocomplete="off"
             clearable
             placeholder="请输入新密码"
+            show-password
             type="password"
           ></el-input>
         </el-form-item>
@@ -84,6 +85,7 @@
             autocomplete="off"
             clearable
             placeholder="请确认输入新密码"
+            show-password
             type="password"
           ></el-input>
         </el-form-item>
@@ -98,7 +100,7 @@
 <script>
 import bus from "../common/bus";
 import { loginOut, resetPasswd } from "@/api/system/sysUser";
-import { sysTitle } from "@/config/dev";
+import { pasValid, sysTitle } from "@/config";
 
 export default {
   data() {
@@ -143,7 +145,7 @@ export default {
         psw: [
           { required: true, message: "请输入密码", trigger: "blur" },
           {
-            pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,16}$/,
+            pattern: pasValid,
             message: "密码必须为8-16位的大写字母、小写字母、数字组合"
           },
           { validator: pswRule, trigger: "change" }
@@ -151,7 +153,7 @@ export default {
         comPsw: [
           { required: true, message: "请再次输入密码", trigger: "blur" },
           {
-            pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,16}$/,
+            pattern: pasValid,
             message: "密码必须为8-16位的大写字母、小写字母、数字组合"
           },
           { validator: comPswRule, trigger: "change" }

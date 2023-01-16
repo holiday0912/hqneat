@@ -24,6 +24,7 @@
             v-model="param.password"
             clearable
             placeholder="请输入密码"
+            show-password
             type="password"
             @focus="onfocus($event)"
             @keyup.enter.native="submitForm()"

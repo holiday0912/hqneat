@@ -87,7 +87,14 @@
           align="center"
           label="更新时间"
           prop="updateTime"
-        ></el-table-column>
+        >
+          <template v-slot="{ row }">
+            <div>
+              <i class="el-icon-time" style="margin-right: 10px"></i>
+              {{ row.updateTime }}
+            </div>
+          </template>
+        </el-table-column>
 
         <!--状态-->
         <el-table-column align="center" label="状态" prop="status">

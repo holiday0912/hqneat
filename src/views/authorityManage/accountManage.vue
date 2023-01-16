@@ -122,19 +122,10 @@
         v-if="dialogFormVisible"
         ref="add"
         :model="addItem"
+        :rules="rules"
         label-width="150px"
       >
-        <el-form-item
-          :rules="[
-            {
-              required: true,
-              message: '请输入用户名',
-              trigger: 'blur'
-            }
-          ]"
-          label="用户名"
-          prop="userName"
-        >
+        <el-form-item label="用户名" prop="userName">
           <el-input
             v-model="addItem.userName"
             clearable
@@ -142,22 +133,7 @@
           />
         </el-form-item>
 
-        <el-form-item
-          :rules="[
-            {
-              required: true,
-              message: '请输入手机号',
-              trigger: 'blur'
-            },
-            {
-              pattern: /^1[3|5|7|8|9]\d{9}$/,
-              message: '请输入正确的号码格式',
-              trigger: 'change'
-            }
-          ]"
-          label="手机号"
-          prop="phone"
-        >
+        <el-form-item label="手机号" prop="phone">
           <el-input
             v-model="addItem.phone"
             :maxlength="11"
@@ -166,17 +142,7 @@
           />
         </el-form-item>
 
-        <el-form-item
-          :rules="[
-            {
-              required: true,
-              message: '请选择需要绑定的角色',
-              trigger: 'blur'
-            }
-          ]"
-          label="角色"
-          prop="roleIds"
-        >
+        <el-form-item label="角色" prop="roleIds">
           <el-select
             v-model="addItem.roleIds"
             clearable
@@ -197,7 +163,6 @@
 
         <el-form-item
           v-if="dialogTitle === '新增账号'"
-          :rules="[{ required: true, message: '请输入密码' }]"
           label="密码"
           prop="password"
         >
@@ -205,6 +170,21 @@
             v-model="addItem.password"
             clearable
             placeholder="请输入密码"
+            show-password
+            type="password"
+          />
+        </el-form-item>
+
+        <el-form-item
+          v-if="dialogTitle === '新增账号'"
+          label="确认密码"
+          prop="confirmPassword"
+        >
+          <el-input
+            v-model="addItem.confirmPassword"
+            clearable
+            placeholder="请输入密码"
+            show-password
             type="password"
           />
         </el-form-item>
@@ -227,10 +207,22 @@ import {
 } from "@/api/system/sysUser";
 import { list } from "@/api/system/sysRole";
 import { updateMenuMethod } from "@/common/toolFunc";
+import { pasValid, phoneValid } from "@/config";
 
 export default {
   name: "accountManage",
   data() {
+    const comPswRule = (rule, value, callback) => {
+      if (this.addItem.password !== "") {
+        if (value !== this.addItem.password) {
+          callback(new Error("两次密码输入不一致"));
+        } else {
+          callback();
+        }
+      } else {
+        callback();
+      }
+    };
     return {
       query: {
         pageNum: 1,
@@ -249,9 +241,43 @@ export default {
         phone: "", // 手机号
         roleIds: "", // 角色id
         userName: "", // 用户名
-        id: ""
+        id: "",
+        confirmPassword: ""
       },
-      roleList: [] // 角色列表
+      roleList: [], // 角色列表
+      rules: {
+        userName: [
+          { required: true, message: "请输入用户名", trigger: "blur" }
+        ],
+        phone: [
+          { required: true, message: "请输入手机号", trigger: "blur" },
+          {
+            pattern: phoneValid,
+            message: "请输入正确的号码格式",
+            trigger: "change"
+          }
+        ],
+        roleIds: [
+          { required: true, message: "请选择需要绑定的角色", trigger: "blur" }
+        ],
+        password: [
+          { required: true, message: "请输入密码" },
+          {
+            pattern: pasValid,
+            message: "密码必须为8-16位的大写字母、小写字母、数字组合",
+            trigger: "blur"
+          }
+        ],
+        confirmPassword: [
+          { required: true, message: "请再次输入密码", trigger: "blur" },
+          {
+            pattern: pasValid,
+            message: "密码必须为8-16位的大写字母、小写字母、数字组合",
+            trigger: "blur"
+          },
+          { validator: comPswRule, trigger: "blur" }
+        ]
+      }
     };
   },
   created() {
@@ -336,6 +362,7 @@ export default {
       this.dialogFormVisible = false;
       this.addItem = {
         password: "", // 登入密码
+        confirmPassword: "", // 登入密码
         phone: "", // 手机号
         roleIds: "", // 角色id
         userName: "" // 用户名
@@ -365,6 +392,7 @@ export default {
             }
           } else {
             delete obj.id;
+            delete obj.confirmPassword;
             addUser(obj).then(res => {
               if (res) {
                 this.$message.success("新增成功");

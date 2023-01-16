@@ -69,6 +69,7 @@
 import { nyHotDepDeleteById, nyHotDepSelectAllInfo } from "@/api/hotRepair";
 import HotRepairUpload from "@/views/hotRepair/HotRepairUpload.vue";
 import HotRepairEdit from "@/views/hotRepair/HotRepairEdit.vue";
+import { addTimeIcon } from "@/common/tableFormat";
 
 export default {
   name: "HotRepair",
@@ -107,11 +108,13 @@ export default {
         {
           label: "上传时间",
           prop: "createTime",
+          formatter: (row, column, val) => addTimeIcon(row, column, val),
           sortable: true
         },
         {
           label: "发布时间",
           prop: "pubTime",
+          formatter: (row, column, val) => addTimeIcon(row, column, val),
           sortable: true
         },
         {

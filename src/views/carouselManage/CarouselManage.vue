@@ -89,20 +89,18 @@
 
         <!--是否登录-->
         <el-table-column
+          :formatter="(row, column, val) => (val === 1 ? '是' : '否')"
           align="center"
           label="是否登录"
           prop="isLogin"
           width="80"
         >
-          <template v-slot="scope">
-            {{ scope.row.isLogin === 1 ? "是" : "否" }}
-          </template>
         </el-table-column>
 
         <!--状态-->
         <el-table-column align="center" label="状态" prop="status" width="80">
           <template v-slot="{ row }">
-            <el-tag :type="row.status.color">{{ row.status.val }} </el-tag>
+            <el-tag :type="row.status.color">{{ row.status.val }}</el-tag>
           </template>
         </el-table-column>
 

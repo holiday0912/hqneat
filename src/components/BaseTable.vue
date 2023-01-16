@@ -13,7 +13,7 @@
         v-bind="{ align: 'center', ...item }"
       >
         <template v-if="item.render" v-slot="scope">
-          <slot :name="item.render" :scope="scope"></slot>
+          <slot :name="item.render" :scope="scope"> </slot>
         </template>
       </el-table-column>
     </el-table>
