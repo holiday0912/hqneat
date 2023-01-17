@@ -94,12 +94,9 @@ export default {
   methods: {
     showDialog(val) {
       this.dialogFormVisible = true;
-      const { content, title, ticker, id, filterGroup } = val;
-      this.form.content = content;
-      this.form.title = title;
-      this.form.ticker = ticker;
-      this.form.id = id;
-      this.form.filterGroup = filterGroup;
+      for (let i in this.form) {
+        this.form[i] = val[i];
+      }
       this.getMsgPushGroup();
     },
     dialogEditClose() {

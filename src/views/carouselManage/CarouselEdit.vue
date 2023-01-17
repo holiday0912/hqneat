@@ -75,9 +75,9 @@ export default {
   methods: {
     showDialog(val) {
       this.dialogFormVisible = true;
-      this.form.id = val.id;
-      this.form.forwardUrl = val.forwardUrl;
-      this.imgUrl = val.imgUrl;
+      for (let i in this.form) {
+        this.form[i] = val[i];
+      }
     },
     dialogEditClose() {
       this.dialogFormVisible = false;

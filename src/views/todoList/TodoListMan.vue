@@ -99,9 +99,9 @@ export default {
     showDialog() {
       this.isEdit = false;
       this.dialogFormVisible = true;
-      this.form.eventName = "";
-      this.form.iconUrl = "";
-      this.form.eventType = "";
+      for (let i in this.form) {
+        this.form[i] = "";
+      }
     },
     editConfirm(target) {
       this.showDialog();

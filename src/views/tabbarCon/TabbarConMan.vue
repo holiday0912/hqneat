@@ -129,10 +129,9 @@ export default {
     showDialog() {
       this.isEdit = false;
       this.dialogFormVisible = true;
-      this.form.text = "";
-      this.form.iconUrl = "";
-      this.form.router = "";
-      this.form.status = 1;
+      for (let i in this.form) {
+        this.form[i] = i === "status" ? 1 : "";
+      }
     },
     editConfirm(target) {
       this.showDialog();

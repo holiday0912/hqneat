@@ -75,11 +75,9 @@ export default {
   methods: {
     showDialog(val) {
       this.dialogFormVisible = true;
-      this.form.property = val.property;
-      this.form.tittle = val.tittle;
-      this.form.type = val.type;
-      this.form.id = val.id;
-      this.form.picPath = val.picPath;
+      for (let i in this.form) {
+        this.form[i] = val[i];
+      }
       this.getTypeList();
     },
     dialogEditClose() {
