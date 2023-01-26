@@ -60,21 +60,21 @@ export default {
   data() {
     return {
       collapse: false,
-      items: [
-        {
-          icon: "el-icon-lx-shop",
-          router: "todoList",
-          resourceName: "待办事项"
-          //     resources: [
-          //       {
-          //         icon: "el-icon-lx-shop",
-          //         router: "resourcesManage",
-          //         resourceName: "资源管理"
-          //       }
-          //     ]
-        }
-      ]
-      // items: []
+      // items: [
+      //   {
+      //     icon: "el-icon-lx-shop",
+      //     router: "todoList",
+      //     resourceName: "待办事项"
+      //     resources: [
+      //       {
+      //         icon: "el-icon-lx-shop",
+      //         router: "resourcesManage",
+      //         resourceName: "资源管理"
+      //       }
+      //     ]
+      //   }
+      // ]
+      items: []
     };
   },
   computed: {
