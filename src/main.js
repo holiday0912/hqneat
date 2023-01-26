@@ -16,18 +16,7 @@ import BaseTable from "@/components/BaseTable.vue";
 import { day } from "@/common/toolFunc";
 // import './utils/rem'
 import axios from "axios";
-// elementui按需全局引入
-// import { elementUI } from "@/plugins/elementui";
-// import { Message, MessageBox, Notification } from "element-ui";
 
-// Vue.prototype.$ELEMENT = { size: "small" };
-// elementUI.forEach(i => {
-//   Vue.use(i);
-// });
-
-// Vue.prototype.$confirm = MessageBox.confirm;
-// Vue.prototype.$notify = Notification;
-// Vue.prototype.$message = Message;
 Vue.prototype.$axios = axios;
 Vue.prototype.$dayjs = day;
 Vue.prototype.$nodata = "——";
@@ -55,46 +44,46 @@ NProgress.configure({
 });
 
 //使用钩子函数对路由进行权限跳转。
-router.beforeEach((to, from, next) => {
-  // 判断进入的页面需不需要授权
-  if (to.meta.everyOne) {
-    // 需要授权
-    next();
-  } else {
-    // 不需要授权
-    const role = sessionStorage.getItem("tk");
-    // 判断是否登陆
-    if (!role) {
-      // 没有登陆跳转到登陆页面
-      next({ name: "login" });
-    } else {
-      // 登陆了判断是否是首页，首页默认放行
-      if (to.path.slice(1) === "dashboard") {
-        next();
-      } else {
-        // 其它页面检查是否有相关权限
-        const router = JSON.parse(sessionStorage.getItem("userLoginContext"));
-        const temp1 = router.map(i => {
-          if (i.resources) {
-            return i.resources.map(i => i.router);
-          }
-          return i.router;
-        });
-        const routes = temp1.flat();
-        if (routes.includes(to.name)) {
-          NProgress.start();
-          next();
-        } else {
-          next({ path: "/404" });
-        }
-      }
-    }
-  }
-});
+// router.beforeEach((to, from, next) => {
+//   // 判断进入的页面需不需要授权
+//   if (to.meta.everyOne) {
+//     // 需要授权
+//     next();
+//   } else {
+//     // 不需要授权
+//     const role = sessionStorage.getItem("tk");
+//     // 判断是否登陆
+//     if (!role) {
+//       // 没有登陆跳转到登陆页面
+//       next({ name: "login" });
+//     } else {
+//       // 登陆了判断是否是首页，首页默认放行
+//       if (to.path.slice(1) === "dashboard") {
+//         next();
+//       } else {
+//         // 其它页面检查是否有相关权限
+//         const router = JSON.parse(sessionStorage.getItem("userLoginContext"));
+//         const temp1 = router.map(i => {
+//           if (i.resources) {
+//             return i.resources.map(i => i.router);
+//           }
+//           return i.router;
+//         });
+//         const routes = temp1.flat();
+//         if (routes.includes(to.name)) {
+//           NProgress.start();
+//           next();
+//         } else {
+//           next({ path: "/404" });
+//         }
+//       }
+//     }
+//   }
+// });
 
-router.afterEach(to => {
-  NProgress.done();
-});
+// router.afterEach(to => {
+//   NProgress.done();
+// });
 
 router.onError(error => {
   const pattern = /Loading chunk (\d)+ failed/g;

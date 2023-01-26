@@ -1,5 +1,34 @@
 <template>
   <div>
+    <el-form
+      v-if="searchFormSet"
+      v-bind="{ 'label-width': '120px', ...searchFormSet }"
+    >
+      <el-row>
+        <slot name="searchForm"></slot>
+
+        <el-col :span="8">
+          <el-button
+            icon="el-icon-refresh"
+            style="margin-left: 50px; display: inline-block"
+            @click="handleReset"
+            >重置
+          </el-button>
+
+          <el-button
+            icon="el-icon-search"
+            style="margin-left: 10px; display: inline-block"
+            type="primary"
+            @click="handleSearch"
+            >查询
+          </el-button>
+          <el-button icon="el-icon-plus" type="primary" @click="handleAdd">
+            新增
+          </el-button>
+        </el-col>
+      </el-row>
+    </el-form>
+
     <el-table
       :data="tableData"
       border
@@ -12,7 +41,25 @@
         :key="index"
         v-bind="{ align: 'center', ...item }"
       >
-        <template v-if="item.render" v-slot="scope">
+        <template v-if="item.label === '操作'" v-slot="scope">
+          <el-button
+            v-if="item.operaBtn.deleteFn"
+            icon="el-icon-delete"
+            type="text"
+            @click="handleDelete(scope.row)"
+            >删除
+          </el-button>
+
+          <el-button
+            v-if="item.operaBtn.editFn"
+            icon="el-icon-edit"
+            type="text"
+            @click="handleEdit(scope.row)"
+            >修改
+          </el-button>
+          <slot :name="item.render" :scope="scope"> </slot>
+        </template>
+        <template v-else-if="item.render" v-slot="scope">
           <slot :name="item.render" :scope="scope"> </slot>
         </template>
       </el-table-column>
@@ -26,63 +73,119 @@
         :total="pageTotal"
         background
         layout="sizes, total, prev, pager, next"
-        @current-change="pgaMethods.handlePageChange"
-        @size-change="pgaMethods.handleSizeChange"
+        @current-change="handlePageChange"
+        @size-change="handleSizeChange"
       ></el-pagination>
     </div>
   </div>
 </template>
 
-<script setup>
-import { reactive } from "vue";
-
-defineProps({
-  tableData: {
-    type: Array,
-    default: () => []
-  },
-  pageTotal: {
-    type: Number,
-    default: 0
-  },
-  columns: {
-    type: Array,
-    default: () => []
-  }
-});
-
-const query = reactive({
-  pageNum: 1,
-  pageSize: 10
-});
-
-// 页码相关方法
-const pgaMethods = {
-  // 分页导航
-  handlePageChange(val) {
-    query.pageNum = val;
-    getData();
-  },
-  // 改变每页条数
-  handleSizeChange(val) {
-    query.pageSize = val;
-    getData();
-  }
-};
-
-const emits = defineEmits(["getData"]);
-
-const getData = () => {
-  emits("getData", query);
-};
-
-defineExpose({
-  query
-});
-</script>
-
 <script>
 export default {
-  name: "BaseTable"
+  name: "BaseTable",
+  props: {
+    tableData: {
+      type: Array,
+      default: () => []
+    },
+    pageTotal: {
+      type: Number,
+      default: 0
+    },
+    columns: {
+      type: Array,
+      default: () => []
+    },
+    searchFormSet: {
+      type: Object,
+      default: () => {}
+    }
+  },
+  data() {
+    return {
+      query: {
+        pageNum: 1,
+        pageSize: 10
+      },
+      // 控制modal框开闭
+      dialogFormVisible: false,
+      operaBtn: this.columns[this.columns.length - 1].operaBtn
+    };
+  },
+  computed: {
+    dialog() {
+      return {
+        "close-on-click-modal": false,
+        "destroy-on-close": true,
+        width: "680px"
+      };
+    }
+  },
+  methods: {
+    getData() {
+      this.$emit("getData", this.query);
+    },
+    // 分页导航
+    handlePageChange(val) {
+      this.query.pageNum = val;
+      this.getData();
+    },
+    // 改变每页条数
+    handleSizeChange(val) {
+      this.query.pageSize = val;
+      this.getData();
+    },
+    handleReset() {
+      this.$refs[this.searchFormSet.ref].resetFields();
+      this.getData();
+    },
+    // 列表查询
+    handleSearch() {
+      this.query = {
+        pageNum: 1,
+        pageSize: 10
+      };
+      this.getData();
+    },
+    handleAdd() {
+      this.dialogFormVisible = true;
+      this.$emit("edit");
+    },
+    handleEdit(row) {
+      this.dialogFormVisible = true;
+      this.$emit("edit", row);
+    },
+    //表格的删除按钮
+    handleDelete(row) {
+      this.$confirm("确认删除？", "提示", {
+        type: "warning"
+      })
+        .then(async () => {
+          const [fn, id] = this.operaBtn.deleteFn;
+          try {
+            const res = await fn(row[id]);
+            if (res) {
+              this.$notify({
+                title: "提示",
+                message: "删除成功",
+                type: "success"
+              });
+              if (this.tableData.length === 1) {
+                if (this.query.pageNum === 0) {
+                  return;
+                }
+                this.query.pageNum--;
+              }
+              await this.getData(this.query);
+            }
+          } catch (error) {
+            throw new Error(error.message);
+          }
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    }
+  }
 };
 </script>

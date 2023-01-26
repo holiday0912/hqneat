@@ -98,10 +98,10 @@ export default {
   methods: {
     showDialog() {
       this.isEdit = false;
-      this.dialogFormVisible = true;
       for (let i in this.form) {
         this.form[i] = "";
       }
+      this.dialogFormVisible = true;
     },
     editConfirm(target) {
       this.showDialog();
