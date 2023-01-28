@@ -129,9 +129,6 @@ export default {
     showDialog() {
       this.isEdit = false;
       this.dialogFormVisible = true;
-      for (let i in this.form) {
-        this.form[i] = i === "status" ? 1 : "";
-      }
     },
     editConfirm(target) {
       this.showDialog();
@@ -150,7 +147,10 @@ export default {
     },
     dialogEditClose() {
       this.dialogFormVisible = false;
-      this.$refs.edit.resetFields();
+      // this.$refs.edit.resetFields();
+      for (let i in this.form) {
+        this.form[i] = i === "status" ? 1 : "";
+      }
     },
     handleConfirm() {
       this.$refs.edit.validate(async valid => {

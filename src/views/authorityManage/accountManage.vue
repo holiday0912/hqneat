@@ -207,7 +207,8 @@ import {
 } from "@/api/system/sysUser";
 import { list } from "@/api/system/sysRole";
 import { updateMenuMethod } from "@/common/toolFunc";
-import { pasValid, phoneValid } from "@/config";
+import { phoneValid } from "@/config";
+import { md5 } from "@/utils/md5";
 
 export default {
   name: "accountManage",
@@ -263,7 +264,7 @@ export default {
         password: [
           { required: true, message: "请输入密码" },
           {
-            pattern: pasValid,
+            // pattern: pasValid,
             message: "密码必须为8-16位的大写字母、小写字母、数字组合",
             trigger: "blur"
           }
@@ -271,7 +272,7 @@ export default {
         confirmPassword: [
           { required: true, message: "请再次输入密码", trigger: "blur" },
           {
-            pattern: pasValid,
+            // pattern: pasValid,
             message: "密码必须为8-16位的大写字母、小写字母、数字组合",
             trigger: "blur"
           },
@@ -393,6 +394,7 @@ export default {
           } else {
             delete obj.id;
             delete obj.confirmPassword;
+            obj.password = md5(obj.password);
             addUser(obj).then(res => {
               if (res) {
                 this.$message.success("新增成功");

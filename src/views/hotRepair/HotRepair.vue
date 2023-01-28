@@ -1,43 +1,25 @@
 <template>
   <div class="container">
     <div class="handle-box">
-      <el-row>
-        <el-col :span="8">
-          <el-form ref="searchRorm" :model="searchForm" label-width="120px">
-            <el-form-item label="包版本号" prop="pkVersion">
-              <el-input
-                v-model="searchForm.pkVersion"
-                style="width: 80%"
-              ></el-input>
-            </el-form-item>
-          </el-form>
-        </el-col>
-        <el-col :span="16">
-          <div class="handle-box">
-            <el-button icon="el-icon-refresh" @click="formRest">重置</el-button>
-            <el-button
-              icon="el-icon-search"
-              type="primary"
-              @click="handleSearch"
-              >查询
-            </el-button>
-            <el-button icon="el-icon-plus" type="primary" @click="handleAdd"
-              >文件上传
-            </el-button>
-          </div>
-        </el-col>
-      </el-row>
-
       <BaseTable
         ref="hotRepaireTable"
         :columns="columns"
         :pageTotal="pageTotal"
+        :searchFormSet="searchFormSet"
         :tableData="tableData"
+        @edit="judgeEdit"
         @getData="getData"
       >
-        <template #ordinal="{scope}">
+        <template #searchForm>
           <div>
-            {{ scope.$index + 1 }}
+            <el-col :span="6">
+              <el-form-item label="包版本号" prop="pkVersion">
+                <el-input
+                  v-model="searchForm.pkVersion"
+                  style="width: 80%"
+                ></el-input>
+              </el-form-item>
+            </el-col>
           </div>
         </template>
 
@@ -90,12 +72,19 @@ export default {
     this.getData();
   },
   computed: {
+    searchFormSet() {
+      return {
+        model: this.searchForm,
+        ref: "searchForm",
+        addBtnText: "文件上传"
+      };
+    },
     columns() {
       return [
         {
           label: "序号",
           width: "55",
-          render: "ordinal"
+          formatter: (row, column, val, index) => index + 1
         },
         {
           label: "包版本号",
@@ -119,7 +108,10 @@ export default {
         },
         {
           label: "操作",
-          render: "operation",
+          operaBtn: {
+            deleteFn: [nyHotDepDeleteById, "id"],
+            editFn: true
+          },
           width: 150
         }
       ];
@@ -150,35 +142,12 @@ export default {
         throw new Error(e);
       }
     },
-    formRest() {
-      this.$refs.searchRorm.resetFields();
-    },
-    // 列表查询
-    handleSearch() {
-      this.getData();
-    },
-    // 新增推送
-    handleAdd() {
-      this.$refs.htmlPckUpload.showDialog();
-    },
-    async handleDelete({ id }) {
-      try {
-        let res = await nyHotDepDeleteById({ id });
-        if (res.message === "请求成功") {
-          this.$message.success("删除成功");
-          if (this.tableData.length === 1) {
-            this.$refs.hotRepaireTable.query.pageNum--;
-          }
-          await this.getData();
-        } else {
-          this.$message.error(res.message);
-        }
-      } catch (e) {
-        throw new Error(e);
+    judgeEdit(row) {
+      if (row) {
+        this.$refs.hotRepairEdit.showDialog(row);
+      } else {
+        this.$refs.htmlPckUpload.showDialog();
       }
-    },
-    handleEdit(val) {
-      this.$refs.hotRepairEdit.showDialog(val);
     }
   }
 };

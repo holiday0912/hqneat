@@ -35,7 +35,7 @@
         <!--        </div>-->
         <!-- 用户头像 -->
         <div class="user-avator">
-          <img src="../../assets/img/img.jpg" />
+          <img alt="用户头像" src="../../assets/img/img.jpg" />
         </div>
         <!-- 用户名下拉菜单 -->
         <el-dropdown class="user-name" trigger="click" @command="handleCommand">
@@ -101,6 +101,7 @@
 import bus from "../common/bus";
 import { loginOut, resetPasswd } from "@/api/system/sysUser";
 import { pasValid, sysTitle } from "@/config";
+import { md5 } from "@/utils/md5";
 
 export default {
   data() {
@@ -231,8 +232,8 @@ export default {
       this.$refs.edit.validate(valid => {
         if (valid) {
           let obj = {
-            oldPassword: this.form.oldPsw,
-            newPassword: this.form.psw,
+            oldPassword: md5(this.form.oldPsw),
+            newPassword: md5(this.form.psw),
             userName: sessionStorage.getItem("user")
           };
           resetPasswd(obj).then(res => {

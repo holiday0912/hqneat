@@ -98,9 +98,6 @@ export default {
   methods: {
     showDialog() {
       this.isEdit = false;
-      for (let i in this.form) {
-        this.form[i] = "";
-      }
       this.dialogFormVisible = true;
     },
     editConfirm(target) {
@@ -119,7 +116,9 @@ export default {
     },
     dialogEditClose() {
       this.dialogFormVisible = false;
-      this.$refs.edit.resetFields();
+      for (let i in this.form) {
+        this.form[i] = "";
+      }
     },
     handleConfirm() {
       this.$refs.edit.validate(async valid => {

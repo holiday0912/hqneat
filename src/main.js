@@ -81,9 +81,9 @@ router.beforeEach((to, from, next) => {
   }
 });
 
-// router.afterEach(to => {
-//   NProgress.done();
-// });
+router.afterEach(to => {
+  NProgress.done();
+});
 
 router.onError(error => {
   const pattern = /Loading chunk (\d)+ failed/g;

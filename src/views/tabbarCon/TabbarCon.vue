@@ -46,15 +46,6 @@
         </template>
 
         <template #operation="{ scope }">
-          <el-popconfirm
-            title="确定删除吗？"
-            @confirm="handleDelete(scope.row)"
-          >
-            <el-button slot="reference" icon="el-icon-delete" type="text"
-              >删除
-            </el-button>
-          </el-popconfirm>
-
           <el-button
             icon="el-icon-edit"
             type="text"
@@ -188,6 +179,9 @@ export default {
         // },
         {
           label: "操作",
+          operaBtn: {
+            deleteFn: [deleteTabbarInfo, "id"]
+          },
           render: "operation"
         }
       ];
@@ -242,20 +236,6 @@ export default {
         pageSize: 10
       };
       this.getData();
-    },
-    async handleDelete({ id }) {
-      try {
-        const res = await deleteTabbarInfo(id);
-        if (res) {
-          this.$notify({ title: "提示", message: "删除成功", type: "success" });
-          if (this.tableData.length === 1) {
-            this.$refs.tabbarConTable.query.pageNum--;
-          }
-          await this.getData();
-        }
-      } catch (error) {
-        throw new Error(error.message);
-      }
     },
     handleAdd() {
       this.$refs.tabbarConAdd.showDialog();

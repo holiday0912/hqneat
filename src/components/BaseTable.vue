@@ -22,8 +22,13 @@
             @click="handleSearch"
             >查询
           </el-button>
-          <el-button icon="el-icon-plus" type="primary" @click="handleAdd">
-            新增
+          <el-button
+            v-if="!searchFormSet.noAdd"
+            icon="el-icon-plus"
+            type="primary"
+            @click="handleAdd"
+          >
+            {{ searchFormSet.addBtnText || "新增" }}
           </el-button>
         </el-col>
       </el-row>
@@ -43,7 +48,7 @@
       >
         <template v-if="item.label === '操作'" v-slot="scope">
           <el-button
-            v-if="item.operaBtn.deleteFn"
+            v-if="item.operaBtn && item.operaBtn.deleteFn"
             icon="el-icon-delete"
             type="text"
             @click="handleDelete(scope.row)"
@@ -51,7 +56,7 @@
           </el-button>
 
           <el-button
-            v-if="item.operaBtn.editFn"
+            v-if="item.operaBtn && item.operaBtn.editFn"
             icon="el-icon-edit"
             type="text"
             @click="handleEdit(scope.row)"
@@ -84,18 +89,22 @@
 export default {
   name: "BaseTable",
   props: {
+    // 表格数据源
     tableData: {
       type: Array,
       default: () => []
     },
+    // 分页数据
     pageTotal: {
       type: Number,
       default: 0
     },
+    // 表格列配置项
     columns: {
       type: Array,
       default: () => []
     },
+    // 搜索表格的配置项
     searchFormSet: {
       type: Object,
       default: () => {}

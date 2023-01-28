@@ -46,6 +46,7 @@
 import { login } from "@/api/system/sysUser";
 import { sysTitle } from "@/config/dev";
 import Big from "big.js";
+import { md5 } from "@/utils/md5";
 
 export default {
   data: function() {
@@ -68,7 +69,9 @@ export default {
       this.$refs.login.validate(valid => {
         if (valid) {
           sessionStorage.setItem("user", this.param.userName);
-          login(this.param).then(res => {
+          const obj = { ...this.param };
+          obj.password = md5(obj.password);
+          login(obj).then(res => {
             if (res) {
               sessionStorage.setItem("tk", res.data.token);
               sessionStorage.setItem(

@@ -1,41 +1,20 @@
 <template>
   <div class="container">
     <div class="handle-box">
-      <el-form ref="searchRorm" :model="searchForm" label-width="120px">
-        <el-row>
-          <el-col :span="6">
-            <el-form-item label="app名称" prop="appName">
-              <el-input v-model="searchForm.appName"></el-input>
-            </el-form-item>
-          </el-col>
-
-          <el-col :span="12">
-            <div style="margin-left: 50px; display: inline-block">
-              <el-button icon="el-icon-refresh" @click="formRest"
-                >重置
-              </el-button>
-            </div>
-            <div style="margin-left: 10px; display: inline-block">
-              <el-button
-                icon="el-icon-search"
-                type="primary"
-                @click="handleSearch"
-                >查询
-              </el-button>
-            </div>
-          </el-col>
-        </el-row>
-      </el-form>
-
       <BaseTable
         :columns="columns"
         :pageTotal="pageTotal"
+        :searchFormSet="searchFormSet"
         :tableData="tableData"
         @getData="getData"
       >
-        <template #ordinal="{scope}">
+        <template #searchForm>
           <div>
-            {{ scope.$index + 1 }}
+            <el-col :span="6">
+              <el-form-item label="app名称" prop="appName">
+                <el-input v-model="searchForm.appName"></el-input>
+              </el-form-item>
+            </el-col>
           </div>
         </template>
 
@@ -80,12 +59,19 @@ export default {
     };
   },
   computed: {
+    searchFormSet() {
+      return {
+        model: this.searchForm,
+        ref: "searchForm",
+        noAdd: true
+      };
+    },
     columns() {
       return [
         {
           label: "序号",
           width: "55",
-          render: "ordinal"
+          formatter: (row, column, val, index) => index + 1
         },
         {
           label: "app名称",

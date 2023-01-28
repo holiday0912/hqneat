@@ -1,85 +1,37 @@
 <template>
   <div class="container">
     <div class="handle-box">
-      <el-form ref="searchRorm" :model="searchForm" label-width="120px">
-        <el-row>
-          <el-col :span="6">
-            <el-form-item label="业务类型代码" prop="serviceTypeCode">
-              <el-select
-                v-model="searchForm.serviceTypeCode"
-                placeholder="请选择"
-              >
-                <el-option
-                  v-for="item in serviceType"
-                  :key="item.key"
-                  :label="item.val"
-                  :value="item.key"
-                />
-              </el-select>
-            </el-form-item>
-          </el-col>
-
-          <!-- <el-col :span="6">
-            <el-form-item label="状态" prop="status">
-              <el-input v-model="searchForm.status"></el-input>
-            </el-form-item>
-          </el-col> -->
-
-          <el-col :span="18">
-            <el-button
-              icon="el-icon-refresh"
-              style="margin-left: 50px; display: inline-block"
-              @click="formRest"
-              >重置
-            </el-button>
-
-            <el-button
-              icon="el-icon-search"
-              style="margin-left: 10px; display: inline-block"
-              type="primary"
-              @click="handleSearch"
-              >查询
-            </el-button>
-
-            <el-button
-              icon="el-icon-plus"
-              style="margin-left: 10px; display: inline-block"
-              type="primary"
-              @click="handleAdd"
-            >
-              新增
-            </el-button>
-          </el-col>
-        </el-row>
-      </el-form>
-
       <BaseTable
         ref="serviceTypeTable"
         :columns="columns"
         :pageTotal="pageTotal"
+        :searchFormSet="searchFormSet"
         :tableData="tableData"
+        @edit="judgeEdit"
         @getData="getData"
       >
-        <template #operation="{ scope }">
-          <el-popconfirm
-            title="确定删除吗？"
-            @confirm="handleDelete(scope.row)"
-          >
-            <el-button slot="reference" icon="el-icon-delete" type="text"
-              >删除
-            </el-button>
-          </el-popconfirm>
-
-          <el-button
-            icon="el-icon-edit"
-            type="text"
-            @click="handleEdit(scope.row)"
-            >修改
-          </el-button>
+        <template #searchForm>
+          <div>
+            <el-col :span="6">
+              <el-form-item label="业务类型代码" prop="serviceTypeCode">
+                <el-select
+                  v-model="searchForm.serviceTypeCode"
+                  placeholder="请选择"
+                >
+                  <el-option
+                    v-for="item in serviceType"
+                    :key="item.key"
+                    :label="item.val"
+                    :value="item.key"
+                  />
+                </el-select>
+              </el-form-item>
+            </el-col>
+          </div>
         </template>
       </BaseTable>
     </div>
-    <!--    <DragAbleTest/>-->
+
     <ServiceTypeAdd ref="serviceTypeAdd" @refresh="getData"></ServiceTypeAdd>
   </div>
 </template>
@@ -94,7 +46,6 @@ export default {
   name: "ServiceType",
   components: {
     ServiceTypeAdd
-    // DragAbleTest
   },
   data() {
     return {
@@ -107,6 +58,12 @@ export default {
     };
   },
   computed: {
+    searchFormSet() {
+      return {
+        model: this.searchForm,
+        ref: "searchForm"
+      };
+    },
     columns() {
       return [
         {
@@ -140,7 +97,10 @@ export default {
         },
         {
           label: "操作",
-          render: "operation"
+          operaBtn: {
+            deleteFn: [deleteServiceType, "id"],
+            editFn: true
+          }
         }
       ];
     }
@@ -171,37 +131,12 @@ export default {
         throw new Error(e);
       }
     },
-    formRest() {
-      this.$refs.searchRorm.resetFields();
-    },
-    // 列表查询
-    handleSearch() {
-      this.query = {
-        pageNum: 1,
-        pageSize: 10
-      };
-      this.getData();
-    },
-    async handleDelete({ id }) {
-      try {
-        const res = await deleteServiceType(id);
-        if (res) {
-          // this.$message.success('删除成功')
-          this.$notify({ title: "提示", message: "删除成功", type: "success" });
-          if (this.tableData.length === 1) {
-            this.$refs.serviceTypeTable.query.pageNum--;
-          }
-          await this.getData();
-        }
-      } catch (error) {
-        throw new Error(error.message);
+    judgeEdit(row) {
+      if (row) {
+        this.$refs.serviceTypeAdd.editConfirm(row);
+      } else {
+        this.$refs.serviceTypeAdd.showDialog();
       }
-    },
-    handleAdd() {
-      this.$refs.serviceTypeAdd.showDialog();
-    },
-    handleEdit(target) {
-      this.$refs.serviceTypeAdd.editConfirm(target);
     }
   }
 };
