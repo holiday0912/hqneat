@@ -51,8 +51,8 @@
       <BaseTable
         ref="resourceTable"
         :columns="columns"
-        :pageTotal="pageTotal"
-        :tableData="tableData"
+        :page-total="pageTotal"
+        :table-data="tableData"
         :tree-props="{ children: 'resources' }"
         row-key="resourceId"
         @getData="getData"
@@ -235,7 +235,7 @@ import { updateMenuMethod } from "@/common/toolFunc";
 import { iconList } from "@/common/enum";
 
 export default {
-  name: "accountManage",
+  name: "AccountManage",
   data() {
     return {
       searchForm: {

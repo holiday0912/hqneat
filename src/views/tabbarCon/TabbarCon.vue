@@ -14,8 +14,8 @@
       <BaseTable
         ref="tabbarConTable"
         :columns="columns"
-        :pageTotal="pageTotal"
-        :tableData="tableData"
+        :page-total="pageTotal"
+        :table-data="tableData"
         @getData="getData"
       >
         <template #ordinal="{ scope }">
@@ -314,10 +314,4 @@ export default {
     padding: 10px;
   }
 }
-
-//.bg-phone {
-//  font-size: 500px;
-//  width: 400px;
-//  display: inline-block;
-//}
 </style>

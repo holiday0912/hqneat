@@ -3,9 +3,9 @@
     <div class="handle-box">
       <BaseTable
         :columns="columns"
-        :pageTotal="pageTotal"
-        :searchFormSet="searchFormSet"
-        :tableData="tableData"
+        :page-total="pageTotal"
+        :search-form-set="searchFormSet"
+        :table-data="tableData"
         @getData="getData"
       >
         <template #searchForm>
@@ -167,9 +167,3 @@ export default {
   }
 };
 </script>
-
-<style>
-.error-log {
-  padding: 20px;
-}
-</style>

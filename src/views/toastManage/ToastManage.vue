@@ -130,7 +130,7 @@
       </el-table>
 
       <BasePagination
-        :pageTotal="pageTotal"
+        :page-total="pageTotal"
         @getData="getData"
       ></BasePagination>
     </div>
@@ -149,7 +149,7 @@ import ToastApproval from "@/views/toastManage/ToastApproval.vue";
 import { ToastStatus } from "@/common/enum";
 
 export default {
-  name: "roleManage",
+  name: "RoleManage",
   components: {
     ToastEdit,
     ToastAddNew,

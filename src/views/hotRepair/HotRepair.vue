@@ -4,9 +4,9 @@
       <BaseTable
         ref="hotRepaireTable"
         :columns="columns"
-        :pageTotal="pageTotal"
-        :searchFormSet="searchFormSet"
-        :tableData="tableData"
+        :page-total="pageTotal"
+        :search-form-set="searchFormSet"
+        :table-data="tableData"
         @edit="judgeEdit"
         @getData="getData"
       >

@@ -4,9 +4,9 @@
       <BaseTable
         ref="tabbarConTable"
         :columns="columns"
-        :pageTotal="pageTotal"
-        :searchFormSet="searchFormSet"
-        :tableData="tableData"
+        :page-total="pageTotal"
+        :search-form-set="searchFormSet"
+        :table-data="tableData"
         @edit="judgeEdit"
         @getData="getData"
       >
@@ -149,31 +149,3 @@ export default {
   }
 };
 </script>
-
-<style lang="scss" scoped>
-.list {
-  list-style: none;
-  display: flex;
-
-  .drag-move {
-    transition: transform 0.3s;
-  }
-
-  .list-item {
-    flex: 1 1 auto;
-    cursor: grabbing;
-    background-color: #66b1ff;
-    margin: 0 1px;
-    color: white;
-    border-radius: 4px;
-    text-align: center;
-    padding: 10px;
-  }
-}
-
-//.bg-phone {
-//  font-size: 500px;
-//  width: 400px;
-//  display: inline-block;
-//}
-</style>

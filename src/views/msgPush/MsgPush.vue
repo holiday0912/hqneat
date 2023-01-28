@@ -143,7 +143,7 @@
       </el-table>
 
       <BasePagination
-        :pageTotal="pageTotal"
+        :page-total="pageTotal"
         @getdata="getData"
       ></BasePagination>
     </div>

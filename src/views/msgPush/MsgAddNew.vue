@@ -139,9 +139,3 @@ export default {
   }
 };
 </script>
-
-<style lang="scss" scoped>
-.select-group:first-child {
-  color: dodgerblue;
-}
-</style>

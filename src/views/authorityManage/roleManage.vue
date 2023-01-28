@@ -238,7 +238,7 @@ import { authResource, queryResourceTree } from "@/api/system/sysRoleResource";
 import { updateMenuMethod } from "@/common/toolFunc";
 
 export default {
-  name: "roleManage",
+  name: "RoleManage",
   data() {
     return {
       query: {

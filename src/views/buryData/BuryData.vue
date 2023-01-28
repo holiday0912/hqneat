@@ -123,7 +123,7 @@
       </el-table>
 
       <BasePagination
-        :pageTotal="pageTotal"
+        :page-total="pageTotal"
         @getdata="getData"
       ></BasePagination>
     </div>
@@ -140,7 +140,7 @@ import BuryDataDrawer from "@/views/buryData/BuryDataDrawer.vue";
 import { NyEventControllerDeleteById, selectAllInfo } from "@/api/buryData";
 
 export default {
-  name: "roleManage",
+  name: "RoleManage",
   components: {
     BuryDataAdd,
     BuryDataDrawer
@@ -159,7 +159,8 @@ export default {
     this.getData();
   },
   methods: {
-    async getData(query = { pageNum: 1, pageSize: 10 }) {
+    // async getData(query = { pageNum: 1, pageSize: 10 }) {
+    async getData() {
       // const params = {
       //   current: query.pageNum,
       //   size: query.pageSize

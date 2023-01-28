@@ -186,16 +186,3 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-.event-record {
-  padding: 20px;
-}
-
-.json-data {
-  font-size: 16px;
-  font-weight: 600;
-  font-family: monospace;
-  overflow-x: auto;
-}
-</style>

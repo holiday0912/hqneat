@@ -144,9 +144,3 @@ export default {
   }
 };
 </script>
-
-<style>
-.select-group:first-child {
-  color: dodgerblue;
-}
-</style>

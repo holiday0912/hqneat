@@ -6,15 +6,6 @@
 
 <script>
 export default {
-  name: "dashboard",
-  data() {
-    return {
-      
-    };
-  },
-  components: {},
-  computed: {},
-  mounted() {},
-  methods: {},
+  name: "Dashboard"
 };
 </script>

@@ -147,14 +147,14 @@
       </el-table>
 
       <BasePagination
-        :pageTotal="pageTotal"
+        :page-total="pageTotal"
         @getdata="getData"
       ></BasePagination>
     </div>
 
     <HtmlPckUpload
       ref="htmlPckUpload"
-      :maxVerionCode="maxVerionCode"
+      :max-verion-code="maxVerionCode"
       @refresh="getData"
     ></HtmlPckUpload>
   </div>

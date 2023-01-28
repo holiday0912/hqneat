@@ -211,7 +211,7 @@ import { phoneValid } from "@/config";
 import { md5 } from "@/utils/md5";
 
 export default {
-  name: "accountManage",
+  name: "AccountManage",
   data() {
     const comPswRule = (rule, value, callback) => {
       if (this.addItem.password !== "") {

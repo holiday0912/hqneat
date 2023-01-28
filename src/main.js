@@ -16,6 +16,8 @@ import BaseTable from "@/components/BaseTable.vue";
 import { day } from "@/common/toolFunc";
 // import './utils/rem'
 import axios from "axios";
+import "@/assets/css/main.css";
+import "@/assets/css/color-dark.css";
 
 Vue.prototype.$axios = axios;
 Vue.prototype.$dayjs = day;
@@ -81,7 +83,7 @@ router.beforeEach((to, from, next) => {
   }
 });
 
-router.afterEach(to => {
+router.afterEach(() => {
   NProgress.done();
 });
 

@@ -1,216 +1,218 @@
 * {
-    margin: 0;
-    padding: 0;
+  margin: 0;
+  padding: 0;
 }
 
 html,
 body,
 #app,
 .wrapper {
-    height: 100%;
-    overflow: hidden;
+  height: 100%;
+  overflow: hidden;
 }
 
 body {
-    font-family: 'PingFang SC', "Helvetica Neue", Helvetica, "microsoft yahei", arial, STHeiTi, sans-serif;
+  font-family: "PingFang SC", "Helvetica Neue", Helvetica, "microsoft yahei",
+    arial, STHeiTi, sans-serif;
 }
 
 a {
-    text-decoration: none
+  text-decoration: none;
 }
 
 .content-box {
-    position: absolute;
-    left: 250px;
-    right: 0;
-    top: 70px;
-    bottom: 0;
-    padding-bottom: 30px;
-    -webkit-transition: left .3s ease-in-out;
-    transition: left .3s ease-in-out;
-    background: #f0f0f0;
+  position: absolute;
+  left: 250px;
+  right: 0;
+  top: 70px;
+  bottom: 0;
+  padding-bottom: 30px;
+  -webkit-transition: left 0.3s ease-in-out;
+  transition: left 0.3s ease-in-out;
+  background: #f0f0f0;
 }
 
 .content {
-    width: auto;
-    height: 100%;
-    padding: 10px;
-    overflow-y: scroll;
-    box-sizing: border-box;
+  width: auto;
+  height: 100%;
+  padding: 10px;
+  overflow-y: scroll;
+  box-sizing: border-box;
 }
 
 .content-collapse {
-    left: 65px;
+  left: 65px;
 }
 
 .container {
-    padding: 30px;
-    background: #fff;
-    border: 1px solid #ddd;
-    border-radius: 5px;
+  padding: 30px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 5px;
 }
 
 .crumbs {
-    margin: 10px 0;
+  margin: 10px 0;
 }
 
 .el-table th {
-    background-color: #f5f7fa !important;
+  background-color: #f5f7fa !important;
 }
 
 .pagination {
-    margin: 20px 0;
-    text-align: right;
+  margin: 20px 0;
+  text-align: right;
 }
 
 .plugins-tips {
-    padding: 20px 10px;
-    margin-bottom: 20px;
+  padding: 20px 10px;
+  margin-bottom: 20px;
 }
 
 .el-button + .el-tooltip {
-    margin-left: 10px;
+  margin-left: 10px;
 }
 
 .el-table tr:hover {
-    background: #f6faff;
+  background: #f6faff;
 }
 
 .mgb20 {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 
 .move-enter-active,
 .move-leave-active {
-    transition: opacity .5s;
+  transition: opacity 0.5s;
 }
 
 .move-enter,
 .move-leave {
-    opacity: 0;
+  opacity: 0;
 }
 
 /*BaseForm*/
 
 .form-box {
-    width: 600px;
+  width: 600px;
 }
 
 .form-box .line {
-    text-align: center;
+  text-align: center;
 }
 
 .el-time-panel__content::after,
 .el-time-panel__content::before {
-    margin-top: -7px;
+  margin-top: -7px;
 }
 
-.el-time-spinner__wrapper .el-scrollbar__wrap:not(.el-scrollbar__wrap--hidden-default) {
-    padding-bottom: 0;
+.el-time-spinner__wrapper
+  .el-scrollbar__wrap:not(.el-scrollbar__wrap--hidden-default) {
+  padding-bottom: 0;
 }
 
 /*Upload*/
 
 .pure-button {
-    width: 150px;
-    height: 40px;
-    line-height: 40px;
-    text-align: center;
-    color: #fff;
-    border-radius: 3px;
+  width: 150px;
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+  color: #fff;
+  border-radius: 3px;
 }
 
 .g-core-image-corp-container .info-aside {
-    height: 45px;
+  height: 45px;
 }
 
 .el-upload--text {
-    background-color: #fff;
-    border: 1px dashed #d9d9d9;
-    border-radius: 6px;
-    box-sizing: border-box;
-    width: 360px;
-    height: 180px;
-    text-align: center;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
+  background-color: #fff;
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  box-sizing: border-box;
+  width: 360px;
+  height: 180px;
+  text-align: center;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
 }
 
 .el-upload--text .el-icon-upload {
-    font-size: 67px;
-    color: #97a8be;
-    margin: 40px 0 16px;
-    line-height: 50px;
+  font-size: 67px;
+  color: #97a8be;
+  margin: 40px 0 16px;
+  line-height: 50px;
 }
 
 .el-upload--text {
-    color: #97a8be;
-    font-size: 14px;
-    text-align: center;
+  color: #97a8be;
+  font-size: 14px;
+  text-align: center;
 }
 
 .el-upload--text em {
-    font-style: normal;
+  font-style: normal;
 }
 
 /*VueEditor*/
 
 .ql-container {
-    min-height: 400px;
+  min-height: 400px;
 }
 
 .ql-snow .ql-tooltip {
-    transform: translateX(117.5px) translateY(10px) !important;
+  transform: translateX(117.5px) translateY(10px) !important;
 }
 
 .editor-btn {
-    margin-top: 20px;
+  margin-top: 20px;
 }
 
 /*markdown*/
 
 .v-note-wrapper .v-note-panel {
-    min-height: 500px;
+  min-height: 500px;
 }
 
 .recommendPage .swiper-container {
-    width: 1088px;
-    height: 350px;
-    margin: 0 auto;
-    border-radius: 16px;
+  width: 1088px;
+  height: 350px;
+  margin: 0 auto;
+  border-radius: 16px;
 }
 
 /*轮播图分页器样式*/
 .my-bullet {
-    width: 8px;
-    height: 8px;
-    display: inline-block;
-    background: #000000;
-    opacity: 0.5;
-    border-radius: 5px;
-    margin: 0 5px;
+  width: 8px;
+  height: 8px;
+  display: inline-block;
+  background: #000000;
+  opacity: 0.5;
+  border-radius: 5px;
+  margin: 0 5px;
 }
 
 .my-bullet-active {
-    width: 20px;
-    height: 8px;
-    background: #0061D9;
-    opacity: 1;
-    border-radius: 4px;
+  width: 20px;
+  height: 8px;
+  background: #0061d9;
+  opacity: 1;
+  border-radius: 4px;
 }
 
 /*輸入框背景#F2F8FF*/
 input:-webkit-autofill {
-    box-shadow: 0 0 0 150px #F2F8FF inset !important;
+  box-shadow: 0 0 0 150px #f2f8ff inset !important;
 }
 
 .el-input.is-disabled .el-input__inner,
 .el-textarea.is-disabled .el-textarea__inner,
 .el-select .el-input.is-disabled .el-input__inner {
-    background: #E8E8E8 !important;
-    border: 1px solid #999999 !important;
-    color: #333333 !important;
+  background: #e8e8e8 !important;
+  border: 1px solid #999999 !important;
+  color: #333333 !important;
 }
 
 /* &:hover
@@ -218,20 +220,155 @@ input:-webkit-autofill {
   border 1px solid #999999
   color #333333 */
 .el-pagination.is-background .el-pager li:not(.disabled).active {
-    background-color: #006ECA
+  background-color: #006eca;
 }
 
 .icon-url {
-    display: inline-block;
-    margin-left: 20px;
-    text-decoration: underline;
-    padding-top: 7px;
+  display: inline-block;
+  margin-left: 20px;
+  text-decoration: underline;
+  padding-top: 7px;
 }
 
 .menu-icon-select {
-    display: flex;
-    overflow-y: auto;
-    flex-wrap: wrap;
-    height: 300px;
-    width: 410px;
+  display: flex;
+  overflow-y: auto;
+  flex-wrap: wrap;
+  height: 300px;
+  width: 410px;
 }
+
+
+.handle-box {
+  margin-bottom: 20px;
+}
+
+.handle-select {
+  width: 120px;
+}
+
+.handle-input {
+  width: 300px;
+  display: inline-block;
+}
+
+.table {
+  width: 100%;
+}
+
+.red {
+  color: #ff0000;
+}
+
+.mr10 {
+  margin-right: 10px;
+}
+
+.table-td-thumb {
+  display: block;
+  margin: auto;
+  width: 40px;
+  height: 40px;
+}
+
+.el-upload {
+  border-radius: 0;
+  margin-left: 10px;
+  overflow: visible;
+  width: 0;
+  height: 0;
+}
+
+/* 解决table表格表头错位 */
+.el-table th.gutter {
+  display: table-cell !important;
+}
+
+.dialog-head-span {
+  margin-left: 15px;
+}
+
+/* 折叠面板 */
+.titleInfo {
+  position: relative;
+}
+
+.titleInfo::before {
+  content: "";
+  display: inline;
+  height: 28px;
+  width: 2px;
+  background-color: #409eff !important;
+  position: absolute;
+  left: 0;
+  top: 11px;
+}
+
+.titleInfo .el-collapse-item__header {
+  color: #409eff !important;
+  font-size: 14px;
+  padding-left: 20px;
+  font-weight: bold;
+  line-height: 40px;
+  margin: 0;
+}
+
+/* 表格tip宽度 */
+.el-tooltip__popper {
+  max-width: 600px;
+}
+
+.error-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  background: #f3f3f3;
+  box-sizing: border-box;
+}
+
+.error-code {
+  line-height: 1;
+  font-size: 250px;
+  font-weight: bolder;
+  color: #2d8cf0;
+}
+
+.error-code span {
+  color: #00a854;
+}
+
+.error-desc {
+  font-size: 30px;
+  color: #777;
+}
+
+.error-handle {
+  margin-top: 30px;
+  padding-bottom: 200px;
+}
+
+.error-btn {
+  margin-left: 100px;
+}
+
+.select-group:first-child {
+  color: dodgerblue;
+}
+
+.error-log {
+  padding: 20px;
+}
+/* 
+.event-record {
+  padding: 20px;
+}
+
+.json-data {
+  font-size: 16px;
+  font-weight: 600;
+  font-family: monospace;
+  overflow-x: auto;
+} */

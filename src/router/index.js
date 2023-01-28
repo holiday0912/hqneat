@@ -53,22 +53,6 @@ const routes = [
           ),
         meta: { permission: false, title: "资源管理" }
       },
-      // {
-      //   path: "/quotaManage",
-      //   name: "quotaManage",
-      //   component: () =>
-      //     import(
-      //       /* webpackChunkName: "quotaManage" */ "@/views/quotaManage.vue"
-      //     ),
-      //   meta: { permission: false, title: "额度管理" }
-      // },
-      // {
-      //   path: "/billManage",
-      //   name: "billManage",
-      //   component: () =>
-      //     import(/* webpackChunkName: "billManage" */ "@/views/billManage.vue"),
-      //   meta: { permission: false, title: "账单管理" }
-      // },
       // 消息推送
       {
         path: "/msgPush",
