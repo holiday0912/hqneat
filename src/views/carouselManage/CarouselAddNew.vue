@@ -17,13 +17,13 @@
           :on-change="handleFileChange"
           :on-error="uploadError"
           :on-success="uploadSuccess"
-          class="upload-demo"
           drag
+          style="padding-left: 140px"
         >
           <i class="el-icon-upload"></i>
-          <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-          <div slot="tip" class="el-upload__tip">
-            只能上传jpg/png文件，且不超过500kb
+          <div class="el-upload__text">
+            将文件拖到此处，或<em>点击上传</em>
+            <p>只能上传jpg/png文件，且不超过500kb</p>
           </div>
         </el-upload>
 
@@ -104,18 +104,3 @@ export default {
   }
 };
 </script>
-
-<style lang="scss" scoped>
-.select-group:first-child {
-  color: dodgerblue;
-}
-
-.upload-demo {
-  margin: 0 0 20px 120px;
-  transform: translateX(-213px);
-}
-
-.el-upload__tip {
-  transform: translateX(107px);
-}
-</style>

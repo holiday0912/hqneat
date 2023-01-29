@@ -45,11 +45,14 @@
                 :on-error="uploadError"
                 :on-success="uploadSuccess"
                 accept=".png,.jpg,.jpeg"
+                drag
                 list-type="picture"
               >
-                <el-button size="small" type="primary"
-                  >{{ isEdit ? "上传新的图标" : "点击上传" }}
-                </el-button>
+                <div class="el-upload__text" style="padding-top: 8px">
+                  将文件拖到此处，或<em>{{
+                    isEdit ? "上传新的图标" : "点击上传"
+                  }}</em>
+                </div>
                 <div slot="tip" class="el-upload__tip">
                   只能上传jpg/jpeg/png文件，且不超过50kb
                 </div>
@@ -177,3 +180,19 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+/deep/.el-upload-dragger {
+  width: 408px;
+  height: 46px;
+  transform: translateX(-10px);
+}
+
+/deep/.el-dialog__body {
+  padding-bottom: 0;
+}
+
+/deep/.el-upload__tip {
+  padding: 0;
+}
+</style>

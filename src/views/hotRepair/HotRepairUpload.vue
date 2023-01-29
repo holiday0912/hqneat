@@ -43,6 +43,7 @@
       :auto-upload="false"
       :file-list="fileList"
       :multiple="false"
+      :on-change="handleFileChange"
       accept=".jar"
     >
       <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
@@ -127,6 +128,9 @@ export default {
           }
         }
       });
+    },
+    handleFileChange(file, fileList) {
+      this.selectFile = Boolean(fileList.length);
     }
     // async uploadSuccess({ data }) {
     //   try {
