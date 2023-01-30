@@ -11,6 +11,7 @@
         <el-button class="add-btn" type="primary" @click="handleAdd"
           >新增
         </el-button>
+        <el-button type="primary" @click="handleDrawerClose">完成</el-button>
       </div>
       <ul>
         <li v-for="item in groupList" :key="item.id" class="group-list-item">

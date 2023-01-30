@@ -99,7 +99,10 @@
         <!--状态-->
         <el-table-column align="center" label="状态" prop="status">
           <template v-slot="{ row }">
-            <el-tag :type="row.status.color">{{ row.status.val }} </el-tag>
+            <el-tag v-if="row.status" :type="row.status.color"
+              >{{ row.status.val }}
+            </el-tag>
+            <div v-else>{{ $nodata }}</div>
           </template>
         </el-table-column>
 
@@ -187,7 +190,7 @@ export default {
               updateTime: i.updateTime
                 ? this.$dayjs(i.updateTime)
                 : this.$nodata,
-              status: this.getStatus(i.status)
+              status: ToastStatus.find(i => i.key === i.status)
             };
           });
           this.pageTotal = total;
@@ -198,9 +201,6 @@ export default {
     },
     formRest() {
       this.$refs.searchRorm.resetFields();
-    },
-    getStatus(target) {
-      return ToastStatus.find(i => i.key === target);
     },
     // 列表查询
     handleSearch() {

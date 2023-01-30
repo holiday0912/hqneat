@@ -6,7 +6,7 @@
     title="提示配置审批"
   >
     <div class="des-content">
-      <p>业务类型：{{ form.type }}</p>
+      <p>业务类型：{{ form.serviceTypeName }}</p>
       <p>温馨提示内容：{{ form.property }}</p>
     </div>
 
