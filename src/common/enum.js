@@ -17,6 +17,21 @@ export const carouStatus = [
   }
 ];
 
+/**
+ * 菜单启用状态
+ * @type {[{val: string, key: number},{val: string, key: number}]}
+ */
+export const statusEnum = [
+  {
+    key: 0,
+    val: "已关闭"
+  },
+  {
+    key: 1,
+    val: "已启用"
+  }
+];
+
 // 提示配置的状态枚举
 // 4审核通过 0审核中 1复核生效 2复核拒绝 3删除审核中
 export const ToastStatus = [

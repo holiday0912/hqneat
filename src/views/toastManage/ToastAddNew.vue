@@ -1,5 +1,4 @@
 <template>
-  <!-- 角色绑定资源 -->
   <div>
     <el-dialog
       v-dialogDrag

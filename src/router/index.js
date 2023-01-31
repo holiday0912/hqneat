@@ -152,6 +152,16 @@ const routes = [
             /* webpackChunkName: "todoList" */ "@/views/todoList/TodoList.vue"
           ),
         meta: { permission: false, title: "待办事项" }
+      },
+      // 菜单分组
+      {
+        path: "/MenuGroup",
+        name: "MenuGroup",
+        component: () =>
+          import(
+            /* webpackChunkName: "MenuGroup" */ "@/views/menuGroup/MenuGroup.vue"
+          ),
+        meta: { permission: false, title: "菜单分组" }
       }
     ]
   },
