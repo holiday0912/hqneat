@@ -3,9 +3,8 @@
     <el-dialog
       v-dialogDrag
       :close-on-click-modal="false"
-      :destroy-on-close="true"
       :visible.sync="dialogFormVisible"
-      title="新增提示配置"
+      title="新增分组菜单"
       width="680px"
       @close="dialogEditClose"
     >
@@ -69,11 +68,11 @@
           <el-dropdown
             v-if="menuIconType === '图标库选择'"
             placement="top-start"
-            trigger="click"
+            trigger="hover"
             @command="handleCommand"
           >
             <el-link :tabindex="9999" class="el-dropdown-link" type="primary">
-              <img v-if="form.menuIcon" :src="form.menuIcon" width="40px" />
+              <img v-if="form.menuIcon" :src="iconShow" width="40px" />
               <span v-else>选择图标</span>
               <i class="el-icon-arrow-down el-icon--right"></i>
             </el-link>
@@ -169,6 +168,7 @@ export default {
         status: 1
       },
       menuIconType: "图标库选择",
+      iconShow: "",
       iconList: [],
       dialogVisible: false,
       disabled: false,
@@ -187,6 +187,9 @@ export default {
       for (let i in this.form) {
         this.form[i] = val[i];
       }
+      this.iconShow = val.menuIcon;
+      this.form.id = val.id;
+      this.getIconList();
     },
     getIconList() {
       functionMenuIconList()
@@ -207,7 +210,8 @@ export default {
       this.$emit("refresh");
     },
     handleCommand(command) {
-      this.form.menuIcon = command;
+      this.iconShow = command;
+      this.form.menuIcon = command.slice(command.indexOf("/home"));
     },
     handlePictureCardPreview(file) {
       this.form.menuIcon = file.url;
@@ -241,8 +245,13 @@ export default {
     editMessagePush() {
       this.$refs.edit.validate(async valid => {
         if (valid) {
+          const target = { ...this.form };
+          const tempUrl = target.menuIcon;
+          if (tempUrl.indexOf("http") !== -1) {
+            target.menuIcon = tempUrl.slice(tempUrl.indexOf("/home"));
+          }
           try {
-            let res = await functionMenuUpdate(this.form);
+            let res = await functionMenuUpdate(target);
             if (res?.message === "请求成功") {
               this.$message.success("修改成功");
               this.dialogEditClose();
