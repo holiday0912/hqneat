@@ -7,7 +7,7 @@
       <el-row>
         <slot name="searchForm"></slot>
 
-        <el-col :span="6" :xs="12">
+        <el-col :span="8" :xs="12">
           <el-button
             icon="el-icon-refresh"
             style="margin-left: 50px; display: inline-block"

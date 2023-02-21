@@ -52,7 +52,7 @@ export default {
   data() {
     return {
       searchForm: {
-        eventName: ""
+        eventName: undefined
       },
       tableData: [],
       pageTotal: 0,
@@ -115,7 +115,8 @@ export default {
   },
   methods: {
     async getData(query = { pageNum: 1, pageSize: 10 }) {
-      const obj = Object.assign(query, this.searchForm);
+      const searchParams = JSON.parse(JSON.stringify(this.searchForm));
+      const obj = Object.assign(query, searchParams);
       try {
         const res = await eventInfoList(obj);
         if (res) {

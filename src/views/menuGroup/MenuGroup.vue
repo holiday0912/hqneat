@@ -95,9 +95,9 @@ export default {
       pageTotal: 0,
       tableData: [],
       searchForm: {
-        title: "",
-        menuGroupName: "",
-        status: ""
+        title: undefined,
+        menuGroupName: undefined,
+        status: undefined
       },
       menuGroupNameList: []
     };
@@ -162,7 +162,8 @@ export default {
   },
   methods: {
     async getData(query = { pageNum: 1, pageSize: 10 }) {
-      const obj = Object.assign(query, this.searchForm);
+      const searchParams = JSON.parse(JSON.stringify(this.searchForm));
+      const obj = Object.assign(query, searchParams);
       try {
         const res = await functionMenuList(obj);
         if (res) {

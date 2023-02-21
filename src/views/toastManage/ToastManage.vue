@@ -4,20 +4,8 @@
       <el-row>
         <el-form ref="searchRorm" :model="searchForm" label-width="120px">
           <el-col :span="6">
-            <el-form-item label="标题" prop="title">
-              <el-input v-model="searchForm.title"></el-input>
-            </el-form-item>
-          </el-col>
-
-          <el-col :span="6">
             <el-form-item label="内容" prop="property">
               <el-input v-model="searchForm.property"></el-input>
-            </el-form-item>
-          </el-col>
-
-          <el-col :span="6">
-            <el-form-item label="类型" prop="type">
-              <el-input v-model="searchForm.type"></el-input>
             </el-form-item>
           </el-col>
 
@@ -162,10 +150,10 @@ export default {
   data() {
     return {
       searchForm: {
-        title: "",
-        property: "",
-        type: "",
-        status: ""
+        // title: "",
+        property: undefined,
+        // type: "",
+        status: undefined
       },
       tableData: [],
       pageTotal: 0,
@@ -181,8 +169,9 @@ export default {
         current: query.pageNum,
         size: query.pageSize
       };
+      const searchForm = JSON.parse(JSON.stringify(this.searchForm));
       try {
-        let res = await toastManageList({ ...params, ...this.searchForm });
+        let res = await toastManageList({ ...params, ...searchForm });
         if (res) {
           const { data, total } = res.data;
           this.tableData = data.map(i => {

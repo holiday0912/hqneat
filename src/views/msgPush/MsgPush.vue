@@ -170,9 +170,9 @@ export default {
   data() {
     return {
       searchForm: {
-        title: "",
-        content: "",
-        ticker: ""
+        title: undefined,
+        content: undefined,
+        ticker: undefined
       },
       tableData: [],
       pageTotal: 0
@@ -183,7 +183,8 @@ export default {
   },
   methods: {
     async getData(query = { pageNum: 1, pageSize: 10 }) {
-      let obj = Object.assign(query, this.searchForm);
+      const searchParams = JSON.parse(JSON.stringify(this.searchForm));
+      let obj = Object.assign(query, searchParams);
       try {
         let res = await msgPushList(obj);
         if (res) {
