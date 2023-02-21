@@ -72,6 +72,7 @@
           align="center"
           label="温馨提示内容"
           prop="property"
+          show-overflow-tooltip
         ></el-table-column>
 
         <!--操作人员-->
@@ -190,7 +191,7 @@ export default {
               updateTime: i.updateTime
                 ? this.$dayjs(i.updateTime)
                 : this.$nodata,
-              status: ToastStatus.find(i => i.key === i.status)
+              status: ToastStatus.find(o => o.key === i.status)
             };
           });
           this.pageTotal = total;
@@ -201,6 +202,7 @@ export default {
     },
     formRest() {
       this.$refs.searchRorm.resetFields();
+      this.getData();
     },
     // 列表查询
     handleSearch() {

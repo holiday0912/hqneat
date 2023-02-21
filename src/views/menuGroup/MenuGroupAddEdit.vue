@@ -3,6 +3,7 @@
     <el-dialog
       v-dialogDrag
       :close-on-click-modal="false"
+      :destroy-on-close="true"
       :visible.sync="dialogFormVisible"
       title="新增分组菜单"
       width="680px"

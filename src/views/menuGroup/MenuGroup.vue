@@ -11,48 +11,46 @@
         @getData="getData"
       >
         <template #searchForm>
-          <div>
-            <el-col :span="6">
-              <el-form-item label="菜单名称" prop="title">
-                <el-input v-model="searchForm.title" placeholder="请输入">
-                </el-input>
-              </el-form-item>
-            </el-col>
+          <el-col :span="6" :xs="12">
+            <el-form-item label="菜单名称" prop="title">
+              <el-input v-model="searchForm.title" placeholder="请输入">
+              </el-input>
+            </el-form-item>
+          </el-col>
 
-            <el-col :span="6">
-              <el-form-item label="菜单分组" prop="menuGroup">
-                <el-select
-                  v-model="searchForm.menuGroup"
-                  :clearable="true"
-                  placeholder="请选择"
-                >
-                  <el-option
-                    v-for="item in menuGroupNameList"
-                    :key="item.menuGroupName"
-                    :label="item.menuGroupName"
-                    :value="item.menuGroup"
-                  />
-                </el-select>
-              </el-form-item>
-            </el-col>
+          <el-col :span="6" :xs="12">
+            <el-form-item label="菜单分组" prop="menuGroup">
+              <el-select
+                v-model="searchForm.menuGroup"
+                :clearable="true"
+                placeholder="请选择"
+              >
+                <el-option
+                  v-for="item in menuGroupNameList"
+                  :key="item.menuGroupName"
+                  :label="item.menuGroupName"
+                  :value="item.menuGroup"
+                />
+              </el-select>
+            </el-form-item>
+          </el-col>
 
-            <el-col :span="6">
-              <el-form-item label="是否开启" prop="status">
-                <el-select
-                  v-model="searchForm.status"
-                  :clearable="true"
-                  placeholder="请选择"
-                >
-                  <el-option
-                    v-for="item in statusEnum"
-                    :key="item.key"
-                    :label="item.val"
-                    :value="item.key"
-                  />
-                </el-select>
-              </el-form-item>
-            </el-col>
-          </div>
+          <el-col :span="6" :xs="12">
+            <el-form-item label="是否开启" prop="status">
+              <el-select
+                v-model="searchForm.status"
+                :clearable="true"
+                placeholder="请选择"
+              >
+                <el-option
+                  v-for="item in statusEnum"
+                  :key="item.key"
+                  :label="item.val"
+                  :value="item.key"
+                />
+              </el-select>
+            </el-form-item>
+          </el-col>
         </template>
 
         <template #menuIcon="{ scope }">

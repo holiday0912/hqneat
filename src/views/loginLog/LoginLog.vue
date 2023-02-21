@@ -75,35 +75,43 @@ export default {
         },
         {
           label: "app名称",
-          prop: "appName"
+          prop: "appName",
+          formatter: (row, column, val) => val || this.$nodata
         },
         {
           label: "版本代码",
-          prop: "versionCode"
+          prop: "versionCode",
+          formatter: (row, column, val) => val || this.$nodata
         },
         {
           label: "版本号",
-          prop: "versionName"
+          prop: "versionName",
+          formatter: (row, column, val) => val || this.$nodata
         },
         {
           label: "品牌",
-          prop: "brand"
+          prop: "brand",
+          formatter: (row, column, val) => val || this.$nodata
         },
         {
           label: "型号",
-          prop: "model"
+          prop: "model",
+          formatter: (row, column, val) => val || this.$nodata
         },
         {
           label: "设备id",
-          prop: "deviceId"
+          prop: "deviceId",
+          formatter: (row, column, val) => val || this.$nodata
         },
         {
           label: "sdk版本",
-          prop: "sdk"
+          prop: "sdk",
+          formatter: (row, column, val) => val || this.$nodata
         },
         {
           label: "系统版本",
-          prop: "systemVersion"
+          prop: "systemVersion",
+          formatter: (row, column, val) => val || this.$nodata
         },
         {
           label: "登录时间",

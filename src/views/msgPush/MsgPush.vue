@@ -65,18 +65,21 @@
           align="center"
           label="标题"
           prop="title"
+          show-overflow-tooltip
         ></el-table-column>
 
         <el-table-column
           align="center"
           label="内容"
           prop="content"
+          show-overflow-tooltip
         ></el-table-column>
 
         <el-table-column
           align="center"
           label="通知栏提示文字"
           prop="ticker"
+          show-overflow-tooltip
         ></el-table-column>
 
         <el-table-column
