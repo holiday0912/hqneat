@@ -140,6 +140,7 @@
       v-dialogDrag
       :close-on-click-modal="false"
       :visible.sync="dialogVisible"
+      style="text-align: center"
       title="轮播图审核"
       width="680px"
       @close="dialogEditClose"
@@ -147,7 +148,7 @@
       <el-image
         :preview-src-list="[imgUrl]"
         :src="imgUrl"
-        style="width: 350px;"
+        style="width: 350px;margin-bottom: 16px"
       />
       <el-form ref="approForm" :model="form" label-width="100px">
         <el-form-item

@@ -147,7 +147,7 @@
 
       <BasePagination
         :page-total="pageTotal"
-        @getdata="getData"
+        @getData="getData"
       ></BasePagination>
     </div>
 

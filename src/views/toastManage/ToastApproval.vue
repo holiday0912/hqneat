@@ -1,8 +1,8 @@
 <template>
   <el-drawer
     :before-close="handleDrawerClose"
+    :title="dialogTitle"
     :visible.sync="drawer"
-    title="提示配置审批"
   >
     <div class="des-content">
       <p>业务类型：{{ form.serviceTypeName }}</p>
@@ -25,7 +25,7 @@
       <!--    </div>-->
       <!--    <div class="btn">-->
       <el-button
-        v-if="form.status === '复核生效'"
+        v-if="form.status.val === '复核生效'"
         key="eff"
         :loading="approvalLoading"
         type="primary"
@@ -33,7 +33,7 @@
         >审批
       </el-button>
       <el-button
-        v-else-if="form.status === '删除审核中'"
+        v-else-if="form.status.val === '删除审核中'"
         key="eff"
         :loading="approvalLoading"
         type="primary"
@@ -68,15 +68,35 @@ export default {
       // 删除审核的时候通过传1，不通过传0，其他情况不用传
       isDeleted: 0,
       status: "",
+      originStatus: undefined,
       // 审核按钮的loading状态
       approvalLoading: false
     };
   },
   computed: {
+    dialogTitle() {
+      let tempTitle;
+      if (this.originStatus === "复核生效") {
+        tempTitle = "复核";
+      } else if (this.originStatus === "审核中") {
+        tempTitle = "审核";
+      } else if (this.originStatus === "删除审核中") {
+        tempTitle = "删除审核";
+      }
+      return tempTitle;
+    },
     statusList() {
+      let tempStatus;
+      if (this.originStatus === "复核生效") {
+        tempStatus = "4";
+      } else if (this.originStatus === "审核中") {
+        tempStatus = "1";
+      } else if (this.originStatus === "删除审核中") {
+        tempStatus = "3";
+      }
       return [
         {
-          key: this.form.status === "复核生效" ? "1" : "4",
+          key: tempStatus,
           val: "通过"
         },
         {
@@ -89,13 +109,17 @@ export default {
   methods: {
     openDrawer(target) {
       this.form = target;
+      this.originStatus = target.status.val;
       this.drawer = true;
     },
     handleDrawerClose() {
       this.drawer = false;
-      this.$emit("refresh");
+      this.status = ''
     },
     async approConfirm() {
+      if (!this.status) {
+        return;
+      }
       this.approvalLoading = true;
       try {
         let res = await recheckTips({
@@ -105,6 +129,7 @@ export default {
         if (res) {
           this.approvalLoading = false;
           this.handleDrawerClose();
+          this.$emit("refresh");
           this.$notify({
             title: "提示",
             message: "审核成功",
@@ -117,6 +142,9 @@ export default {
       }
     },
     async approConfirm1() {
+      if (!this.status) {
+        return;
+      }
       this.approvalLoading = true;
       try {
         let res = await checkTips({
@@ -126,6 +154,7 @@ export default {
         if (res.message === "请求成功") {
           this.approvalLoading = false;
           this.handleDrawerClose();
+          this.$emit("refresh");
           this.$notify({
             title: "提示",
             message: "审核成功",
@@ -138,19 +167,23 @@ export default {
       }
     },
     async approConfirm2() {
+      if (!this.status) {
+        return;
+      }
       this.approvalLoading = true;
       try {
         let res = await checkTips({
           id: this.form.id,
-          status: this.status1,
-          isDeleted: this.isDeleted
+          status: this.status,
+          isDeleted: this.status === "3" ? 1 : 0
         });
         if (res.message === "请求成功") {
           this.approvalLoading = false;
           this.handleDrawerClose();
+          this.$emit("refresh");
           this.$notify({
             title: "提示",
-            message: "审核成功",
+            message: "删除审核成功",
             type: "success"
           });
         }

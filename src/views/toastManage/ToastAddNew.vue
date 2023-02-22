@@ -15,31 +15,31 @@
           label="内容"
           prop="property"
         >
-          <div class="input-wp">
-            <el-input v-model="form.property" maxlength="60"></el-input>
-            <span>(中文)</span>
-          </div>
+          <!--          <div class="input-wp">-->
+          <el-input v-model="form.property" maxlength="60"></el-input>
+          <!--            <span>(中文)</span>-->
+          <!--          </div>-->
         </el-form-item>
 
-        <el-form-item
-          :rules="[{ required: true, message: '请输入' }]"
-          prop="propertyE"
-        >
-          <div class="input-wp">
-            <el-input v-model="form.propertyE" maxlength="60"></el-input>
-            <span>(英文)</span>
-          </div>
-        </el-form-item>
+        <!--        <el-form-item-->
+        <!--          :rules="[{ required: true, message: '请输入' }]"-->
+        <!--          prop="propertyE"-->
+        <!--        >-->
+        <!--          <div class="input-wp">-->
+        <!--            <el-input v-model="form.propertyE" maxlength="60"></el-input>-->
+        <!--            <span>(英文)</span>-->
+        <!--          </div>-->
+        <!--        </el-form-item>-->
 
-        <el-form-item
-          :rules="[{ required: true, message: '请输入' }]"
-          prop="propertyF"
-        >
-          <div class="input-wp">
-            <el-input v-model="form.propertyF" maxlength="60"></el-input>
-            <span>(繁体)</span>
-          </div>
-        </el-form-item>
+        <!--        <el-form-item-->
+        <!--          :rules="[{ required: true, message: '请输入' }]"-->
+        <!--          prop="propertyF"-->
+        <!--        >-->
+        <!--          <div class="input-wp">-->
+        <!--            <el-input v-model="form.propertyF" maxlength="60"></el-input>-->
+        <!--            <span>(繁体)</span>-->
+        <!--          </div>-->
+        <!--        </el-form-item>-->
 
         <el-form-item
           :rules="[{ required: true, message: '请输入' }]"

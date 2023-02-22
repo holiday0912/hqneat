@@ -42,7 +42,7 @@ export default {
       this.getData();
     },
     getData() {
-      this.$emit("getdata", this.query);
+      this.$emit("getData", this.query);
     }
   }
 };

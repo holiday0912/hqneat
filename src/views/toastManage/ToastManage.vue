@@ -17,6 +17,7 @@
         </li>
       </ul>
     </div>
+
     <div class="right">
       <el-row>
         <el-form ref="searchRorm" :model="searchForm" label-width="120px">
@@ -114,7 +115,9 @@
             </el-button>
             <el-button
               :disabled="
-                row.status.val !== '复核生效' || row.status.val !== '复核拒绝'
+                row.status.val === '删除审核中' ||
+                  row.status.val === '审核中' ||
+                  row.status.val === '审核通过'
               "
               icon="el-icon-edit"
               type="text"
@@ -145,7 +148,11 @@
 </template>
 
 <script>
-import { toastDeleteById, toastManageList } from "@/api/toastManage";
+import {
+  recheckTips,
+  toastDeleteById,
+  toastManageList
+} from "@/api/toastManage";
 import ToastEdit from "@/views/toastManage/ToastEdit.vue";
 import ToastAddNew from "@/views/toastManage/ToastAddNew.vue";
 import ToastApproval from "@/views/toastManage/ToastApproval.vue";
@@ -218,7 +225,7 @@ export default {
     },
     // 删除toast
     async handleDelete({ id, status }) {
-      if (status === "审核通过") {
+      if (status.val === "复核生效") {
         this.$confirm(
           "生效状态的提示配置需审核才能删除，是否发起审核？",
           "提示",
@@ -228,20 +235,40 @@ export default {
             type: "warning"
           }
         )
-          .then()
+          .then(async () => {
+            try {
+              let res = await recheckTips({
+                id: id,
+                status: "3",
+                isDeleted: "1"
+              });
+              if (res) {
+                this.approvalLoading = false;
+                this.getData();
+                this.$notify({
+                  title: "提示",
+                  message: "删除请求提交成功",
+                  type: "success"
+                });
+              }
+            } catch (error) {
+              this.approvalLoading = false;
+              throw new Error(error);
+            }
+          })
           .catch(error => {
             console.log(error);
           });
-        return;
-      }
-      try {
-        let res = await toastDeleteById({ id });
-        if (res.message === "请求成功") {
-          this.$message.success("删除成功");
-          await this.getData();
+      } else {
+        try {
+          let res = await toastDeleteById({ id });
+          if (res.message === "请求成功") {
+            this.$message.success("删除成功");
+            await this.getData();
+          }
+        } catch (e) {
+          throw new Error(e);
         }
-      } catch (e) {
-        throw new Error(e);
       }
     },
     handleEdit(val) {
@@ -254,6 +281,21 @@ export default {
       this.searchForm.status = target;
       this.handleSearch();
     }
+    // async DeleteApprove(target) {
+    //   this.$confirm(
+    //     "生效状态的提示配置需审核才能删除，是否发起审核？",
+    //     "提示",
+    //     {
+    //       confirmButtonText: "确定",
+    //       cancelButtonText: "取消",
+    //       type: "warning"
+    //     }
+    //   )
+    //     .then()
+    //     .catch(error => {
+    //       console.log(error);
+    //     });
+    // }
   }
 };
 </script>

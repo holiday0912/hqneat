@@ -1,15 +1,17 @@
 <template>
   <div class="container">
     <div class="handle-box">
-      <el-button icon="el-icon-refresh" type="primary" @click="handleSearch">
-        刷新
-      </el-button>
-      <el-button icon="el-icon-plus" type="primary" @click="handleAdd">
-        新增
-      </el-button>
-      <el-button type="primary" @click="openEditOrderModal">
-        修改菜单顺序
-      </el-button>
+      <div style="margin-bottom: 16px">
+        <el-button icon="el-icon-refresh" type="primary" @click="handleSearch">
+          刷新
+        </el-button>
+        <el-button icon="el-icon-plus" type="primary" @click="handleAdd">
+          新增
+        </el-button>
+        <el-button type="primary" @click="openEditOrderModal">
+          修改菜单顺序
+        </el-button>
+      </div>
 
       <BaseTable
         ref="tabbarConTable"

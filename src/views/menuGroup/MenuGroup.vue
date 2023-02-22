@@ -113,7 +113,10 @@ export default {
     searchFormSet() {
       return {
         model: this.searchForm,
-        ref: "searchForm"
+        ref: "searchForm",
+        style: {
+          marginBottom: "16px"
+        }
       };
     },
     columns() {
