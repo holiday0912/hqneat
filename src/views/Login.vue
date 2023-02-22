@@ -8,7 +8,7 @@
         :rules="rules"
         class="ms-content"
         label-width="0"
-        @keyup.enter.native.once="submitForm()"
+        @keyup.enter.native="submitForm()"
       >
         <el-form-item prop="userName">
           <el-input

@@ -9,7 +9,11 @@
           class="items"
           @click="statusBarClick(item.key)"
         >
-          {{ item.val }}({{ num[item.key] }})
+          <span
+            :style="{ backgroundColor: item.oColor }"
+            class="status-flag"
+          ></span>
+          <span>{{ item.val }}</span>
         </li>
       </ul>
     </div>
@@ -21,19 +25,6 @@
               <el-input v-model="searchForm.property"></el-input>
             </el-form-item>
           </el-col>
-
-          <!--          <el-col :span="6">-->
-          <!--            <el-form-item label="状态" prop="status">-->
-          <!--              <el-select v-model="searchForm.status" placeholder="请选择">-->
-          <!--                <el-option-->
-          <!--                  v-for="item in ToastStatus"-->
-          <!--                  :key="item.key"-->
-          <!--                  :label="item.val"-->
-          <!--                  :value="item.key"-->
-          <!--                />-->
-          <!--              </el-select>-->
-          <!--            </el-form-item>-->
-          <!--          </el-col>-->
         </el-form>
         <el-col :span="8" style="margin-left: 20px">
           <div class="handle-box">
@@ -177,14 +168,6 @@ export default {
       },
       tableData: [],
       pageTotal: 0,
-      // 待审核的数量
-      num: {
-        "0": 0,
-        "1": 0,
-        "2": 0,
-        "3": 0,
-        "4": 0
-      },
       ToastStatus: ToastStatus
     };
   },
@@ -198,15 +181,11 @@ export default {
         size: query.pageSize
       };
       const searchForm = JSON.parse(JSON.stringify(this.searchForm));
-      for (let i in this.num) {
-        this.num[i] = 0;
-      }
       try {
         let res = await toastManageList({ ...params, ...searchForm });
         if (res) {
           const { data, total } = res.data;
           this.tableData = data.map(i => {
-            this.num[i.status] = this.num[i.status] + 1;
             return {
               ...i,
               updateTime: i.updateTime
@@ -272,10 +251,8 @@ export default {
       this.$refs.toastApproval.openDrawer(target);
     },
     statusBarClick(target) {
-      console.log(this.tableData);
-      this.tableData = this.tableData.filter(i => {
-        i.status.key === target;
-      });
+      this.searchForm.status = target;
+      this.handleSearch();
     }
   }
 };
@@ -318,5 +295,14 @@ export default {
   background-color: #fff;
   padding: 16px;
   border-radius: 4px;
+}
+
+.status-flag {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  vertical-align: middle;
+  margin-right: 10px;
 }
 </style>

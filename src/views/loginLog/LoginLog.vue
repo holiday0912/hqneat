@@ -20,9 +20,9 @@
 
         <template #operation="{ scope }">
           <el-button
+            v-debounce="() => handleDetail(scope.row)"
             icon="el-icon-document"
             type="text"
-            @click="handleDetail(scope.row)"
             >详情
           </el-button>
         </template>

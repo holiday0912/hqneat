@@ -17,11 +17,13 @@
 
         <el-col :span="8" style="margin-left: 20px">
           <div class="handle-box">
-            <el-button icon="el-icon-refresh" @click="formRest">重置</el-button>
+            <el-button v-debounce="formRest" icon="el-icon-refresh"
+              >重置</el-button
+            >
             <el-button
+              v-debounce="handleSearch"
               icon="el-icon-search"
               type="primary"
-              @click="handleSearch"
               >查询
             </el-button>
             <el-button icon="el-icon-plus" type="primary" @click="handleAdd"
@@ -113,9 +115,9 @@
             </el-popconfirm>
             <el-button
               slot="reference"
+              v-debounce="() => showDrawer(scope.row)"
               icon="el-icon-document"
               type="text"
-              @click="showDrawer(scope.row)"
               >详情
             </el-button>
           </template>

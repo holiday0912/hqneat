@@ -1,7 +1,7 @@
 import { debounce } from "throttle-debounce";
 import { off, on } from "@/utils/dom";
 
-let fn = null;
+let fn = undefined;
 export default {
   name: "debounce",
   install(Vue, { defaultTime = 300 } = {}) {

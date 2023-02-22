@@ -38,27 +38,32 @@ export const ToastStatus = [
   {
     key: "0",
     val: "审核中",
-    color: "info"
+    color: "info",
+    oColor: "#909399"
   },
   {
     key: "1",
     val: "复核生效",
-    color: "warning"
+    color: "warning",
+    oColor: "#e8a94a"
   },
   {
     key: "2",
     val: "复核拒绝",
-    color: "danger"
+    color: "danger",
+    oColor: "#f78383"
   },
   {
     key: "3",
     val: "删除审核中",
-    color: ""
+    color: "",
+    oColor: "#409eff"
   },
   {
     key: "4",
     val: "审核通过",
-    color: "success"
+    color: "success",
+    oColor: "#72c648"
   }
 ];
 

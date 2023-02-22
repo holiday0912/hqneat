@@ -9,17 +9,17 @@
 
         <el-col :span="8" :xs="12">
           <el-button
+            v-debounce="handleReset"
             icon="el-icon-refresh"
             style="margin-left: 50px; display: inline-block"
-            @click="handleReset"
             >重置
           </el-button>
 
           <el-button
+            v-debounce="handleSearch"
             icon="el-icon-search"
             style="margin-left: 10px; display: inline-block"
             type="primary"
-            @click="handleSearch"
             >查询
           </el-button>
           <el-button

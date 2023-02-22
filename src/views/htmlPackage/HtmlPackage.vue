@@ -45,8 +45,11 @@
       </el-form>
 
       <div class="handle-box">
-        <el-button icon="el-icon-refresh" @click="formRest">重置</el-button>
-        <el-button icon="el-icon-search" type="primary" @click="handleSearch"
+        <el-button v-debounce="formRest" icon="el-icon-refresh">重置</el-button>
+        <el-button
+          v-debounce="handleSearch"
+          icon="el-icon-search"
+          type="primary"
           >查询
         </el-button>
         <el-button icon="el-icon-plus" type="primary" @click="handleAdd"
@@ -136,10 +139,10 @@
             </el-popconfirm>
             <el-button
               slot="reference"
+              v-debounce="() => handleDownload(scope.row)"
               icon="el-icon-download"
               style="margin-left: 10px"
               type="text"
-              @click="handleDownload(scope.row)"
               >下载
             </el-button>
           </template>

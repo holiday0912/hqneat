@@ -15,15 +15,15 @@
           </el-col>
           <div style="display: inline-block">
             <div style="margin-left: 10px; display: inline-block">
-              <el-button icon="el-icon-refresh" @click="formRest"
+              <el-button v-debounce="formRest" icon="el-icon-refresh"
                 >重置
               </el-button>
             </div>
             <div style="margin-left: 10px; display: inline-block">
               <el-button
+                v-debounce="handleSearch"
                 icon="el-icon-search"
                 type="primary"
-                @click="handleSearch"
                 >查询
               </el-button>
             </div>
