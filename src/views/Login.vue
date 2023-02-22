@@ -8,6 +8,7 @@
         :rules="rules"
         class="ms-content"
         label-width="0"
+        @keyup.enter.native.once="submitForm()"
       >
         <el-form-item prop="userName">
           <el-input
@@ -27,15 +28,13 @@
             show-password
             type="password"
             @focus="onfocus($event)"
-            @keyup.enter.native="submitForm()"
           >
             <i slot="prepend" class="el-icon-lx-lock"></i>
           </el-input>
         </el-form-item>
         <div class="login-btn">
-          <el-button type="primary" @click="submitForm()">登录</el-button>
+          <el-button v-debounce="submitForm" type="primary">登录</el-button>
         </div>
-        <!-- <p class="login-tips">Tips : 用户名和密码随便填。</p> -->
       </el-form>
     </div>
     <div class="copyDrec">备案号</div>

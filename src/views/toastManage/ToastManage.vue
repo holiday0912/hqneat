@@ -1,6 +1,19 @@
 <template>
-  <div class="container">
-    <div class="handle-box">
+  <div class="flex-wp">
+    <div class="left">
+      <h3 class="title">状态</h3>
+      <ul>
+        <li
+          v-for="item in ToastStatus"
+          :key="item.key"
+          class="items"
+          @click="statusBarClick(item.key)"
+        >
+          {{ item.val }}({{ num[item.key] }})
+        </li>
+      </ul>
+    </div>
+    <div class="right">
       <el-row>
         <el-form ref="searchRorm" :model="searchForm" label-width="120px">
           <el-col :span="6">
@@ -9,18 +22,18 @@
             </el-form-item>
           </el-col>
 
-          <el-col :span="6">
-            <el-form-item label="状态" prop="status">
-              <el-select v-model="searchForm.status" placeholder="请选择">
-                <el-option
-                  v-for="item in ToastStatus"
-                  :key="item.key"
-                  :label="item.val"
-                  :value="item.key"
-                />
-              </el-select>
-            </el-form-item>
-          </el-col>
+          <!--          <el-col :span="6">-->
+          <!--            <el-form-item label="状态" prop="status">-->
+          <!--              <el-select v-model="searchForm.status" placeholder="请选择">-->
+          <!--                <el-option-->
+          <!--                  v-for="item in ToastStatus"-->
+          <!--                  :key="item.key"-->
+          <!--                  :label="item.val"-->
+          <!--                  :value="item.key"-->
+          <!--                />-->
+          <!--              </el-select>-->
+          <!--            </el-form-item>-->
+          <!--          </el-col>-->
         </el-form>
         <el-col :span="8" style="margin-left: 20px">
           <div class="handle-box">
@@ -98,20 +111,27 @@
         <el-table-column align="center" label="操作">
           <template v-slot="{ row }">
             <el-button
-              :disabled="row.status === '删除审核中' || row.status === '审核中'"
+              :disabled="
+                row.status.val === '删除审核中' ||
+                  row.status.val === '审核中' ||
+                  row.status.val === '审核通过'
+              "
               icon="el-icon-delete"
               type="text"
               @click="handleDelete(row)"
               >删除
             </el-button>
             <el-button
-              :disabled="row.status !== '复核生效' || row.status !== '复核拒绝'"
+              :disabled="
+                row.status.val !== '复核生效' || row.status.val !== '复核拒绝'
+              "
               icon="el-icon-edit"
               type="text"
               @click="handleEdit(row)"
               >编辑
             </el-button>
             <el-button
+              :disabled="row.status.val === '审核通过'"
               icon="el-icon-check"
               type="text"
               @click="handleAppro(row)"
@@ -157,6 +177,14 @@ export default {
       },
       tableData: [],
       pageTotal: 0,
+      // 待审核的数量
+      num: {
+        "0": 0,
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0
+      },
       ToastStatus: ToastStatus
     };
   },
@@ -170,11 +198,15 @@ export default {
         size: query.pageSize
       };
       const searchForm = JSON.parse(JSON.stringify(this.searchForm));
+      for (let i in this.num) {
+        this.num[i] = 0;
+      }
       try {
         let res = await toastManageList({ ...params, ...searchForm });
         if (res) {
           const { data, total } = res.data;
           this.tableData = data.map(i => {
+            this.num[i.status] = this.num[i.status] + 1;
             return {
               ...i,
               updateTime: i.updateTime
@@ -238,7 +270,53 @@ export default {
     },
     handleAppro(target) {
       this.$refs.toastApproval.openDrawer(target);
+    },
+    statusBarClick(target) {
+      console.log(this.tableData);
+      this.tableData = this.tableData.filter(i => {
+        i.status.key === target;
+      });
     }
   }
 };
 </script>
+
+<style>
+.flex-wp {
+  display: flex;
+  min-height: 100%;
+}
+
+.left {
+  background-color: #fff;
+  padding: 16px;
+  border-radius: 4px;
+  margin-right: 12px;
+}
+
+.title {
+  font-size: 14px;
+  color: #606266;
+  margin-bottom: 16px;
+}
+
+.items {
+  width: 120px;
+  list-style-type: none;
+  font-size: 12px;
+  color: #606266;
+  line-height: 30px;
+  cursor: pointer;
+}
+
+.items:hover {
+  background-color: #f6f8fa;
+}
+
+.right {
+  flex: 1;
+  background-color: #fff;
+  padding: 16px;
+  border-radius: 4px;
+}
+</style>

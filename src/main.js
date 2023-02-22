@@ -18,6 +18,9 @@ import { day } from "@/common/toolFunc";
 import axios from "axios";
 import "@/assets/css/main.css";
 import "@/assets/css/color-dark.css";
+import debounce from "@/directives/debounce";
+
+debounce.install(Vue);
 
 Vue.prototype.$axios = axios;
 Vue.prototype.$dayjs = day;
