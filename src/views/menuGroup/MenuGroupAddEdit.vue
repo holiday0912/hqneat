@@ -78,7 +78,12 @@
             @command="handleCommand"
           >
             <el-link :tabindex="9999" class="el-dropdown-link" type="primary">
-              <img v-if="form.menuIcon" :src="iconShow" width="40px" />
+              <img
+                v-if="form.menuIcon"
+                :src="iconShow"
+                alt="图标"
+                width="40px"
+              />
               <span v-else>选择图标</span>
               <i class="el-icon-arrow-down el-icon--right"></i>
             </el-link>
