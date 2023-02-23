@@ -9,7 +9,12 @@
       width="680px"
       @close="dialogEditClose"
     >
-      <el-form ref="edit" :model="form" label-width="150px">
+      <el-form
+        v-if="dialogFormVisible"
+        ref="edit"
+        :model="form"
+        label-width="150px"
+      >
         <el-form-item
           :rules="[{ required: true, message: '请输入' }]"
           label="标题"
