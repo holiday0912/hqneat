@@ -198,7 +198,7 @@ export default {
               updateTime: i.updateTime
                 ? this.$dayjs(i.updateTime)
                 : this.$nodata,
-              status: ToastStatus.find(o => o.key === i.status)
+              status: i.status ? ToastStatus.find(o => o.key === i.status) : ""
             };
           });
           this.pageTotal = total;

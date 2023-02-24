@@ -7,7 +7,7 @@
       <el-row>
         <slot name="searchForm"></slot>
 
-        <el-col :span="8" :xs="12">
+        <el-col :span="10" :xs="12">
           <el-button
             v-debounce="handleReset"
             icon="el-icon-refresh"

@@ -61,7 +61,8 @@ export default {
     searchFormSet() {
       return {
         model: this.searchForm,
-        ref: "searchForm"
+        ref: "searchForm",
+        noAdd: true
       };
     },
     columns() {

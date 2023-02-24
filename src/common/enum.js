@@ -1,3 +1,8 @@
+export const rollTypeList = {
+  1: "上下滚动",
+  2: "左右滚动"
+};
+
 // 轮播图审核状态的枚举
 export const carouStatus = [
   {

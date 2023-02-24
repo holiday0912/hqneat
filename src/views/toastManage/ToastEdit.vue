@@ -19,11 +19,22 @@
           <el-input v-model="form.property"></el-input>
         </el-form-item>
 
-        <el-form-item
-          :rules="[{ required: true, message: '请输入' }]"
-          label="类型"
-          prop="type"
-        >
+        <!--        <el-form-item-->
+        <!--          :rules="[{ required: true, message: '请输入' }]"-->
+        <!--          label="滚动方向"-->
+        <!--          prop="rollType"-->
+        <!--        >-->
+        <!--          <el-select v-model="form.rollType" placeholder="请选择">-->
+        <!--            <el-option-->
+        <!--              v-for="(val, key) in rollTypeList"-->
+        <!--              :key="key"-->
+        <!--              :label="val"-->
+        <!--              :value="key"-->
+        <!--            />-->
+        <!--          </el-select>-->
+        <!--        </el-form-item>-->
+
+        <el-form-item label="类型" prop="type">
           <el-input v-model="form.serviceTypeName" disabled></el-input>
         </el-form-item>
       </el-form>
@@ -38,15 +49,18 @@
 
 <script>
 import { toastUpdateNotice } from "@/api/toastManage";
+// import { rollTypeList } from "@/common/enum";
 
 export default {
   name: "ToastEdit",
   data() {
     return {
       dialogFormVisible: false,
+      // rollTypeList: rollTypeList,
       form: {
         property: "",
         serviceTypeName: "",
+        // rollType: "",
         id: ""
       },
       typeList: []
@@ -58,6 +72,7 @@ export default {
       for (let i in this.form) {
         this.form[i] = val[i];
       }
+      // this.form.rollType += "";
     },
     dialogEditClose() {
       this.dialogFormVisible = false;

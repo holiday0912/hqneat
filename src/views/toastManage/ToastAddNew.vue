@@ -15,10 +15,22 @@
           label="内容"
           prop="property"
         >
-          <!--          <div class="input-wp">-->
           <el-input v-model="form.property" maxlength="60"></el-input>
-          <!--            <span>(中文)</span>-->
-          <!--          </div>-->
+        </el-form-item>
+
+        <el-form-item
+          :rules="[{ required: true, message: '请输入' }]"
+          label="滚动方向"
+          prop="rollType"
+        >
+          <el-select v-model="form.rollType" placeholder="请选择">
+            <el-option
+              v-for="(val, key) in rollTypeList"
+              :key="key"
+              :label="val"
+              :value="key"
+            />
+          </el-select>
         </el-form-item>
 
         <!--        <el-form-item-->
@@ -65,29 +77,30 @@
         <el-button type="primary" @click="addMessagePush">新 增</el-button>
       </div>
     </el-dialog>
-    <ToastType ref="toastType" @updateGroup="getTypeList"></ToastType>
+    <!--    <ToastType ref="toastType" @updateGroup="getTypeList"></ToastType>-->
   </div>
 </template>
 
 <script>
-import ToastType from "@/views/toastManage/ToastType.vue";
+// import ToastType from "@/views/toastManage/ToastType.vue";
 import { searchTypeList, toastAddNotice } from "@/api/toastManage";
+import { rollTypeList } from "@/common/enum";
 
 export default {
   name: "ToastAddNew",
   components: {
-    ToastType
+    // ToastType
   },
   props: {},
   data() {
     return {
+      rollTypeList: rollTypeList,
       dialogFormVisible: false,
       form: {
         property: "",
-        propertyE: "",
-        propertyF: "",
         serviceTypeCode: "",
-        serviceTypeName: ""
+        serviceTypeName: "",
+        rollType: ""
       },
       typeList: []
     };
@@ -117,11 +130,11 @@ export default {
         );
       };
     },
-    handleTypeManage(val) {
-      if (val === "类型管理") {
-        this.$refs.toastType.handleDrawerOpen();
-      }
-    },
+    // handleTypeManage(val) {
+    //   if (val === "类型管理") {
+    //     this.$refs.toastType.handleDrawerOpen();
+    //   }
+    // },
     async getTypeList() {
       try {
         let res = await searchTypeList();
