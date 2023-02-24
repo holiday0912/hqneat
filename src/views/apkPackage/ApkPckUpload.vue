@@ -5,7 +5,7 @@
     :close-on-click-modal="false"
     :destroy-on-close="true"
     :visible.sync="dialogFormVisible"
-    title="h5包上传"
+    title="安卓安装包上传"
     width="680px"
     @close="dialogEditClose"
   >
@@ -69,14 +69,14 @@
       :on-change="handleFileChange"
       :on-error="uploadError"
       :on-success="uploadSuccess"
-      accept="application/zip"
+      accept=".apk"
     >
       <el-button slot="trigger" size="small" type="primary"
         >选取文件
       </el-button>
 
       <div slot="tip" class="el-upload__tip">
-        只能上传zip格式的压缩包，请将文件直接压缩到一级目录
+        只能上传apk格式的安装包
       </div>
     </el-upload>
 

@@ -83,6 +83,16 @@ const routes = [
           ),
         meta: { permission: false, title: "h5包管理" }
       },
+      // apk包管理
+      {
+        path: "/apkPackage",
+        name: "apkPackage",
+        component: () =>
+          import(
+            /* webpackChunkName: "apkPackage" */ "@/views/apkPackage/ApkPackage.vue"
+          ),
+        meta: { permission: false, title: "apk包管理" }
+      },
       // 热修复
       {
         path: "/hotRepair",
