@@ -93,6 +93,16 @@ const routes = [
           ),
         meta: { permission: false, title: "apk包管理" }
       },
+      // 咨询管理
+      {
+        path: "/consultation",
+        name: "consultation",
+        component: () =>
+          import(
+            /* webpackChunkName: "apkPackage" */ "@/views/consultation/Consultation.vue"
+          ),
+        meta: { permission: false, title: "咨讯管理" }
+      },
       // 热修复
       {
         path: "/hotRepair",

@@ -35,7 +35,8 @@ module.exports = {
   devServer: {
     proxy: {
       "^/app-platform-backend": {
-        target: "http://192.168.10.240:9009",
+        // target: "http://192.168.10.240:9009",
+        target: "http://192.168.10.214:9009",
         ws: true, //是否代理websockets
         changeOrigin: true // 设置同源  默认false，是否需要改变原始主机头为目标URL
         // "^/admin": "/admin"
