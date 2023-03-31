@@ -182,6 +182,26 @@ const routes = [
             /* webpackChunkName: "MenuGroup" */ "@/views/menuGroup/MenuGroup.vue"
           ),
         meta: { permission: false, title: "菜单分组" }
+      },
+      // 签名管理
+      {
+        path: "/Signature",
+        name: "Signature",
+        component: () =>
+          import(
+            /* webpackChunkName: "MenuGroup" */ "@/views/signature/Signature.vue"
+          ),
+        meta: { permission: false, title: "签名管理" }
+      },
+      // 投诉建议
+      {
+        path: "/ComplaintAdvise",
+        name: "ComplaintAdvise",
+        component: () =>
+          import(
+            /* webpackChunkName: "MenuGroup" */ "@/views/complaintAdvise/ComplaintAdvise.vue"
+          ),
+        meta: { permission: false, title: "投诉建议" }
       }
     ]
   },

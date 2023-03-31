@@ -37,15 +37,26 @@
 
         <el-table-column
           align="center"
-          label="链接"
-          prop="url"
+          label="标题"
+          prop="title"
         ></el-table-column>
 
-        <el-table-column align="center" label="状态" prop="status">
-          <template slot-scope="scope">
-            {{ statusValueForce(scope.row.status) }}
+        <el-table-column align="center" label="图片" prop="imgUrl" width="350">
+          <template v-slot="scope">
+            <el-image
+              :preview-src-list="[scope.row.imgUrl]"
+              :src="scope.row.imgUrl"
+              lazy
+              style="width: 200px;"
+            />
           </template>
         </el-table-column>
+
+        <el-table-column
+          align="center"
+          label="链接"
+          prop="forwardUrl"
+        ></el-table-column>
 
         <el-table-column align="center" label="创建时间" prop="createTime">
           <template v-slot="{ row }">
@@ -56,14 +67,14 @@
           </template>
         </el-table-column>
 
-        <el-table-column align="center" label="修改时间" prop="updateTime">
+        <!-- <el-table-column align="center" label="修改时间" prop="updateTime">
           <template v-slot="{ row }">
             <div>
               <i class="el-icon-time" style="margin-right: 10px"></i>
               {{ row.updateTime }}
             </div>
           </template>
-        </el-table-column>
+        </el-table-column> -->
 
         <el-table-column align="center" label="操作" width="200">
           <template v-slot="scope">
@@ -96,7 +107,7 @@
 
       <BasePagination
         :page-total="pageTotal"
-        @getData="getList"
+        @getData="getDataList"
       ></BasePagination>
     </div>
 
@@ -132,9 +143,9 @@
 
 <script>
 import {
-  getConfigList,
   marketInfoTypeList,
-  deleteConfig
+  deleteConfig,
+  getMarketInfoList
 } from "@/api/consultation";
 import { dateFormat } from "@/utils/file.js";
 import EditConsultation from "./EditConsultation.vue";
@@ -166,7 +177,8 @@ export default {
   },
   mounted() {
     this.getPrdData();
-    this.getList();
+    // this.getList();
+    this.getDataList();
   },
   methods: {
     // 获取数字字典
@@ -180,12 +192,35 @@ export default {
         throw new Error(error);
       }
     },
-    async getList(query = { pageNum: 1, pageSize: 10 }) {
+    // async getList(query = { pageNum: 1, pageSize: 10 }) {
+    //   let params = Object.assign({}, query);
+    //   try {
+    //     let res = await getConfigList(params);
+    //     if (res) {
+    //       console.log(res, 22);
+    //       this.tableData = res.data.list.map(i => {
+    //         return {
+    //           ...i,
+    //           createTime: i.createTime
+    //             ? dateFormat(i.createTime, "yyyy-mm-dd HH:MM:ss")
+    //             : "--",
+    //           updateTime: i.updateTime
+    //             ? dateFormat(i.updateTime, "yyyy-mm-dd HH:MM:ss")
+    //             : "--"
+    //         };
+    //       });
+    //       this.pageTotal = res.data.total;
+    //     }
+    //   } catch (e) {
+    //     throw new Error(e);
+    //   }
+    // },
+    async getDataList(query = { pageNum: 1, pageSize: 10 }) {
       let params = Object.assign({}, query);
       try {
-        let res = await getConfigList(params);
+        let res = await getMarketInfoList(params);
         if (res) {
-          console.log(res, 22);
+          console.log(res, 11);
           this.tableData = res.data.list.map(i => {
             return {
               ...i,
@@ -241,7 +276,7 @@ export default {
     // 新增确认
     addConfirm() {
       this.$refs.son1.$refs.addForm.resetFields();
-      this.getList();
+      this.getDataList();
       this.addDialogVisible = false;
     },
     // 详情与修改弹窗
@@ -252,7 +287,7 @@ export default {
     // 详情与修改弹窗
     confirm() {
       this.$refs.son2.$refs.dialogForm.resetFields();
-      this.getList();
+      this.getDataList();
       this.dialogVisible = false;
     },
     formRest() {
@@ -281,7 +316,7 @@ export default {
         let res = await deleteConfig({ id });
         if (res.message === "请求成功") {
           this.$message.success("删除成功");
-          await this.getList();
+          await this.getDataList();
         }
       } catch (e) {
         throw new Error(e);

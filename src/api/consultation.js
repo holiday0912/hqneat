@@ -8,12 +8,12 @@ export const getConfigList = query => {
 
 // 新增咨询
 export const addInsert = query => {
-  return post("/marketInfoConfig/insert", query);
+  return post("/marketInfo/insert", query);
 };
 
 // 修改咨询配置
 export const updateConfig = query => {
-  return post("/marketInfoConfig/update", query);
+  return post("/marketInfo/update", query);
 };
 
 // 获取咨询类型
@@ -23,9 +23,16 @@ export const marketInfoTypeList = query => {
   });
 };
 
-// 获取咨询类型
+// 删除列表
 export const deleteConfig = query => {
-  return get("/marketInfoConfig/delete", {
+  return get("/marketInfo/delete", {
+    ...query
+  });
+};
+
+// 获取咨询列表
+export const getMarketInfoList = query => {
+  return post("/marketInfo/list", {
     ...query
   });
 };
