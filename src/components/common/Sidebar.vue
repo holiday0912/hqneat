@@ -34,7 +34,7 @@
                 </el-submenu>
                 <el-menu-item
                   v-else
-                  :key="subItem.router"
+                  :key="subItem.router + '/'"
                   :index="subItem.router"
                   ><i :class="subItem.icon"></i>{{ subItem.resourceName }}
                 </el-menu-item>
@@ -60,21 +60,31 @@ export default {
   data() {
     return {
       collapse: false,
-      // items: [
-      //   {
-      //     icon: "el-icon-lx-shop",
-      //     router: "todoList",
-      //     resourceName: "待办事项"
-      //     resources: [
-      //       {
-      //         icon: "el-icon-lx-shop",
-      //         router: "resourcesManage",
-      //         resourceName: "资源管理"
-      //       }
-      //     ]
-      //   }
-      // ]
-      items: []
+      items: [
+        {
+          icon: "el-icon-lx-shop",
+          router: "todoList",
+          resourceName: "权限管理",
+          resources: [
+            {
+              icon: "el-icon-lx-shop",
+              router: "accountManage",
+              resourceName: "账号管理"
+            },
+            {
+              icon: "el-icon-lx-shop",
+              router: "roleManage",
+              resourceName: "角色管理"
+            },
+            {
+              icon: "el-icon-lx-shop",
+              router: "resourcesManage",
+              resourceName: "资源管理"
+            }
+          ]
+        }
+      ]
+      // items: []
     };
   },
   computed: {
@@ -88,12 +98,12 @@ export default {
       this.collapse = msg;
       bus.$emit("collapse-content", msg);
     });
-    if (sessionStorage.getItem("userLoginContext")) {
-      this.items = JSON.parse(sessionStorage.getItem("userLoginContext"));
-    }
-    bus.$on("updateMenu", target => {
-      this.items = target;
-    });
+    // if (sessionStorage.getItem("userLoginContext")) {
+    //   this.items = JSON.parse(sessionStorage.getItem("userLoginContext"));
+    // }
+    // bus.$on("updateMenu", target => {
+    //   this.items = target;
+    // });
   }
 };
 </script>
